@@ -1,22 +1,13 @@
 import { signOut, useSession } from '@/lib/auth/auth-client'
 import menuConfigs from '@/lib/configs/menu.config'
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/redux.hooks'
-import { IMenuConfig, userMenuProps } from '@/lib/types'
+import { userMenuProps } from '@/lib/types'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AiOutlineLogout } from 'react-icons/ai'
 
 const UserMenu = ({ open, toggleMenu }: userMenuProps) => {
   const { data: session } = useSession()
-  //   const { appState } = useAppSelector(state => state.appState)
-  const dispatch = useAppDispatch()
   const router = useRouter()
-
-  const handleClick = (item: IMenuConfig) => {
-    toggleMenu()
-    // dispatch(setAppState(item.state))
-    toggleMenu()
-  }
 
   const signout = async () => {
     toggleMenu()

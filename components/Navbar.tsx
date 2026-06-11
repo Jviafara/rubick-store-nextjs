@@ -1,7 +1,6 @@
 'use client'
 
 import { useSession } from '@/lib/auth/auth-client'
-import { useAppDispatch } from '@/lib/hooks/redux.hooks'
 import Link from 'next/link'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { FaUserCircle } from 'react-icons/fa'
@@ -10,15 +9,17 @@ import { TiThMenuOutline } from 'react-icons/ti'
 import Logo from './Logo'
 import { useRef, useState } from 'react'
 import UserMenu from './UserMenu'
+import SideBar from './SideBar'
+import { useAppSelector } from '@/lib/hooks/redux.hooks'
 
 const Navbar = () => {
   const { data: session } = useSession()
 
+  const { cartItems } = useAppSelector(state => state.cart)
+
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const userMenuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const dispatch = useAppDispatch()
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen)
@@ -50,8 +51,11 @@ const Navbar = () => {
   }
 
   return (
-    <div className='shadow-smbg-gray-200 bg-opacity-50 backdrop-blur-2xl py-4 md:px-4 text-black max-w-[100vw] w-full'>
-      {/* <Sidebar open={sidebarOpen} toggleSidebar={toggleSidebar} />*/}
+    <div className='shadow-sm bg-gray-200/70 backdrop-blur-2xl py-4 md:px-4 text-black max-w-[100vw] w-full'>
+      <SideBar
+        open={sidebarOpen}
+        toggleSidebar={toggleSidebar}
+      />
       <UserMenu
         open={userMenuOpen}
         toggleMenu={toggleMenu}
@@ -83,11 +87,11 @@ const Navbar = () => {
               className='flex items-center gap-1'
             >
               <HiShoppingCart size={24} />
-              {/* {cartItems?.length > 0 && (
+              {cartItems?.length > 0 && (
                 <span className='bg-red-600 text-white text-xs  font-bold px-1 lg:px-1.5 py-0.5 rounded-full h-full relative -top-2 -left-3  dark:bg-red-600 dark:text-white'>
-                  {cartItems.reduce((a, c) => a + c.quantity, 0)}
+                  {cartItems.reduce((a, c) => a + c?.quantity || 0, 0)}
                 </span>
-              )} */}
+              )}
             </Link>
           </li>
           {!session?.user && (

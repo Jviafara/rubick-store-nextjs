@@ -1,8 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import globalLoadingSlice from './features/globalLoadingSlice'
+import cartSlice from './features/cartSlice'
+import favoriteSlice from './features/favoriteSlice'
 
 const rootReducer = combineReducers({
   globalLoading: globalLoadingSlice,
+  cart: cartSlice,
+  favoriteList: favoriteSlice,
 })
 
 export const store = configureStore({

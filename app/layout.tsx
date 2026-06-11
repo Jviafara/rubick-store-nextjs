@@ -7,6 +7,11 @@ import ToastProvider from './ToastProvider'
 import Navbar from '@/components/Navbar'
 import GlobalLoading from '@/components/GlobalLoading'
 
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -56,9 +61,10 @@ export default function RootLayout({
               <Navbar />
             </header>
 
-            {/* global loading */}
+            {/* Global Loading */}
             <GlobalLoading />
-            {/* global loading */}
+            {/* Global Loading */}
+
             {children}
           </ToastProvider>
         </StoreProvider>

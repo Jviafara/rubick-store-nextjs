@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server'
-import { GenericObject } from './types'
-
-const responseWithData = (body: GenericObject, status: number) => NextResponse.json(body, { status })
+const responseWithData = (body: unknown, status: number) => NextResponse.json(body, { status })
 
 const error = () =>
   responseWithData(
@@ -14,11 +12,11 @@ const error = () =>
 
 const badRequest = (message: string) => responseWithData({ status: 400, message }, 400)
 
-const ok = (data: GenericObject) => responseWithData(data, 200)
+const ok = (data: unknown) => responseWithData(data, 200)
 
 const justOk = () => NextResponse.json({ status: 200 })
 
-const created = (data: GenericObject) => responseWithData(data, 201)
+const created = (data: unknown) => responseWithData(data, 201)
 
 const unauthorize = () => responseWithData({ status: 401, message: 'Unauthorized' }, 401)
 
