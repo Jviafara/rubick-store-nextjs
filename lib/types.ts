@@ -19,7 +19,7 @@ export interface ISidebarProps {
 }
 
 export interface ICart {
-  shippingAddress: any[]
+  shippingAddress: string[]
   cartItems: ICartItem[]
 }
 
@@ -83,4 +83,23 @@ export interface IFavorite extends Document {
 export interface RatingsProps {
   rating?: number
   numReviews?: number
+}
+
+export interface SearchBarProps {
+  setQuery: (value: string) => void
+}
+
+export interface ProductFiltersProps {
+  filter: string
+  setFilter: (value: string) => void
+  setPriceFilter: (value: number[]) => void
+  priceSort: string | number[]
+  setPriceSort: (value: string) => void
+}
+
+export interface ProductGridProps {
+  filter: string
+  priceFilter: number[]
+  priceSort: string
+  query: string
 }
