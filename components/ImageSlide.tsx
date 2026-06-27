@@ -11,6 +11,7 @@ const ImageSlide = ({ images }: { images: string[] }) => {
             key={index}
             src={image}
             alt={'Images'}
+            loading='eager'
             width={500}
             height={500}
             className='w-[5vw] bg-cover rounded-lg'
@@ -27,6 +28,7 @@ const ImageSlide = ({ images }: { images: string[] }) => {
               src={image}
               alt={'Images'}
               width={500}
+              loading='eager'
               height={500}
               className='w-full bg-cover rounded-lg'
             />

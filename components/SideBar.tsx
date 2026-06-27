@@ -1,15 +1,29 @@
 import menuConfigs from '@/lib/configs/menu.config'
 import { ISidebarProps } from '@/lib/types'
 import Link from 'next/link'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { motion } from 'framer-motion'
 import Logo from './Logo'
+import { useScrollLock } from '@/lib/hooks/useScrollLock'
 
 const SideBar = ({ open, toggleSidebar }: ISidebarProps) => {
   const sideNavRef = useRef(null)
+  const [mounted, setMounted] = useState(false)
 
-  if (!open) return null
-  return (
+  useScrollLock(open)
+
+  useEffect(() => {
+    const mountSidebar = () => {
+      setMounted(true)
+      return () => setMounted(false)
+    }
+    mountSidebar()
+  }, [])
+
+  if (!open || !mounted || typeof document === 'undefined') return null
+
+  return createPortal(
     <div className='fixed inset-0 z-50 flex items-center justify-center'>
       {/* <!-- Backdrop with Fade-In Blur --> */}
       <div
@@ -40,7 +54,8 @@ const SideBar = ({ open, toggleSidebar }: ISidebarProps) => {
           ))}
         </ul>
       </motion.div>
-    </div>
+    </div>,
+    document.body,
   )
 }
 

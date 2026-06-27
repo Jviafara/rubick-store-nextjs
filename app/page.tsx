@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className='flex flex-col items-center relative  mt-4 mb-16'>
+    <div className='flex flex-col items-center relative mt-4 mb-16'>
       <Container
         header={'new products'}
         seeMore={'/products'}

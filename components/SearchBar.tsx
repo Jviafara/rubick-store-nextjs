@@ -23,7 +23,7 @@ const SearchBar = ({ setQuery }: SearchBarProps) => {
         id='address'
         onChange={onQueryChange}
         placeholder='Search Products'
-        className='w-full h-8 rounded-lg text-lg py-1 px-4'
+        className='w-full h-8 rounded-lg text-lg py-1 px-4 text-center border border-gray-50 focus:outline-blue-500 focus:border-none focus:outline-1'
       />
     </div>
   )

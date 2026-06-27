@@ -8,7 +8,7 @@ import { productApi } from '@/lib/modules/productsApiClient'
 import { addcartItem } from '@/lib/redux/features/cartSlice'
 import { addFavorite, removeFavorite } from '@/lib/redux/features/favoriteSlice'
 import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
-import { IFavorite, IProduct } from '@/lib/types'
+import { ICartItem, IFavorite, IProduct } from '@/lib/types'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { AiFillHeart } from 'react-icons/ai'
@@ -24,6 +24,7 @@ const ProductDetail = () => {
   const { favoriteList } = useAppSelector(state => state.favoriteList)
   const { cartItems } = useAppSelector(state => state.cart)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [alreadyInCart, setAlreadyInCart] = useState(false)
   const [product, setProduct] = useState<IProduct>()
 
   useEffect(() => {
@@ -35,15 +36,20 @@ const ProductDetail = () => {
   }, [favoriteList, product])
 
   useEffect(() => {
+    const CheckCartItems = async (item: ICartItem) => {
+      const inCart = cartItems.find(p => p._id === item._id)
+      if (inCart) setAlreadyInCart(true)
+    }
     const getProduct = async () => {
       const { res, error } = await productApi.productInfo(slug || '')
       if (res) {
         setProduct(res)
       }
       if (error) toast.error(error.toString())
+      CheckCartItems(res)
     }
     getProduct()
-  }, [slug])
+  }, [slug, cartItems])
 
   useEffect(() => {
     const getProduct = async () => {
@@ -99,6 +105,7 @@ const ProductDetail = () => {
       toast.success('Product remove from favorites')
     }
   }
+
   if (!product) return null
 
   return (
@@ -150,14 +157,20 @@ const ProductDetail = () => {
             <div>
               <hr className='border border-yellow' />
               <li>
-                <button
-                  onClick={addToCartHandler}
-                  type='button'
-                  className='w-full md:w-1/2 rounded-lg border hover:bg-blue-500 bg-yellow py-3 px-4
+                {alreadyInCart ? (
+                  <div className='w-full py-3 px-4 text-white font-bold font-serif text-lg mt-4'>
+                    Already in the Cart
+                  </div>
+                ) : (
+                  <button
+                    onClick={addToCartHandler}
+                    type='button'
+                    className='w-full md:w-1/2 rounded-lg border hover:bg-blue-500 bg-yellow py-3 px-4
                                         text-white font-bold font-serif text-lg mt-4'
-                >
-                  Add to Cart
-                </button>
+                  >
+                    Add to Cart
+                  </button>
+                )}
               </li>
             </div>
           )}

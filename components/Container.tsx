@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 const Container = ({ header, children, seeMore }: ContainerProps) => {
   return (
-    <div className='mt-20 w-full max-w-[90vw] relative z-0'>
+    <div className='mt-20 w-full max-w-[90vw]'>
       <div className='flex flex-col gap-8 w-full items-center'>
         {header && (
           <div
