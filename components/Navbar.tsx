@@ -51,7 +51,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className='shadow-sm bg-gray-200/70 backdrop-blur-2xl py-4 md:px-4 text-black max-w-[100vw] w-full'>
+    <div className='shadow-sm bg-gray-200/70 backdrop-blur-2xl py-4 md:px-4 text-black max-w-[100vw] w-full z-50'>
       <SideBar
         open={sidebarOpen}
         toggleSidebar={toggleSidebar}

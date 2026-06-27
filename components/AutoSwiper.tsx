@@ -4,7 +4,7 @@ import { Swiper } from 'swiper/react'
 
 const AutoSwiper = ({ children }: AutoSwiperProps) => {
   return (
-    <div className='flex w-full md:max-w-[80vw] relative z-0'>
+    <div className='flex w-full md:max-w-[80vw]'>
       <Swiper
         // slidesPerView={2}
         loop={true}
