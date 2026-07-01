@@ -16,6 +16,13 @@ export const favoriteEndpoints = {
   remove: 'favorites',
 }
 
+export const orderEndpoints = {
+  list: 'orders',
+  userList: 'orders/user',
+  create: 'orders',
+  remove: 'orders',
+}
+
 export const videos = [
   {
     name: 'Tutorial 3x3',

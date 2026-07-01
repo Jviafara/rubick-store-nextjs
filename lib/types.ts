@@ -28,7 +28,7 @@ export interface IFavoriteSlice {
 }
 
 export interface ContainerProps {
-  header: string
+  header?: string
   children: React.ReactNode
   seeMore?: string
 }
@@ -102,4 +102,31 @@ export interface ProductGridProps {
   priceFilter: number[]
   priceSort: string
   query: string
+}
+
+export interface IOrderItems extends IProduct {
+  product: mongoose.Types.ObjectId
+}
+
+export interface IShippingAddress {
+  name: string
+  address: string
+  city: string
+  postalCode: string
+  country: string
+}
+export interface IOrder extends Document {
+  orderItems: IOrderItems[]
+  shippingAddress: IShippingAddress
+  paymentId: string
+  itemsPrice: number
+  shippingPrice: number
+  totalPrice: number
+  user: mongoose.Types.ObjectId
+  isPaid: boolean
+  paidAt: Date
+  isDelivered: boolean
+  deliveredAt: Date
+  createdAt?: Date
+  updatedAt?: Date
 }
