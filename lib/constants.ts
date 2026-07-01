@@ -21,6 +21,7 @@ export const orderEndpoints = {
   userList: 'orders/user',
   create: 'orders',
   remove: 'orders',
+  orderPayment: (orderId: string) => `orders/pay/${orderId}`,
 }
 
 export const videos = [

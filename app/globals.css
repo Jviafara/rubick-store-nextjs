@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+input {
+  text-align: left;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

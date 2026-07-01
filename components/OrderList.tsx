@@ -22,7 +22,6 @@ const OrderList = ({ max }: { max: number }) => {
       dispatch(setGlobalLoading(false))
 
       if (error) toast.error(res.message)
-      console.log(res)
       if (res) {
         if (max) {
           setOrders(res.sort((a: IOrder, b: IOrder) => getDate(b).getTime() - getDate(a).getTime()).slice(0, 4))
@@ -58,7 +57,7 @@ const OrderList = ({ max }: { max: number }) => {
                   </p>
                   <p className='flex flex-col xl:flex-row items-center'>
                     <strong>Date:</strong>
-                    <p>{order.createdAt!.toString().slice(0, 10)}</p>
+                    <span>{order.createdAt!.toString().slice(0, 10)}</span>
                   </p>
                 </div>
               </div>
@@ -121,7 +120,7 @@ const OrderList = ({ max }: { max: number }) => {
                   </p>
                   <p className='flex gap-1'>
                     <strong>Date:</strong>
-                    <p>{order.createdAt!.toString().slice(0, 10)}</p>
+                    <span>{order.createdAt!.toString().slice(0, 10)}</span>
                   </p>
                 </div>
 

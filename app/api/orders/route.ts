@@ -26,6 +26,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  console.log('POST /api/orders')
   try {
     const session = await auth.api.getSession({
       headers: req.headers,
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
       totalPrice: body.totalPrice,
       user: session.user.id,
     })
-    responseHandler.created(order)
+    return responseHandler.created(order)
   } catch (e) {
     console.error(e)
     return responseHandler.error()

@@ -5,11 +5,17 @@ import Container from '@/components/Container'
 import FavoriteSlide from '@/components/FavoriteSlide'
 import OrderList from '@/components/OrderList'
 import { useSession } from '@/lib/auth/auth-client'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 const ProfilePage = () => {
+  const router = useRouter()
   const { data: session } = useSession()
+  useEffect(() => {
+    if (!session?.user) router.push('/sign-in')
+  })
   return (
-    <div className='w-full flex flex-col items-center'>
+    <div className='w-full flex flex-col items-center mb-32'>
       <Container>
         <h1 className='text-3xl  font-bold -my-10'>Welcome! {session?.user.name?.split(' ')[0].toLocaleUpperCase()} </h1>
       </Container>

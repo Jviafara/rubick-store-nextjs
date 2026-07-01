@@ -19,7 +19,7 @@ export interface ISidebarProps {
 }
 
 export interface ICart {
-  shippingAddress: string[]
+  shippingAddress: IShippingAddress
   cartItems: ICartItem[]
 }
 
@@ -104,7 +104,7 @@ export interface ProductGridProps {
   query: string
 }
 
-export interface IOrderItems extends IProduct {
+export interface IOrderItems extends ICartItem {
   product: mongoose.Types.ObjectId
 }
 
@@ -129,4 +129,27 @@ export interface IOrder extends Document {
   deliveredAt: Date
   createdAt?: Date
   updatedAt?: Date
+}
+
+export interface OrderPaymentProps {
+  orderId: string
+  amount: number
+  token: string
+}
+
+export interface IShippingAddress {
+  name: string
+  address: string
+  city: string
+  postalCode: string
+  country: string
+}
+
+export interface CreateOrderProps {
+  shippingAddress: IShippingAddress
+  paymentId: string
+  itemsPrice: number
+  shippingPrice: number
+  totalPrice: number
+  orderItems: IOrderItems[]
 }

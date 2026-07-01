@@ -15,7 +15,6 @@ export async function GET(req: NextRequest) {
 
     await connectDB()
     const orders = await Order.find({ user: session.user.id })
-    console.log(orders)
 
     if (!orders) return responseHandler.notFound()
     return responseHandler.ok(orders)
