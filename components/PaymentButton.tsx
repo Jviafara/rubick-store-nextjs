@@ -1,55 +1,37 @@
-import { useSession } from '@/lib/auth/auth-client'
-import { useAppDispatch } from '@/lib/hooks/redux.hooks'
-import { OrdersApi } from '@/lib/modules/orderApiClient'
-import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
+'use client'
+
 import { IOrder } from '@/lib/types'
-import { useRouter } from 'next/navigation'
-import { toast } from 'react-toastify'
-// import StripeCheckout from 'react-stripe-checkout'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+import { useState } from 'react'
+import StripeCheckout from './StripeCheckout'
+
+const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
 const PaymentButton = ({ order }: { order: IOrder }) => {
-  const { data: session } = useSession()
+  const [openPaymentForm, setOpenPaymentForm] = useState(false)
 
-  const router = useRouter()
-  const dispatch = useAppDispatch()
-
-  const handleToken = async (total: number, token: string) => {
-    dispatch(setGlobalLoading(true))
-
-    const { res, error } = await OrdersApi.orderPayment({
-      orderId: order._id.toString(),
-      token,
-      amount: total,
-    })
-    dispatch(setGlobalLoading(false))
-
-    if (error) toast.error(res.message)
-
-    if (res) {
-      router.refresh()
-    }
-  }
-
-  const tokenHandler = (token: string) => {
-    handleToken(order.totalPrice, token)
-  }
   return (
     <div>
-      {/* <StripeCheckout
-        name='Payment'
-        email={user.email}
-        amount={order?.totalPrice * 100}
-        description={`Payment order: ${order?.id}`}
-        token={tokenHandler}
-        stripeKey='pk_test_51NGzQhAWaH59OtvEbobT1NiRqKYk9Q6C5FLgWEvs4CcEz23nkODRsyBEo7hkYhMlccQcVEJ9hTV3fkUxZYQmJJl100Qeg9dxqt'
+      <Elements
+        stripe={stripe}
+        options={{ mode: 'payment', amount: order.totalPrice * 100, currency: 'usd' }}
       >
-        <button
-          type='button'
-          className='rounded-lg border bg-blue-600 p-2 px-4  w-full text-white font-bold text-lg'
-        >
-          Pay now
-        </button>
-      </StripeCheckout> */}
+        {openPaymentForm ? (
+          <StripeCheckout
+            amount={order.totalPrice}
+            orderId={order._id.toString()}
+          />
+        ) : (
+          <button
+            type='button'
+            className='rounded-lg border bg-blue-600 p-2 px-4  w-full text-white font-bold text-lg'
+            onClick={() => setOpenPaymentForm(true)}
+          >
+            Pay now
+          </button>
+        )}
+      </Elements>
     </div>
   )
 }

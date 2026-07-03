@@ -134,7 +134,7 @@ export interface IOrder extends Document {
 export interface OrderPaymentProps {
   orderId: string
   amount: number
-  token: string
+  type: string
 }
 
 export interface IShippingAddress {

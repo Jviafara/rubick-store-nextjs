@@ -1,3 +1,4 @@
+'use client'
 import { useAppDispatch } from '@/lib/hooks/redux.hooks'
 import { OrdersApi } from '@/lib/modules/orderApiClient'
 import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
@@ -7,8 +8,9 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import Container from './Container'
+import Link from 'next/link'
 
-const OrderList = ({ max }: { max: number }) => {
+const OrderList = ({ max }: { max?: number }) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const [orders, setOrders] = useState<IOrder[]>([])
@@ -38,7 +40,7 @@ const OrderList = ({ max }: { max: number }) => {
   return (
     <Container
       header={'Orders'}
-      seeMore={'/orders'}
+      seeMore={max ? '/orders' : ''}
     >
       <div className='hidden md:inline-flex '>
         <ul className='w-[95vw] lg:w-[90vw]  flex flex-col gap-2'>
@@ -70,8 +72,13 @@ const OrderList = ({ max }: { max: number }) => {
                     Order Paid
                   </p>
                 ) : (
-                  <h1>Payment Button</h1>
-                  //   <PaymentButton order={order} />
+                  <Link
+                    href={`/orders/${order._id}`}
+                    className='border min-w-fit border-red-300 rounded-lg shadow-sm shadow-red-300
+                         bg-red-200 p-1 font-bold text-red-800 px-4 py-2'
+                  >
+                    Go to pay
+                  </Link>
                 )}
               </div>
               <div className='w-1/4 lg:w-[20%] flex justify-center'>
@@ -95,7 +102,7 @@ const OrderList = ({ max }: { max: number }) => {
               <div className='w-[8%]'>
                 <button
                   type='button'
-                  onClick={() => router.push(`/order/${order._id}`)}
+                  onClick={() => router.push(`/orders/${order._id}`)}
                   className='rounded-lg border hover:bg-blue-500 bg-yellow p-2
                     text-black font-medium font-roboto '
                 >
@@ -136,8 +143,13 @@ const OrderList = ({ max }: { max: number }) => {
                       Order Paid
                     </p>
                   ) : (
-                    <h1>Payment Button</h1>
-                    // <PaymentButton order={order} />
+                    <Link
+                      href={`/orders/${order._id}`}
+                      className='border min-w-fit border-red-300 rounded-lg shadow-sm shadow-red-300
+                         bg-red-200 p-1 font-bold text-red-800 px-4 py-2'
+                    >
+                      Go to pay
+                    </Link>
                   )}
 
                   {order.isDelivered ? (
@@ -157,7 +169,7 @@ const OrderList = ({ max }: { max: number }) => {
                   )}
                   <button
                     type='button'
-                    onClick={() => router.push(`/order/${order._id}`)}
+                    onClick={() => router.push(`/orders/${order._id}`)}
                     className='w-[60vw] mx-auto sm:hidden rounded-lg border hover:bg-blue-500 bg-yellow py-3 px-4
                     text-black font-medium font-serif '
                   >
@@ -168,7 +180,7 @@ const OrderList = ({ max }: { max: number }) => {
               <div className='hidden sm:inline-flex w-1/4'>
                 <button
                   type='button'
-                  onClick={() => router.push(`/order/${order._id}`)}
+                  onClick={() => router.push(`/orders/${order._id}`)}
                   className='w-full rounded-lg border hover:bg-blue-500 bg-yellow py-3 px-4
                     text-black font-medium font-serif '
                 >

@@ -19,6 +19,7 @@ export const favoriteEndpoints = {
 export const orderEndpoints = {
   list: 'orders',
   userList: 'orders/user',
+  details: (orderId: string) => `orders/${orderId}`,
   create: 'orders',
   remove: 'orders',
   orderPayment: (orderId: string) => `orders/pay/${orderId}`,

@@ -44,11 +44,10 @@ const PlaceOrderForm = () => {
       orderItems: cartItems as IOrderItems[],
     })
     dispatch(setGlobalLoading(false))
-    console.log('res', res)
 
     if (res) {
       dispatch(clearCart())
-      router.push(`/order/${res.id}`)
+      router.push(`/orders/${res._id}`)
     }
     if (error) toast.error(res.message)
   }

@@ -4,7 +4,7 @@ import responseHandler from '@/lib/responseHandler'
 import { NextRequest } from 'next/server'
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_S_KEY || ' ')
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '')
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -22,20 +22,25 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     const body = await req.json()
 
-    const charge = await stripe.charges.create({
-      source: body.token.id,
-      amount: body.amount,
-      currency: 'usd',
-    })
+    if (body.type === 'payment_intent') {
+      const charge = await stripe.paymentIntents.create({
+        amount: body.amount,
+        currency: 'usd',
+        automatic_payment_methods: { enabled: true },
+      })
+
+      order.paymentId = charge.id
+      await order.save()
+      return responseHandler.ok({ order, clientSecret: charge.client_secret })
+    }
 
     order.isPaid = true
-    order.paymentId = charge.id
     order.paidAt = Date.now()
     await order.save()
 
-    responseHandler.ok(order)
+    return responseHandler.ok({ order })
   } catch (e) {
     console.error(e)
-    responseHandler.error()
+    return responseHandler.error()
   }
 }

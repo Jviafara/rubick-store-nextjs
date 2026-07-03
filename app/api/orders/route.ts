@@ -26,7 +26,6 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  console.log('POST /api/orders')
   try {
     const session = await auth.api.getSession({
       headers: req.headers,
