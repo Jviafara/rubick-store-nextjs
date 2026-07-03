@@ -2,7 +2,7 @@
 import Container from '@/components/Container'
 import FavoritesGrid from '@/components/FavoritesGrid'
 import { useSession } from '@/lib/auth/auth-client'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 const Favorites = () => {
