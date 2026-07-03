@@ -24,11 +24,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
   }, [favoriteList, product])
 
   const addToCartHandler = async () => {
-    console.log(cartItems[0], product._id)
     const existItem = cartItems?.find(x => x._id === product._id)
-    console.log(existItem)
     const quantity = existItem ? existItem.quantity + 1 : 1
-    console.log(quantity)
 
     if (product.countInStock! < quantity) {
       toast.error('Product Out of Stock')

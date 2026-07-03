@@ -2,7 +2,13 @@ import { ICart, ICartItem } from '@/lib/types'
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState: ICart = {
-  shippingAddress: [],
+  shippingAddress: {
+    name: '',
+    address: '',
+    city: '',
+    postalCode: '',
+    country: '',
+  },
   cartItems: [],
 }
 

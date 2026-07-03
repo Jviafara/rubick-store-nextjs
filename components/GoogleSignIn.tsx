@@ -3,7 +3,6 @@ import Image from 'next/image'
 
 const GoogleSignIn = () => {
   const handleGoogleSignIn = async () => {
-    console.log('Initiating Google sign-in...')
     try {
       await signIn.social({ provider: 'google' })
     } catch (e) {
