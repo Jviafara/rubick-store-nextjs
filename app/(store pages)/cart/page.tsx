@@ -20,7 +20,7 @@ const Cart = () => {
     if (session?.user) {
       router.push('/shipping-address')
     } else {
-      router.push('/signin')
+      router.push('/sign-in')
     }
   }
 
