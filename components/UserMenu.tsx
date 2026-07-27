@@ -1,11 +1,12 @@
 import { signOut, useSession } from '@/lib/auth/auth-client'
 import menuConfigs from '@/lib/configs/menu.config'
-import { userMenuProps } from '@/lib/types'
+import { FullUser, userMenuProps } from '@/lib/types'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AiOutlineLogout } from 'react-icons/ai'
+import { MdSpaceDashboard } from 'react-icons/md'
 
 const UserMenu = ({ open, toggleMenu }: userMenuProps) => {
   const { data: session } = useSession()
@@ -45,6 +46,18 @@ const UserMenu = ({ open, toggleMenu }: userMenuProps) => {
         {session?.user && (
           <div>
             <ul className='flex flex-col gap-2 ml-4 justify-center'>
+              {(session.user as FullUser).role === 'admin' && (
+                <li>
+                  <Link
+                    href={'/admin/dashboard'}
+                    onClick={() => toggleMenu()}
+                    className='flex max-w-max items-center gap-2 rounded-lg py-1 px-2 hover:bg-gray-300/70 hover:scale-110'
+                  >
+                    <MdSpaceDashboard size={24} />
+                    <h6 className='font-medium uppercase'>Dashboard</h6>
+                  </Link>
+                </li>
+              )}
               {menuConfigs.user.map((item, index) => (
                 <li key={index}>
                   <Link

@@ -10,6 +10,13 @@ export const productsEndpoints = {
   addImages: (productId: string) => `products/images/${productId}`,
 }
 
+export const usersEndpoints = {
+  list: 'users',
+  remove: (userId: string) => `users/${userId}`,
+  info: (userId: string) => `users/${userId}`,
+  update: (userId: string) => `users/${userId}`,
+}
+
 export const favoriteEndpoints = {
   list: 'favorites',
   add: 'favorites',

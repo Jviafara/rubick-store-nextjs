@@ -76,12 +76,25 @@ const ProductGrid = ({ filter, priceFilter, priceSort, query }: ProductGridProps
 
   return (
     <div className='w-[95vw] md:w-[90vw] flex flex-col items-center pb-12'>
-      <p className='my-2'>{'Category: ' + filter.toUpperCase() + ' / Min Price: ' + priceFilter[0] + ' / Max Price: ' + priceFilter[1] + ' / Sort: ' + priceSort.toUpperCase()}</p>
+      <p className='my-2'>
+        {'Category: ' +
+          filter.toUpperCase() +
+          ' / Min Price: ' +
+          priceFilter[0] +
+          ' / Max Price: ' +
+          priceFilter[1] +
+          ' / Sort: ' +
+          priceSort.toUpperCase()}
+      </p>
       {filter !== 'All products' &&
-        products?.filter(product => product.category === filter)?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1]).length <= 0 && (
+        products
+          ?.filter(product => product.category === filter)
+          ?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1]).length <= 0 && (
           <ProductNotFound />
         )}
-      {filter === 'All products' && products?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])?.length <= 0 && <ProductNotFound />}
+      {filter === 'All products' &&
+        products?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])?.length <=
+          0 && <ProductNotFound />}
       <div className='w-[80vw] grid gap-8 xl:gap-12 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center justify-stretch'>
         {filter !== 'All products' &&
           products

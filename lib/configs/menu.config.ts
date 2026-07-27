@@ -1,6 +1,9 @@
 import { AiOutlineHome, AiOutlineShopping, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai'
 import { BiCommentCheck } from 'react-icons/bi'
 import { BsFillBagFill } from 'react-icons/bs'
+import { FaProductHunt, FaUsers } from 'react-icons/fa'
+import { IoReceiptSharp } from 'react-icons/io5'
+
 import { MdOutlineFavorite } from 'react-icons/md'
 
 const main = [
@@ -50,7 +53,24 @@ const user = [
     state: 'orders',
   },
 ]
+const admin = [
+  {
+    display: 'Orders List',
+    icon: IoReceiptSharp,
+    state: 'order',
+  },
+  {
+    display: 'Users List',
+    icon: FaUsers,
+    state: 'users',
+  },
+  {
+    display: 'Products List',
+    icon: FaProductHunt,
+    state: 'products',
+  },
+]
 
-const menuConfigs = { main, user }
+const menuConfigs = { main, user, admin }
 
 export default menuConfigs

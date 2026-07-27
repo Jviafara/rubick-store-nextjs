@@ -2,10 +2,8 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import StoreProvider from './StoreProvider'
-import { ToastContainer } from 'react-toastify'
 import ToastProvider from './ToastProvider'
-import Navbar from '@/components/Navbar'
-import GlobalLoading from '@/components/GlobalLoading'
+import AppShell from '@/components/AppShell'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -41,31 +39,7 @@ export default function RootLayout({
       <body className='min-h-full flex flex-col'>
         <StoreProvider>
           <ToastProvider>
-            <ToastContainer
-              position='bottom-left'
-              autoClose={1000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              pauseOnFocusLoss
-              pauseOnHover
-            />
-            <div
-              style={{
-                backgroundImage: 'url(/assets/background.jpg)',
-              }}
-              className='w-screen h-full fixed bg-top-left bg-cover z-[-999]'
-            />
-            {/* Header */}
-            <header>
-              <Navbar />
-            </header>
-
-            {/* Global Loading */}
-            <GlobalLoading />
-            {/* Global Loading */}
-
-            {children}
+            <AppShell>{children}</AppShell>
           </ToastProvider>
         </StoreProvider>
       </body>
