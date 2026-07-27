@@ -25,6 +25,22 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
+  user: {
+    // Define your custom properties here
+    additionalFields: {
+      role: {
+        type: 'string',
+        required: true,
+        defaultValue: 'user',
+      },
+      prefix: { type: 'string', required: false, defaultValue: '+57' },
+      phone: {
+        type: 'number',
+        required: false,
+        defaultValue: NaN,
+      },
+    },
+  },
   session: {
     cookieCache: {
       enabled: true,

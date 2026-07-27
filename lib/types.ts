@@ -1,6 +1,19 @@
 import mongoose, { Document } from 'mongoose'
 import { IconType } from 'react-icons/lib'
 
+export interface FullUser {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+  email: string
+  emailVerified: boolean
+  name: string
+  image?: string | null | undefined
+  role: string
+  phone: number
+  prefix: string
+}
+
 export interface userMenuProps {
   open: boolean
   toggleMenu: () => void
@@ -152,4 +165,9 @@ export interface CreateOrderProps {
   shippingPrice: number
   totalPrice: number
   orderItems: IOrderItems[]
+}
+
+export interface AdminAsideProps {
+  mainView: string
+  setView: (state: string) => void
 }

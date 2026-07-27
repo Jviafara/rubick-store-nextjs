@@ -7,9 +7,13 @@ import { useEffect } from 'react'
 
 const Favorites = () => {
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session, isPending } = useSession()
   useEffect(() => {
-    if (!session?.user) router.push('/sign-in')
+    if (isPending) return
+    if (!session?.user) {
+      router.replace('/sign-in')
+      return
+    }
   })
   return (
     <div className='w-full flex flex-col items-center'>
