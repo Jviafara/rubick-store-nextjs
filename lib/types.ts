@@ -100,6 +100,7 @@ export interface RatingsProps {
 
 export interface SearchBarProps {
   setQuery: (value: string) => void
+  type: string
 }
 
 export interface ProductFiltersProps {
