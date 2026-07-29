@@ -4,63 +4,61 @@ import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
 import { FullUser } from '@/lib/types'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import UserTable from './UserTable'
+import SearchBar from './SearchBar'
 
 const UserList = () => {
   const dispatch = useAppDispatch()
   const [users, setUsers] = useState<FullUser[]>([])
+  const [query, setQuery] = useState('')
+  const [adminFilter, setAdminFilter] = useState(false)
+
+  const selected = 'bg-gray-200'
 
   useEffect(() => {
     const getUsers = async () => {
       dispatch(setGlobalLoading(true))
       const { res, error } = await userApi.getList()
       if (res.status === 404) {
-        toast.error('Product not found')
+        toast.error('Users not found')
+        return
       }
       if (res.status === 401) return
-      setUsers(res)
+
+      if (adminFilter) {
+        setUsers(
+          res.filter(
+            (user: FullUser) => user.role === 'admin' && (user.name?.toLowerCase()?.includes(query.toLowerCase()) || user.email?.toLowerCase()?.includes(query.toLowerCase())),
+          ),
+        )
+      } else {
+        setUsers(res.filter((user: FullUser) => user.name?.toLowerCase()?.includes(query.toLowerCase()) || user.email?.toLowerCase()?.includes(query.toLowerCase())))
+      }
+
       dispatch(setGlobalLoading(false))
       if (error) toast.error(error.toString())
     }
     getUsers()
-  }, [dispatch])
+  }, [dispatch, query,adminFilter])
 
   return (
     <div className='w-full h-full flex flex-col gap-4 items-baseline bg-gray-200/50 backdrop-blur-2xl p-4 rounded-xl'>
       <section className='w-full'>
         <h1 className='font-bold text-center uppercase text-xl'>User List</h1>
       </section>
-      <section className='w-full flex flex-col items-center '>
-        <table className='w-full border-collapse text-left table-fixed'>
-          <thead className='w-full text-center'>
-            <tr className='w-full'>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th className='text-center!'>Orders</th>
-            </tr>
-          </thead>
-          <tbody className='w-full'>
-            {users?.map((user, index) => (
-              <tr
-                key={index}
-                className='w-full'
-              >
-                <td className='uppercase font-semibold'>{user.name}</td>
-                <td>{user.email}</td>
-                <td>
-                  <span className='mr-2'>({user.prefix ? user.prefix : ''})</span>
-                  {user.phone ? user.phone : 'NN'}
-                </td>
-                <td className='flex justify-center'>
-                  <button className='cursor-pointer px-2 py-1 border border-gray-400 rounded-xl bg-blue-400/60 hover:bg-blue-500'>
-                    See orders
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <section className='w-full flex items-center'>
+        <SearchBar
+          type='User'
+          setQuery={setQuery}
+        />
+        <button
+          onClick={() => setAdminFilter(!adminFilter)}
+          className={`${adminFilter && selected} font-semibold border border-gray-200 rounded-xl px-4 py-1  cursor-pointer`}
+        >
+          Admin
+        </button>
       </section>
+      <UserTable users={users} />
     </div>
   )
 }

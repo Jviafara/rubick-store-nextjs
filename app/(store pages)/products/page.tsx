@@ -13,7 +13,10 @@ const ProductsList = () => {
 
   return (
     <div className='w-full flex flex-col items-center'>
-      <SearchBar setQuery={setQuery} />
+      <SearchBar
+        type='Product'
+        setQuery={setQuery}
+      />
       <ProductFilters
         filter={filter}
         setFilter={setFilter}
