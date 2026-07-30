@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import AutoSwiper from './AutoSwiper'
 import { SwiperSlide } from 'swiper/react'
 import ProductCard from './ProductCard'
+import { AiFillExclamationCircle } from 'react-icons/ai'
 
 const FavoriteSlide = () => {
   const dispatch = useAppDispatch()
@@ -25,6 +26,17 @@ const FavoriteSlide = () => {
     }
     getProducts()
   }, [dispatch, favoriteList])
+
+  if (products.length <= 0)
+    return (
+      <div className='w-fit flex justify-start items-center gap-4 rounded-xl bg-red-200 p-6'>
+        <AiFillExclamationCircle
+          size={32}
+          color='red'
+        />
+        <p className='text-2xl text-red-700'>No products added to favorites yet!</p>
+      </div>
+    )
   return (
     <AutoSwiper>
       {products.slice(0, 8).map((product, index) => (

@@ -1,5 +1,6 @@
 import mongoose, { Document } from 'mongoose'
 import { IconType } from 'react-icons/lib'
+import { userSortBy } from './constants'
 
 export interface FullUser {
   id: string
@@ -171,4 +172,10 @@ export interface CreateOrderProps {
 export interface AdminAsideProps {
   mainView: string
   setView: (state: string) => void
+}
+
+export interface UserTableProps {
+  query: string
+  adminFilter: boolean
+  sortBy: userSortBy
 }
