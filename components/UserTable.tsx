@@ -1,7 +1,56 @@
-import { FullUser } from '@/lib/types'
+import { FullUser, UserTableProps } from '@/lib/types'
 import UserNotFound from './UserNotFound'
+import { useEffect, useState } from 'react'
+import { useAppDispatch } from '@/lib/hooks/redux.hooks'
+import { userApi } from '@/lib/modules/userApiClient'
+import { toast } from 'react-toastify'
+import { userSortBy } from '@/lib/constants'
+import { getDate } from '@/lib/utils'
 
-const UserTable = ({ users }: { users: FullUser[] }) => {
+const UserTable = ({ query, adminFilter, sortBy }: UserTableProps) => {
+  const dispatch = useAppDispatch()
+  const [users, setUsers] = useState<FullUser[]>([])
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const { res, error } = await userApi.getList()
+      if (res.status === 404) {
+        toast.error('Users not found')
+        return
+      }
+      if (res.status === 401) return
+
+      if (adminFilter) {
+        const fileterUsers = res.filter(
+          (user: FullUser) => user.role === 'admin' && (user.name?.toLowerCase()?.includes(query.toLowerCase()) || user.email?.toLowerCase()?.includes(query.toLowerCase())),
+        )
+        if (sortBy === userSortBy.latest) {
+          setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => getDate(b).getTime() - getDate(a).getTime()))
+        } else if (sortBy === userSortBy.oldest) {
+          setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => getDate(a).getTime() - getDate(b).getTime()))
+        } else if (sortBy === userSortBy.alphabetical) {
+          setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())))
+        } else {
+          setUsers(fileterUsers)
+        }
+      } else {
+        const fileterUsers = res.filter((user: FullUser) => user.name?.toLowerCase()?.includes(query.toLowerCase()) || user.email?.toLowerCase()?.includes(query.toLowerCase()))
+        if (sortBy === userSortBy.latest) {
+          setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => getDate(b).getTime() - getDate(a).getTime()))
+        } else if (sortBy === userSortBy.oldest) {
+          setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => getDate(a).getTime() - getDate(b).getTime()))
+        } else if (sortBy === userSortBy.alphabetical) {
+          setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())))
+        } else {
+          setUsers(fileterUsers)
+        }
+      }
+
+      if (error) toast.error(error.toString())
+    }
+    getUsers()
+  }, [dispatch, query, adminFilter, sortBy])
+
   return (
     <section className='w-full flex flex-col items-center '>
       {users.length <= 0 ? (
@@ -13,6 +62,7 @@ const UserTable = ({ users }: { users: FullUser[] }) => {
               <th>Name</th>
               <th>Email</th>
               <th>Phone</th>
+              <th>Role</th>
               <th className='text-center!'>Orders</th>
             </tr>
           </thead>
@@ -28,6 +78,7 @@ const UserTable = ({ users }: { users: FullUser[] }) => {
                   <span className='mr-2'>({user.prefix ? user.prefix : ''})</span>
                   {user.phone ? user.phone : 'NN'}
                 </td>
+                <td className='uppercase font-semibold'>{user.role}</td>
                 <td className='flex justify-center'>
                   <button className='cursor-pointer px-2 py-1 border border-gray-400 rounded-xl bg-blue-400/60 hover:bg-blue-500'>See orders</button>
                 </td>

@@ -10,12 +10,14 @@ const SearchBar = ({ setQuery, type }: SearchBarProps) => {
     const newQuery = e.target.value
     clearTimeout(timer)
 
-    timer = setTimeout(() => {
-      setQuery(newQuery)
-    }, timeout)
+    if (newQuery.length >= 3 || !newQuery) {
+      timer = setTimeout(() => {
+        setQuery(newQuery)
+      }, timeout)
+    }
   }
   return (
-    <div className='lg:w-[30%] flex items-center justify-center gap-4 py-4 px-8'>
+    <div className='lg:w-[30%] flex items-center justify-center gap-4 '>
       <AiOutlineSearch size={32} />
       <input
         type='text'

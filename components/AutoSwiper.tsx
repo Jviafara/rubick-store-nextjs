@@ -39,7 +39,7 @@ const AutoSwiper = ({ children }: AutoSwiperProps) => {
           },
         }}
         modules={[Pagination]}
-        style={{ padding: '20px 0 40px 0' }}
+        style={{ padding: '20px 0 40px 0', width: '100%' }}
       >
         {children}
       </Swiper>

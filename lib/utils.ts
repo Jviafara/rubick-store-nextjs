@@ -1,7 +1,7 @@
 import { Stripe, loadStripe } from '@stripe/stripe-js'
-import { IOrder, IProduct } from './types'
+import { FullUser, IOrder, IProduct } from './types'
 
-export const getDate = (product: IProduct | IOrder) => {
+export const getDate = (product: IProduct | IOrder | FullUser) => {
   const date = new Date(product.createdAt || '')
   return date
 }

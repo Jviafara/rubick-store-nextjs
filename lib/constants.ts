@@ -54,3 +54,9 @@ export const videos = [
     id: 'oVRooYDvRqg',
   },
 ]
+
+export enum userSortBy {
+  latest = 'latest',
+  oldest = 'oldest',
+  alphabetical = 'alphabetical',
+}
