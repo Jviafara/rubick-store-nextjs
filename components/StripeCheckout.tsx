@@ -31,7 +31,9 @@ const StripeCheckout = ({ amount, orderId }: StripeCheckoutProps) => {
       })
       dispatch(setGlobalLoading(false))
 
-      if (error) toast.error(res.message)
+      if (res?.status || error) {
+        toast.error(res?.message || 'Failed to create payment intent.')
+      }
 
       if (res) {
         setClientSecret(res.clientSecret)
@@ -76,7 +78,7 @@ const StripeCheckout = ({ amount, orderId }: StripeCheckoutProps) => {
         type: 'payment_confirmation',
       })
 
-      if (error) {
+      if (res?.status || error) {
         toast.error(res?.message || 'Payment confirmation failed.')
       } else {
         toast.success('Payment successful!')

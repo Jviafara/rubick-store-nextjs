@@ -24,6 +24,8 @@ th,
 td {
   padding: 10px 20px;
   text-align: left;
+  height: 100%;
+  overflow-wrap: break-word;
 }
 
 @theme {
@@ -40,4 +42,33 @@ td {
 
   /* Custom fonts */
   --font-roboto: 'Roboto', sans-serif;
+}
+
+/* Green Status (paid / delivered) */
+.status-paid,
+.status-delivered {
+  border-color: rgb(134, 239, 172);
+  background-color: rgb(187, 247, 208);
+  color: rgb(22, 101, 52);
+  --tw-shadow-color: rgb(134, 239, 172);
+  box-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgba(0, 0, 0, 0.1));
+}
+
+/* Red Status (unpaid / pending) */
+.status-unpaid,
+.status-pending {
+  border-color: rgb(252, 165, 165);
+  background-color: rgb(254, 202, 202);
+  color: rgb(153, 27, 27);
+  --tw-shadow-color: rgb(252, 165, 165);
+  box-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgba(0, 0, 0, 0.1));
+}
+
+/* Yellow Status (shipped) */
+.status-shipped {
+  border-color: #155dfc;
+  background-color: rgb(66, 165, 245);
+  color: #193cb8;
+  --tw-shadow-color: #155dfc;
+  box-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgba(0, 0, 0, 0.1));
 }

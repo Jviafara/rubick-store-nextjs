@@ -29,4 +29,18 @@ export const userApi = {
       return { error }
     }
   },
+  orders: async (id: string) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/${usersEndpoints.orders(id)}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const res = await response.json()
+      return { res }
+    } catch (error) {
+      console.error(error)
+      return { error }
+    }
+  },
 }

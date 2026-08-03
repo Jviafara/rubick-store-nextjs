@@ -5,11 +5,11 @@ import responseHandler from '@/lib/responseHandler'
 import { NextRequest } from 'next/server'
 
 export async function GET(req: NextRequest) {
-  console.log('Get Users')
   try {
     const session = await auth.api.getSession({
       headers: req.headers,
     })
+
     if (session?.user.role !== 'admin') {
       return responseHandler.unauthorize()
     }
