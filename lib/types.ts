@@ -2,7 +2,7 @@ import mongoose, { Document } from 'mongoose'
 import { IconType } from 'react-icons/lib'
 import { userSortBy } from './constants'
 
-export interface FullUser {
+export interface FullUser extends Document {
   id: string
   createdAt: Date
   updatedAt: Date
@@ -140,7 +140,7 @@ export interface IOrder extends Document {
   user: mongoose.Types.ObjectId
   isPaid: boolean
   paidAt: Date
-  isDelivered: boolean
+  shippingStatus: string
   deliveredAt: Date
   createdAt?: Date
   updatedAt?: Date
@@ -150,6 +150,11 @@ export interface OrderPaymentProps {
   orderId: string
   amount: number
   type: string
+}
+export interface OrderUpdateProps {
+  orderId: string
+  isPaid?: boolean
+  shippingStatus?: string
 }
 
 export interface IShippingAddress {

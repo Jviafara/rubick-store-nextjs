@@ -6,6 +6,7 @@ import { userApi } from '@/lib/modules/userApiClient'
 import { toast } from 'react-toastify'
 import { userSortBy } from '@/lib/constants'
 import { getDate } from '@/lib/utils'
+import Link from 'next/link'
 
 const UserTable = ({ query, adminFilter, sortBy }: UserTableProps) => {
   const dispatch = useAppDispatch()
@@ -80,7 +81,13 @@ const UserTable = ({ query, adminFilter, sortBy }: UserTableProps) => {
                 </td>
                 <td className='uppercase font-semibold'>{user.role}</td>
                 <td className='flex justify-center'>
-                  <button className='cursor-pointer px-2 py-1 border border-gray-400 rounded-xl bg-blue-400/60 hover:bg-blue-500'>See orders</button>
+                  <Link
+                    href={`/admin/user-orders/${user._id}`}
+                    target='_blank'
+                    className='cursor-pointer px-2 py-1 border border-gray-400 rounded-xl bg-blue-400/60 hover:bg-blue-500'
+                  >
+                    See orders
+                  </Link>
                 </td>
               </tr>
             ))}

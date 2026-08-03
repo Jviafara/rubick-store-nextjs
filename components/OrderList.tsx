@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import Container from './Container'
 import Link from 'next/link'
+import { AiFillExclamationCircle } from 'react-icons/ai'
 
 const OrderList = ({ max }: { max?: number }) => {
   const router = useRouter()
@@ -35,7 +36,16 @@ const OrderList = ({ max }: { max?: number }) => {
     getOrders()
   }, [dispatch, max])
 
-  if (orders.length <= 0) return null
+  if (orders.length <= 0)
+    return (
+      <div className='w-fit flex justify-start items-center gap-4 rounded-xl bg-red-200 p-6'>
+        <AiFillExclamationCircle
+          size={32}
+          color='red'
+        />
+        <p className='text-2xl text-red-700'>No Orders completed yet!</p>
+      </div>
+    )
 
   return (
     <Container
@@ -65,38 +75,20 @@ const OrderList = ({ max }: { max?: number }) => {
               </div>
               <div className='w-1/4 lg:w-[20%] flex justify-center'>
                 {order.isPaid ? (
-                  <p
-                    className='min-w-fit border border-green-300 rounded-lg shadow-sm shadow-green-300
-                         bg-green-200 p-1 font-bold text-green-800 px-4 py-2'
-                  >
-                    Order Paid
-                  </p>
+                  <p className='w-fit border rounded-lg shadow-sm  text-nowrap p-1 font-bold px-4 py-2 status-paid'>Order Paid</p>
                 ) : (
                   <Link
                     href={`/orders/${order._id}`}
-                    className='border min-w-fit border-red-300 rounded-lg shadow-sm shadow-red-300
-                         bg-red-200 p-1 font-bold text-red-800 px-4 py-2'
+                    className='w-fit border rounded-lg shadow-sm  text-nowrap p-1 font-bold px-4 py-2 status-unpaid'
                   >
-                    Go to pay
+                    Pay Now!
                   </Link>
                 )}
               </div>
               <div className='w-1/4 lg:w-[20%] flex justify-center'>
-                {order.isDelivered ? (
-                  <p
-                    className='min-w-fit border border-green-300 rounded-lg shadow-sm shadow-green-300
-                         bg-green-200 p-1 font-bold text-green-800 px-4 py-2'
-                  >
-                    Order Delivered
-                  </p>
-                ) : (
-                  <p
-                    className='border min-w-fit border-red-300 rounded-lg shadow-sm shadow-red-300
-                         bg-red-200 p-1 font-bold text-red-800 px-4 py-2'
-                  >
-                    Waiting Delivery
-                  </p>
-                )}
+                <p className={`w-fit border rounded-lg shadow-sm  text-nowrap p-1 font-bold px-4 py-2 status-${order.shippingStatus}`}>
+                  {order.shippingStatus === 'delivered' ? 'Order Delivered' : order.shippingStatus === 'shipped' ? 'Order Shipped' : 'Waiting Delivery'}
+                </p>
               </div>
 
               <div className='w-[8%]'>
@@ -152,21 +144,9 @@ const OrderList = ({ max }: { max?: number }) => {
                     </Link>
                   )}
 
-                  {order.isDelivered ? (
-                    <p
-                      className='min-w-fit text-center border border-green-300 rounded-lg shadow-sm shadow-green-300
-                         bg-green-200 p-1 font-bold text-green-800 sm:mt-2'
-                    >
-                      Order Delivered
-                    </p>
-                  ) : (
-                    <p
-                      className='border min-w-fit border-red-300 rounded-lg shadow-sm shadow-red-300
-                         bg-red-200 p-1 font-bold text-red-800 text-center sm:mt-2'
-                    >
-                      Waiting Delivery
-                    </p>
-                  )}
+                  <p className={`w-fit border rounded-lg shadow-sm  text-nowrap p-1 font-bold px-4 py-2 status-${order.shippingStatus}`}>
+                    {order.shippingStatus === 'delivered' ? 'Order Delivered' : order.shippingStatus === 'shipped' ? 'Order Shipped' : 'Waiting Shippment'}
+                  </p>
                   <button
                     type='button'
                     onClick={() => router.push(`/orders/${order._id}`)}

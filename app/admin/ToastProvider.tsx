@@ -4,10 +4,10 @@ import { useSession } from '@/lib/auth/auth-client'
 import { useAppDispatch } from '@/lib/hooks/redux.hooks'
 import { setShippingAddress } from '@/lib/redux/features/cartSlice'
 import { setFavoriteList } from '@/lib/redux/features/favoriteSlice'
-import { UserWithRole } from '@/lib/types'
+import { FullUser } from '@/lib/types'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function ToastProvider({ children }: { children: React.ReactNode }) {
@@ -23,8 +23,10 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
       return
     }
 
-    if ((session.user as UserWithRole)?.role !== 'admin') {
-      router.replace('/')
+    if ((session.user as FullUser)?.role !== 'admin') {
+      toast.error('You are not authorized to view this page')
+      router.replace('/admin/dashboard')
+      return
     }
   })
 

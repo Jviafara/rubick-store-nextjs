@@ -1,15 +1,8 @@
 import { BASE_URL, orderEndpoints } from '../constants'
-import { CreateOrderProps, OrderPaymentProps } from '../types'
+import { CreateOrderProps, OrderPaymentProps, OrderUpdateProps } from '../types'
 
 export const OrdersApi = {
-  create: async ({
-    shippingAddress,
-    paymentId,
-    itemsPrice,
-    shippingPrice,
-    totalPrice,
-    orderItems,
-  }: CreateOrderProps) => {
+  create: async ({ shippingAddress, paymentId, itemsPrice, shippingPrice, totalPrice, orderItems }: CreateOrderProps) => {
     const body = {
       shippingAddress,
       paymentId,
@@ -85,6 +78,25 @@ export const OrdersApi = {
         body: JSON.stringify({
           amount: amount,
           type,
+        }),
+      })
+      const res = await response.json()
+      return { res }
+    } catch (error) {
+      console.error(error)
+      return { error }
+    }
+  },
+  update: async ({ orderId, isPaid, shippingStatus }: OrderUpdateProps) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/${orderEndpoints.update(orderId)}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          isPaid,
+          shippingStatus,
         }),
       })
       const res = await response.json()
