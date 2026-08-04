@@ -146,6 +146,13 @@ export interface IOrder extends Document {
   updatedAt?: Date
 }
 
+export interface StatusSelectorProps {
+  order: IOrder
+  setOrders?: React.Dispatch<React.SetStateAction<IOrder[]>>
+  setOrder?: React.Dispatch<React.SetStateAction<IOrder | null>>
+  useLabel?: boolean
+}
+
 export interface OrderPaymentProps {
   orderId: string
   amount: number

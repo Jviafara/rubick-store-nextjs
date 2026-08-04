@@ -1,21 +1,29 @@
 'use client'
 
+import OrderNotFound from '@/components/OrderNotFound'
 import PaymentButton from '@/components/PaymentButton'
+import PaymentStatusSelector from '@/components/PaymentStatusSelector'
+import ShippingStatusSelector from '@/components/ShippingStatusSelector'
+import { useSession } from '@/lib/auth/auth-client'
 import { useAppDispatch } from '@/lib/hooks/redux.hooks'
 import { OrdersApi } from '@/lib/modules/orderApiClient'
 import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
-import { IOrder } from '@/lib/types'
+import { FullUser, IOrder } from '@/lib/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { FaNotdef } from 'react-icons/fa6'
+import { FcShipped } from 'react-icons/fc'
+import { FiPackage } from 'react-icons/fi'
 import { toast } from 'react-toastify'
 
 const OrderDetailsPage = () => {
   const params = useParams<{ id: string }>()
+  const { data: session } = useSession()
 
   const dispatch = useAppDispatch()
-  const [order, setOrder] = useState<IOrder>()
+  const [order, setOrder] = useState<IOrder | null>(null)
 
   const { id: orderId } = params
 
@@ -24,19 +32,29 @@ const OrderDetailsPage = () => {
       dispatch(setGlobalLoading(true))
       const { res, error } = await OrdersApi.orderDetail({ orderId })
       dispatch(setGlobalLoading(false))
+      console.log(res)
 
-      if (error) toast.error(res.message)
-      if (res) {
+      if (res.status || error) {
+        toast.error(res.message)
+      } else {
         setOrder(res)
       }
     }
     getOrder()
   }, [orderId, dispatch])
 
+  if (!order) {
+    return (
+      <div className='w-full h-full flex justify-center items-center p-8'>
+        <OrderNotFound />
+      </div>
+    )
+  }
+
   return (
     <div className='w-[90vw] mx-auto flex flex-col items-center justify-center'>
       <h2 className='text-center text-xl xl:text-3xl mx-5 py-4 truncate flex gap-2 justify-center'>
-        Order: #<span>{order ? order._id.toString() : ''}</span>
+        Order: #<span>{orderId}</span>
       </h2>
       <div className='flex flex-col lg:flex-row gap-8 w-full'>
         <section className='w-full lg:w-[70%] flex flex-col gap-4 '>
@@ -50,45 +68,23 @@ const OrderDetailsPage = () => {
                 <strong>Address:</strong> {order?.shippingAddress.address}
               </p>
             </div>
-            {order?.isDelivered ? (
-              <div
-                className='border border-green-300 rounded-lg shadow-sm shadow-green-300 bg-green-200 p-4 font-bold
-                text-green-800 mt-2'
-              >
-                Order Delivered
-              </div>
-            ) : (
-              <div
-                className='border border-red-300 rounded-lg shadow-sm shadow-red-300 bg-red-200 p-4 font-bold
-                text-red-800 mt-2'
-              >
-                Not Delivered
-              </div>
-            )}
+            <ShippingStatusSelector
+              order={order}
+              setOrder={setOrder}
+              useLabel={true}
+            />
           </div>
           <div className='flex flex-col gap-2 p-6 border border-yellow rounded-lg'>
             <h1 className='text-2xl font-medium '>Payment</h1>
-            {order?.isPaid ? (
-              <div
-                className='border border-green-300 rounded-lg shadow-sm shadow-green-300 bg-green-200 p-4 font-bold
-                text-green-800 mt-2'
-              >
-                Order Paid
-              </div>
-            ) : (
-              <div>
-                <div
-                  className='border mb-3 border-red-300 rounded-lg shadow-sm shadow-red-300 bg-red-200 p-4 font-bold
-                text-red-800 mt-2'
-                >
-                  Not Paid
-                </div>
-                <div className='w-full '>
-                  {order && <PaymentButton order={order} />}
-                  <h1 className='mt-4 text-center'>
-                    Demo card: 4242 4242 4242 4242 / any future date / any 3 digit CVV
-                  </h1>
-                </div>
+            <PaymentStatusSelector
+              order={order}
+              setOrder={setOrder}
+              useLabel={true}
+            />
+            {!order.isPaid && order.user.toString() === session?.user.id && (
+              <div className='w-fit'>
+                <PaymentButton order={order} />
+                <h1>Demo card: 4242 4242 4242 4242 / any future date / any 3 digit CVV</h1>
               </div>
             )}
           </div>
@@ -156,7 +152,7 @@ const OrderDetailsPage = () => {
               <p>${order?.totalPrice}</p>
             </div>
           </div>
-          {order?.isPaid && (
+          {order?.isPaid && session?.user.id === order.user.toString() && (
             <div className='flex flex-col gap-3'>
               <Link
                 href={'/products'}
