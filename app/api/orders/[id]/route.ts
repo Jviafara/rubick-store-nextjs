@@ -43,7 +43,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (!order) return responseHandler.notFound()
 
     order.shippingStatus = body.shippingStatus || order.shippingStatus
-    order.isPaid = body.isPaid || order.isPaid
+    order.isPaid = body.isPaid !== undefined ? body.isPaid : order.isPaid
 
     await order.save()
 

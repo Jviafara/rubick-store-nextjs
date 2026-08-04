@@ -25,7 +25,7 @@ const PaymentButton = ({ order }: { order: IOrder }) => {
         ) : (
           <button
             type='button'
-            className='rounded-lg border bg-blue-600 p-2 px-4  w-full text-white font-bold text-lg'
+            className='rounded-lg border bg-blue-600 p-2 px-4 w-full max-w-55 text-white font-bold text-lg'
             onClick={() => setOpenPaymentForm(true)}
           >
             Pay now
