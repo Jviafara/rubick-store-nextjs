@@ -3,7 +3,6 @@ import { addcartItem } from '@/lib/redux/features/cartSlice'
 import { ProductCardProps } from '@/lib/types'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
 import { AiFillHeart, AiOutlineShoppingCart } from 'react-icons/ai'
 import { toast } from 'react-toastify'
 import Ratings from './Ratings'
@@ -28,8 +27,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
   }
   return (
     <div className='w-fit h-full group duration-300 rounded-lg overflow-visible'>
-      <div className='bg-gray-200  bg-opacity-50 backdrop-blur-2xl flex flex-col gap-2 w-fit h-full border border-pink rounded-lg shadow-md group-hover:shadow-xl duration-300'>
-        <div className='object-center flex items-center justify-center'>
+      <div className='bg-gray-200  bg-opacity-50 backdrop-blur-2xl flex flex-col gap-2 w-fit h-full border border-pink rounded-lg shadow-md group-hover:shadow-xl duration-300 '>
+        <div className='object-center flex items-center justify-center '>
           <Link href={`/product/slug/${product.slug}`}>
             <Image
               src={product.images![0]}
