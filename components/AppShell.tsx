@@ -15,13 +15,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <div
-        style={{
-          backgroundImage: 'url(/assets/background.jpg)',
-        }}
-        className='w-screen h-full fixed bg-top-left bg-cover z-[-999]'
-      />
-
       <header>
         <Navbar />
       </header>
