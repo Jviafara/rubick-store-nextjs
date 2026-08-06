@@ -26,7 +26,7 @@ const MediaVideo = ({ video }: mediaVideoProps) => {
   }, [])
 
   return (
-    <div className='max-h-max'>
+    <div className='w-full aspect-video'>
       <iframe
         key={video.id}
         src={`https://youtube.com/embed/${video.id}?autoplay=0`}

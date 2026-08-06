@@ -1,0 +1,739 @@
+[
+  {
+    "name": "YJ MGC 6x6 Magnetic",
+    "slug": "yj-mgc-6x6-magnetic",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856680/RubickStore/Products/yj_mgc_6x6_main.jpg"
+    ],
+    "price": 26,
+    "countInStock": 45,
+    "createdAt": {
+      "$date": "2023-06-05T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-06-05T10:15:22.100Z"
+    },
+    "category": "nxn",
+    "rating": 4.8,
+    "numReviews": 127
+  },
+  {
+    "name": "YJ YuShi V2 M 6x6",
+    "slug": "yj-yushi-v2-m-6x6",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856681/RubickStore/Products/yj_yushi_v2_6x6.jpg"
+    ],
+    "price": 16,
+    "countInStock": 30,
+    "createdAt": {
+      "$date": "2023-06-05T10:30:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-06-05T10:30:00.000Z"
+    },
+    "category": "nxn",
+    "rating": 4.5,
+    "numReviews": 22
+  },
+  {
+    "name": "MoYu MeiLong 5M",
+    "slug": "moyu-meilong-5m",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856682/RubickStore/Products/moyu_meilong_5m.jpg"
+    ],
+    "price": 13,
+    "countInStock": 112,
+    "createdAt": {
+      "$date": "2023-06-05T11:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-06-05T11:05:10.000Z"
+    },
+    "category": "nxn",
+    "rating": 4.7,
+    "numReviews": 88
+  },
+  {
+    "name": "MoYu MeiLong 7M",
+    "slug": "moyu-meilong-7m",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856683/RubickStore/Products/moyu_meilong_7m.jpg"
+    ],
+    "price": 20,
+    "countInStock": 18,
+    "createdAt": {
+      "$date": "2023-06-05T11:15:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2023-06-05T11:15:00.000Z"
+    },
+    "category": "nxn",
+    "rating": 4.4,
+    "numReviews": 15
+  },
+
+  {
+    "name": "MoYu RS3 M 2020 3x3",
+    "slug": "moyu-rs3-m-2020-3x3",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-rs3-m-2020-3x3.jpg"
+    ],
+    "price": 9,
+    "countInStock": 150,
+    "createdAt": { "$date": "2023-06-04T05:31:19.000Z" },
+    "updatedAt": { "$date": "2023-06-04T05:31:19.000Z" },
+    "category": "nxn",
+    "rating": 4.9,
+    "numReviews": 342
+  },
+  {
+    "name": "MoYu RS3 M MagLev 3x3",
+    "slug": "moyu-rs3-m-maglev-3x3",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-rs3-m-maglev-3x3.jpg"
+    ],
+    "price": 14,
+    "countInStock": 120,
+    "createdAt": { "$date": "2023-06-04T06:00:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T06:00:00.000Z" },
+    "category": "nxn",
+    "rating": 4.8,
+    "numReviews": 215
+  },
+  {
+    "name": "MoYu RS3 M V5 3x3",
+    "slug": "moyu-rs3-m-v5-3x3",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-rs3-m-v5-3x3.jpg"
+    ],
+    "price": 10,
+    "countInStock": 200,
+    "createdAt": { "$date": "2023-06-04T06:10:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T06:15:00.000Z" },
+    "category": "nxn",
+    "rating": 4.9,
+    "numReviews": 180
+  },
+  {
+    "name": "MoYu WeiLong WR M V9 3x3",
+    "slug": "moyu-weilong-wrm-v9-3x3",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-weilong-wrm-v9-3x3.jpg"
+    ],
+    "price": 40,
+    "countInStock": 65,
+    "createdAt": { "$date": "2023-06-04T06:20:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T06:20:00.000Z" },
+    "category": "nxn",
+    "rating": 4.7,
+    "numReviews": 95
+  },
+  {
+    "name": "MoYu Super RS3 M V2 3x3",
+    "slug": "moyu-super-rs3-m-v2-3x3",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-super-rs3-m-v2-3x3.jpg"
+    ],
+    "price": 15,
+    "countInStock": 80,
+    "createdAt": { "$date": "2023-06-04T06:30:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T06:30:00.000Z" },
+    "category": "nxn",
+    "rating": 4.6,
+    "numReviews": 110
+  },
+  {
+    "name": "MoYu MeiLong 2x2 M",
+    "slug": "moyu-meilong-2x2-m",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-meilong-2x2-m.jpg"
+    ],
+    "price": 6,
+    "countInStock": 300,
+    "createdAt": { "$date": "2023-06-04T06:40:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T06:40:00.000Z" },
+    "category": "nxn",
+    "rating": 4.5,
+    "numReviews": 140
+  },
+  {
+    "name": "MoYu MeiLong 3x3 M",
+    "slug": "moyu-meilong-3x3-m",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-meilong-3x3-m.jpg"
+    ],
+    "price": 6,
+    "countInStock": 250,
+    "createdAt": { "$date": "2023-06-04T06:50:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T06:50:00.000Z" },
+    "category": "nxn",
+    "rating": 4.4,
+    "numReviews": 175
+  },
+  {
+    "name": "MoYu MeiLong 4x4 M",
+    "slug": "moyu-meilong-4x4-m",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-meilong-4x4-m.jpg"
+    ],
+    "price": 12,
+    "countInStock": 140,
+    "createdAt": { "$date": "2023-06-04T07:00:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T07:00:00.000Z" },
+    "category": "nxn",
+    "rating": 4.5,
+    "numReviews": 120
+  },
+  {
+    "name": "MoYu AoSu WR M 4x4",
+    "slug": "moyu-aosu-wr-m-4x4",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-aosu-wr-m-4x4.jpg"
+    ],
+    "price": 40,
+    "countInStock": 45,
+    "createdAt": { "$date": "2023-06-04T07:10:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T07:10:00.000Z" },
+    "category": "nxn",
+    "rating": 4.8,
+    "numReviews": 65
+  },
+  {
+    "name": "MoYu AoChuang WR M 5x5",
+    "slug": "moyu-aochuang-wr-m-5x5",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-aochuang-wr-m-5x5.jpg"
+    ],
+    "price": 43,
+    "countInStock": 35,
+    "createdAt": { "$date": "2023-06-04T07:20:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T07:20:00.000Z" },
+    "category": "nxn",
+    "rating": 4.7,
+    "numReviews": 40
+  },
+  {
+    "name": "MoYu AoShi WR M 6x6",
+    "slug": "moyu-aoshi-wr-m-6x6",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-aoshi-wr-m-6x6.jpg"
+    ],
+    "price": 45,
+    "countInStock": 25,
+    "createdAt": { "$date": "2023-06-04T07:30:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T07:30:00.000Z" },
+    "category": "nxn",
+    "rating": 4.6,
+    "numReviews": 28
+  },
+  {
+    "name": "MoYu AoFu WR M 7x7",
+    "slug": "moyu-aofu-wr-m-7x7",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-aofu-wr-m-7x7.jpg"
+    ],
+    "price": 50,
+    "countInStock": 20,
+    "createdAt": { "$date": "2023-06-04T07:40:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T07:40:00.000Z" },
+    "category": "nxn",
+    "rating": 4.8,
+    "numReviews": 35
+  },
+  {
+    "name": "MoYu WeiLong Pyraminx",
+    "slug": "moyu-weilong-pyraminx",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-weilong-pyraminx.jpg"
+    ],
+    "price": 18,
+    "countInStock": 75,
+    "createdAt": { "$date": "2023-06-04T07:50:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T07:50:00.000Z" },
+    "category": "pyraminx",
+    "rating": 4.7,
+    "numReviews": 50
+  },
+  {
+    "name": "MoYu RS Skewb",
+    "slug": "moyu-rs-skewb",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-rs-skewb.jpg"],
+    "price": 10,
+    "countInStock": 100,
+    "createdAt": { "$date": "2023-06-04T08:00:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T08:00:00.000Z" },
+    "category": "skewb",
+    "rating": 4.5,
+    "numReviews": 85
+  },
+  {
+    "name": "MoYu WeiLong Skewb MagLev",
+    "slug": "moyu-weilong-skewb-maglev",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-weilong-skewb-maglev.jpg"
+    ],
+    "price": 25,
+    "countInStock": 40,
+    "createdAt": { "$date": "2023-06-04T08:10:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T08:10:00.000Z" },
+    "category": "skewb",
+    "rating": 4.8,
+    "numReviews": 45
+  },
+  {
+    "name": "MoYu RS Pyraminx M",
+    "slug": "moyu-rs-pyraminx-m",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-rs-pyraminx-m.jpg"
+    ],
+    "price": 10,
+    "countInStock": 110,
+    "createdAt": { "$date": "2023-06-04T08:20:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T08:20:00.000Z" },
+    "category": "pyraminx",
+    "rating": 4.6,
+    "numReviews": 70
+  },
+  {
+    "name": "MoYu WeiLong Clock",
+    "slug": "moyu-weilong-clock",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/moyu-weilong-clock.jpg"
+    ],
+    "price": 32,
+    "countInStock": 25,
+    "createdAt": { "$date": "2023-06-04T08:30:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T08:30:00.000Z" },
+    "category": "clock",
+    "rating": 4.9,
+    "numReviews": 33
+  },
+  {
+    "name": "GAN 11 M Pro 3x3",
+    "slug": "gan-11-m-pro-3x3",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-11-m-pro-3x3.jpg"
+    ],
+    "price": 60,
+    "countInStock": 45,
+    "createdAt": { "$date": "2023-06-04T08:40:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T08:40:00.000Z" },
+    "category": "nxn",
+    "rating": 4.8,
+    "numReviews": 412
+  },
+  {
+    "name": "GAN 12 MagLev 3x3",
+    "slug": "gan-12-maglev-3x3",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-12-maglev-3x3.jpg"
+    ],
+    "price": 75,
+    "countInStock": 60,
+    "createdAt": { "$date": "2023-06-04T08:50:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T08:50:00.000Z" },
+    "category": "nxn",
+    "rating": 4.9,
+    "numReviews": 310
+  },
+  {
+    "name": "GAN 13 MagLev 3x3",
+    "slug": "gan-13-maglev-3x3",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-13-maglev-3x3.jpg"
+    ],
+    "price": 85,
+    "countInStock": 55,
+    "createdAt": { "$date": "2023-06-04T09:00:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T09:00:00.000Z" },
+    "category": "nxn",
+    "rating": 4.8,
+    "numReviews": 215
+  },
+  {
+    "name": "GAN 14 MagLev 3x3",
+    "slug": "gan-14-maglev-3x3",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-14-maglev-3x3.jpg"
+    ],
+    "price": 90,
+    "countInStock": 80,
+    "createdAt": { "$date": "2023-06-04T09:10:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T09:10:00.000Z" },
+    "category": "nxn",
+    "rating": 4.9,
+    "numReviews": 150
+  },
+  {
+    "name": "GAN 356 XS 3x3",
+    "slug": "gan-356-xs-3x3",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-356-xs-3x3.jpg"],
+    "price": 45,
+    "countInStock": 20,
+    "createdAt": { "$date": "2023-06-04T09:20:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T09:20:00.000Z" },
+    "category": "nxn",
+    "rating": 4.7,
+    "numReviews": 180
+  },
+  {
+    "name": "GAN 356 RS 3x3",
+    "slug": "gan-356-rs-3x3",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-356-rs-3x3.jpg"],
+    "price": 18,
+    "countInStock": 150,
+    "createdAt": { "$date": "2023-06-04T09:30:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T09:30:00.000Z" },
+    "category": "nxn",
+    "rating": 4.4,
+    "numReviews": 250
+  },
+  {
+    "name": "GAN 251 M Pro 2x2",
+    "slug": "gan-251-m-pro-2x2",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-251-m-pro-2x2.jpg"
+    ],
+    "price": 35,
+    "countInStock": 40,
+    "createdAt": { "$date": "2023-06-04T09:40:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T09:40:00.000Z" },
+    "category": "nxn",
+    "rating": 4.8,
+    "numReviews": 88
+  },
+  {
+    "name": "GAN 249 V2 2x2",
+    "slug": "gan-249-v2-2x2",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-249-v2-2x2.jpg"],
+    "price": 14,
+    "countInStock": 60,
+    "createdAt": { "$date": "2023-06-04T09:50:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T09:50:00.000Z" },
+    "category": "nxn",
+    "rating": 4.3,
+    "numReviews": 112
+  },
+  {
+    "name": "GAN 460 M 4x4",
+    "slug": "gan-460-m-4x4",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-460-m-4x4.jpg"],
+    "price": 45,
+    "countInStock": 30,
+    "createdAt": { "$date": "2023-06-04T10:00:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T10:00:00.000Z" },
+    "category": "nxn",
+    "rating": 4.5,
+    "numReviews": 95
+  },
+  {
+    "name": "GAN 562 M 5x5",
+    "slug": "gan-562-m-5x5",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-562-m-5x5.jpg"],
+    "price": 68,
+    "countInStock": 25,
+    "createdAt": { "$date": "2023-06-04T10:10:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T10:10:00.000Z" },
+    "category": "nxn",
+    "rating": 4.9,
+    "numReviews": 50
+  },
+  {
+    "name": "GAN Megaminx MagLev",
+    "slug": "gan-megaminx-maglev",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-megaminx-maglev.jpg"
+    ],
+    "price": 65,
+    "countInStock": 15,
+    "createdAt": { "$date": "2023-06-04T10:20:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T10:20:00.000Z" },
+    "category": "megaminx",
+    "rating": 4.8,
+    "numReviews": 42
+  },
+  {
+    "name": "GAN Skewb M",
+    "slug": "gan-skewb-m",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-skewb-m.jpg"],
+    "price": 30,
+    "countInStock": 35,
+    "createdAt": { "$date": "2023-06-04T10:30:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T10:30:00.000Z" },
+    "category": "skewb",
+    "rating": 4.7,
+    "numReviews": 74
+  },
+  {
+    "name": "GAN Pyraminx M",
+    "slug": "gan-pyraminx-m",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/gan-pyraminx-m.jpg"],
+    "price": 28,
+    "countInStock": 40,
+    "createdAt": { "$date": "2023-06-04T10:40:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T10:40:00.000Z" },
+    "category": "pyraminx",
+    "rating": 4.6,
+    "numReviews": 85
+  },
+  {
+    "name": "X-Man Tornado V2 M 3x3",
+    "slug": "x-man-tornado-v2-m-3x3",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/x-man-tornado-v2-m-3x3.jpg"
+    ],
+    "price": 25,
+    "countInStock": 55,
+    "createdAt": { "$date": "2023-06-04T10:50:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T10:50:00.000Z" },
+    "category": "nxn",
+    "rating": 4.7,
+    "numReviews": 160
+  },
+  {
+    "name": "X-Man Tornado V3 M Flagship 3x3",
+    "slug": "x-man-tornado-v3-m-flagship-3x3",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/x-man-tornado-v3-m-flagship-3x3.jpg"
+    ],
+    "price": 33,
+    "countInStock": 110,
+    "createdAt": { "$date": "2023-06-04T11:00:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T11:00:00.000Z" },
+    "category": "nxn",
+    "rating": 4.9,
+    "numReviews": 280
+  },
+  {
+    "name": "QiYi MS 2x2",
+    "slug": "qiyi-ms-2x2",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/qiyi-ms-2x2.jpg"],
+    "price": 7,
+    "countInStock": 180,
+    "createdAt": { "$date": "2023-06-04T11:10:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T11:10:00.000Z" },
+    "category": "nxn",
+    "rating": 4.4,
+    "numReviews": 130
+  },
+  {
+    "name": "QiYi MS 3x3",
+    "slug": "qiyi-ms-3x3",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/qiyi-ms-3x3.jpg"],
+    "price": 8,
+    "countInStock": 210,
+    "createdAt": { "$date": "2023-06-04T11:20:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T11:20:00.000Z" },
+    "category": "nxn",
+    "rating": 4.5,
+    "numReviews": 190
+  },
+  {
+    "name": "QiYi MS 4x4",
+    "slug": "qiyi-ms-4x4",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/qiyi-ms-4x4.jpg"],
+    "price": 15,
+    "countInStock": 90,
+    "createdAt": { "$date": "2023-06-04T11:30:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T11:30:00.000Z" },
+    "category": "nxn",
+    "rating": 4.5,
+    "numReviews": 85
+  },
+  {
+    "name": "QiYi MS 5x5",
+    "slug": "qiyi-ms-5x5",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/qiyi-ms-5x5.jpg"],
+    "price": 18,
+    "countInStock": 60,
+    "createdAt": { "$date": "2023-06-04T11:40:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T11:40:00.000Z" },
+    "category": "nxn",
+    "rating": 4.4,
+    "numReviews": 65
+  },
+  {
+    "name": "QiYi Valk 3 Elite M",
+    "slug": "qiyi-valk-3-elite-m",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/qiyi-valk-3-elite-m.jpg"
+    ],
+    "price": 45,
+    "countInStock": 20,
+    "createdAt": { "$date": "2023-06-04T11:50:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T11:50:00.000Z" },
+    "category": "nxn",
+    "rating": 4.6,
+    "numReviews": 110
+  },
+  {
+    "name": "X-Man Spark M 7x7",
+    "slug": "x-man-spark-m-7x7",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/x-man-spark-m-7x7.jpg"
+    ],
+    "price": 48,
+    "countInStock": 15,
+    "createdAt": { "$date": "2023-06-04T12:00:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T12:00:00.000Z" },
+    "category": "nxn",
+    "rating": 4.7,
+    "numReviews": 35
+  },
+  {
+    "name": "X-Man Shadow V2 M 6x6",
+    "slug": "x-man-shadow-v2-m-6x6",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/x-man-shadow-v2-m-6x6.jpg"
+    ],
+    "price": 42,
+    "countInStock": 25,
+    "createdAt": { "$date": "2023-06-04T12:10:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T12:10:00.000Z" },
+    "category": "nxn",
+    "rating": 4.6,
+    "numReviews": 28
+  },
+  {
+    "name": "X-Man Flare 2x2 M",
+    "slug": "x-man-flare-2x2-m",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/x-man-flare-2x2-m.jpg"
+    ],
+    "price": 15,
+    "countInStock": 55,
+    "createdAt": { "$date": "2023-06-04T12:20:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T12:20:00.000Z" },
+    "category": "nxn",
+    "rating": 4.5,
+    "numReviews": 45
+  },
+  {
+    "name": "X-Man Bell V2 Pyraminx M",
+    "slug": "x-man-bell-v2-pyraminx-m",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/x-man-bell-v2-pyraminx-m.jpg"
+    ],
+    "price": 20,
+    "countInStock": 45,
+    "createdAt": { "$date": "2023-06-04T12:30:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T12:30:00.000Z" },
+    "category": "pyraminx",
+    "rating": 4.8,
+    "numReviews": 65
+  },
+  {
+    "name": "X-Man Galaxy V2 M Megaminx",
+    "slug": "x-man-galaxy-v2-m-megaminx",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/x-man-galaxy-v2-m-megaminx.jpg"
+    ],
+    "price": 30,
+    "countInStock": 35,
+    "createdAt": { "$date": "2023-06-04T12:40:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T12:40:00.000Z" },
+    "category": "megaminx",
+    "rating": 4.9,
+    "numReviews": 90
+  },
+  {
+    "name": "X-Man Wingy V2 Skewb M",
+    "slug": "x-man-wingy-v2-skewb-m",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/x-man-wingy-v2-skewb-m.jpg"
+    ],
+    "price": 22,
+    "countInStock": 40,
+    "createdAt": { "$date": "2023-06-04T12:50:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T12:50:00.000Z" },
+    "category": "skewb",
+    "rating": 4.7,
+    "numReviews": 50
+  },
+  {
+    "name": "QiYi Clock M (2024 Edition)",
+    "slug": "qiyi-clock-m-2024",
+    "images": [
+      "https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/qiyi-clock-m-2024.jpg"
+    ],
+    "price": 30,
+    "countInStock": 60,
+    "createdAt": { "$date": "2023-06-04T13:00:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T13:00:00.000Z" },
+    "category": "clock",
+    "rating": 4.9,
+    "numReviews": 115
+  },
+  {
+    "name": "YJ MGC 2x2 M",
+    "slug": "yj-mgc-2x2-m",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/yj-mgc-2x2-m.jpg"],
+    "price": 10,
+    "countInStock": 120,
+    "createdAt": { "$date": "2023-06-04T13:10:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T13:10:00.000Z" },
+    "category": "nxn",
+    "rating": 4.6,
+    "numReviews": 95
+  },
+  {
+    "name": "YJ MGC 3x3 M",
+    "slug": "yj-mgc-3x3-m",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/yj-mgc-3x3-m.jpg"],
+    "price": 14,
+    "countInStock": 100,
+    "createdAt": { "$date": "2023-06-04T13:20:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T13:20:00.000Z" },
+    "category": "nxn",
+    "rating": 4.5,
+    "numReviews": 125
+  },
+  {
+    "name": "YJ MGC 4x4 M",
+    "slug": "yj-mgc-4x4-m",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/yj-mgc-4x4-m.jpg"],
+    "price": 20,
+    "countInStock": 95,
+    "createdAt": { "$date": "2023-06-04T13:30:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T13:30:00.000Z" },
+    "category": "nxn",
+    "rating": 4.8,
+    "numReviews": 180
+  },
+  {
+    "name": "YJ MGC 5x5 M",
+    "slug": "yj-mgc-5x5-m",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/yj-mgc-5x5-m.jpg"],
+    "price": 22,
+    "countInStock": 80,
+    "createdAt": { "$date": "2023-06-04T13:40:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T13:40:00.000Z" },
+    "category": "nxn",
+    "rating": 4.9,
+    "numReviews": 210
+  },
+  {
+    "name": "YJ MGC 6x6 M",
+    "slug": "yj-mgc-6x6-m",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/yj-mgc-6x6-m.jpg"],
+    "price": 26,
+    "countInStock": 65,
+    "createdAt": { "$date": "2023-06-04T13:50:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T13:50:00.000Z" },
+    "category": "nxn",
+    "rating": 4.8,
+    "numReviews": 140
+  },
+  {
+    "name": "YJ MGC 7x7 M",
+    "slug": "yj-mgc-7x7-m",
+    "images": ["https://res.cloudinary.com/dj5ai1dmc/image/upload/v1685856679/RubickStore/Products/yj-mgc-7x7-m.jpg"],
+    "price": 32,
+    "countInStock": 50,
+    "createdAt": { "$date": "2023-06-04T14:00:00.000Z" },
+    "updatedAt": { "$date": "2023-06-04T14:00:00.000Z" },
+    "category": "nxn",
+    "rating": 4.8,
+    "numReviews": 110
+  }
+]

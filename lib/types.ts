@@ -1,5 +1,19 @@
 import mongoose, { Document } from 'mongoose'
 import { IconType } from 'react-icons/lib'
+import { userSortBy } from './constants'
+
+export interface FullUser extends Document {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+  email: string
+  emailVerified: boolean
+  name: string
+  image?: string | null | undefined
+  role: string
+  phone: number
+  prefix: string
+}
 
 export interface userMenuProps {
   open: boolean
@@ -87,6 +101,7 @@ export interface RatingsProps {
 
 export interface SearchBarProps {
   setQuery: (value: string) => void
+  type: string
 }
 
 export interface ProductFiltersProps {
@@ -125,16 +140,28 @@ export interface IOrder extends Document {
   user: mongoose.Types.ObjectId
   isPaid: boolean
   paidAt: Date
-  isDelivered: boolean
+  shippingStatus: string
   deliveredAt: Date
   createdAt?: Date
   updatedAt?: Date
+}
+
+export interface StatusSelectorProps {
+  order: IOrder
+  setOrders?: React.Dispatch<React.SetStateAction<IOrder[]>>
+  setOrder?: React.Dispatch<React.SetStateAction<IOrder | null>>
+  useLabel?: boolean
 }
 
 export interface OrderPaymentProps {
   orderId: string
   amount: number
   type: string
+}
+export interface OrderUpdateProps {
+  orderId: string
+  isPaid?: boolean
+  shippingStatus?: string
 }
 
 export interface IShippingAddress {
@@ -152,4 +179,15 @@ export interface CreateOrderProps {
   shippingPrice: number
   totalPrice: number
   orderItems: IOrderItems[]
+}
+
+export interface AdminAsideProps {
+  mainView: string
+  setView: (state: string) => void
+}
+
+export interface UserTableProps {
+  query: string
+  adminFilter: boolean
+  sortBy: userSortBy
 }

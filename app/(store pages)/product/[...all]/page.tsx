@@ -23,17 +23,9 @@ const ProductDetail = () => {
   const dispatch = useAppDispatch()
   const { favoriteList } = useAppSelector(state => state.favoriteList)
   const { cartItems } = useAppSelector(state => state.cart)
-  const [isFavorite, setIsFavorite] = useState(false)
   const [alreadyInCart, setAlreadyInCart] = useState(false)
   const [product, setProduct] = useState<IProduct>()
-
-  useEffect(() => {
-    const setFavorite = () => {
-      const fav = favoriteList.find((item: IFavorite) => item.product === product?._id)
-      if (fav) setIsFavorite(true)
-    }
-    setFavorite()
-  }, [favoriteList, product])
+  const isFavorite = Boolean(product?._id && favoriteList.some((item: IFavorite) => item.product === product._id))
 
   useEffect(() => {
     const CheckCartItems = async (item: ICartItem) => {
@@ -89,19 +81,22 @@ const ProductDetail = () => {
     if (err) toast.error(err.toString())
     if (res) {
       dispatch(addFavorite(res))
-      setIsFavorite(true)
       toast.success('Product added to favorites')
     }
   }
 
   const onRemoveFavorite = async () => {
     const favorite = favoriteList.find(item => item.product === product!._id)
-    const { res, err } = await favoriteApi.remove(favorite!._id.toString())
+
+    if (!favorite) {
+      return
+    }
+
+    const { res, err } = await favoriteApi.remove(favorite._id.toString())
 
     if (err) toast.error(err.toString())
     if (res) {
       dispatch(removeFavorite(product?._id))
-      setIsFavorite(false)
       toast.success('Product remove from favorites')
     }
   }
@@ -158,9 +153,7 @@ const ProductDetail = () => {
               <hr className='border border-yellow' />
               <li>
                 {alreadyInCart ? (
-                  <div className='w-full py-3 px-4 text-white font-bold font-serif text-lg mt-4'>
-                    Already in the Cart
-                  </div>
+                  <div className='w-full py-3 px-4 text-white font-bold font-serif text-lg mt-4'>Already in the Cart</div>
                 ) : (
                   <button
                     onClick={addToCartHandler}

@@ -10,6 +10,14 @@ export const productsEndpoints = {
   addImages: (productId: string) => `products/images/${productId}`,
 }
 
+export const usersEndpoints = {
+  list: 'users',
+  remove: (userId: string) => `users/${userId}`,
+  info: (userId: string) => `users/${userId}`,
+  update: (userId: string) => `users/${userId}`,
+  orders: (userId: string) => `users/${userId}/orders`,
+}
+
 export const favoriteEndpoints = {
   list: 'favorites',
   add: 'favorites',
@@ -23,6 +31,7 @@ export const orderEndpoints = {
   create: 'orders',
   remove: 'orders',
   orderPayment: (orderId: string) => `orders/pay/${orderId}`,
+  update: (orderId: string) => `orders/${orderId}`,
 }
 
 export const videos = [
@@ -47,3 +56,18 @@ export const videos = [
     id: 'oVRooYDvRqg',
   },
 ]
+
+export enum userSortBy {
+  latest = 'latest',
+  oldest = 'oldest',
+  alphabetical = 'alphabetical',
+}
+export enum paymentStatus {
+  paid = 'paid',
+  unpaid = 'unpaid',
+}
+export enum shippingStatus {
+  delivered = 'delivered',
+  shipped = 'shipped',
+  pending = 'pending',
+}

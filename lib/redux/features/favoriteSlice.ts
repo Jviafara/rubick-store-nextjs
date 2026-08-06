@@ -13,8 +13,8 @@ export const favoriteSlice = createSlice({
       state.favoriteList = action.payload
     },
     removeFavorite: (state, action) => {
-      const { productId } = action.payload
-      state.favoriteList = [...state.favoriteList].filter(e => e.product !== productId)
+      const productId = action.payload
+      state.favoriteList = state.favoriteList.filter(e => e.product !== productId)
     },
     addFavorite: (state, action) => {
       state.favoriteList = [action.payload, ...state.favoriteList]

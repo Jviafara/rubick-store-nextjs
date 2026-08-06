@@ -10,14 +10,20 @@ import { useEffect } from 'react'
 
 const ProfilePage = () => {
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session, isPending } = useSession()
   useEffect(() => {
-    if (!session?.user) router.push('/sign-in')
+    if (isPending) return
+    if (!session?.user) {
+      router.replace('/sign-in')
+      return
+    }
   })
   return (
     <div className='w-full flex flex-col items-center mb-32'>
       <Container>
-        <h1 className='text-3xl  font-bold -my-10'>Welcome! {session?.user.name?.split(' ')[0].toLocaleUpperCase()} </h1>
+        <h1 className='text-3xl  font-bold -my-10'>
+          Welcome! {session?.user.name?.split(' ')[0].toLocaleUpperCase()}{' '}
+        </h1>
       </Container>
       <Container
         header={'favorites'}
