@@ -2,7 +2,7 @@ import { useSession } from '@/lib/auth/auth-client'
 import { useAppDispatch } from '@/lib/hooks/redux.hooks'
 import { OrdersApi } from '@/lib/modules/orderApiClient'
 import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
-import { FullUser, IOrder, StatusSelectorProps } from '@/lib/types'
+import { FullUser, IFullOrder, StatusSelectorProps } from '@/lib/types'
 import { ChevronDown } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { MdOutlineMoneyOff, MdPaid } from 'react-icons/md'
@@ -41,15 +41,15 @@ const PaymentStatusSelector = ({ order, setOrders, setOrder, useLabel }: StatusS
       toast.error(res?.message || 'Shipping status update failed.')
     } else if (setOrders) {
       if (shippinsStatus !== undefined && isPaid !== undefined) {
-        setOrders(prevOrders => prevOrders.map(order => (order._id.toString() === orderId ? ({ ...order, shippingStatus: shippinsStatus, isPaid } as IOrder) : order)))
+        setOrders(prevOrders => prevOrders.map(order => (order._id.toString() === orderId ? ({ ...order, shippingStatus: shippinsStatus, isPaid } as IFullOrder) : order)))
       } else if (shippinsStatus !== undefined) {
-        setOrders(prevOrders => prevOrders.map(order => (order._id.toString() === orderId ? ({ ...order, shippingStatus: shippinsStatus } as IOrder) : order)))
+        setOrders(prevOrders => prevOrders.map(order => (order._id.toString() === orderId ? ({ ...order, shippingStatus: shippinsStatus } as IFullOrder) : order)))
       } else if (isPaid !== undefined) {
-        setOrders(prevOrders => prevOrders.map(order => (order._id.toString() === orderId ? ({ ...order, isPaid } as IOrder) : order)))
+        setOrders(prevOrders => prevOrders.map(order => (order._id.toString() === orderId ? ({ ...order, isPaid } as IFullOrder) : order)))
       }
       toast.success('Payment status updated successfully!')
     } else if (setOrder) {
-      setOrder(res as IOrder)
+      setOrder(res as IFullOrder)
       toast.success('Payment status updated successfully!')
     }
 

@@ -23,25 +23,40 @@ const UserTable = ({ query, adminFilter, sortBy }: UserTableProps) => {
 
       if (adminFilter) {
         const fileterUsers = res.filter(
-          (user: FullUser) => user.role === 'admin' && (user.name?.toLowerCase()?.includes(query.toLowerCase()) || user.email?.toLowerCase()?.includes(query.toLowerCase())),
+          (user: FullUser) =>
+            user.role === 'admin' &&
+            (user.name?.toLowerCase()?.includes(query.toLowerCase()) ||
+              user.email?.toLowerCase()?.includes(query.toLowerCase())),
         )
         if (sortBy === userSortBy.latest) {
           setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => getDate(b).getTime() - getDate(a).getTime()))
         } else if (sortBy === userSortBy.oldest) {
           setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => getDate(a).getTime() - getDate(b).getTime()))
         } else if (sortBy === userSortBy.alphabetical) {
-          setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())))
+          setUsers(
+            fileterUsers.sort((a: FullUser, b: FullUser) =>
+              a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase()),
+            ),
+          )
         } else {
           setUsers(fileterUsers)
         }
       } else {
-        const fileterUsers = res.filter((user: FullUser) => user.name?.toLowerCase()?.includes(query.toLowerCase()) || user.email?.toLowerCase()?.includes(query.toLowerCase()))
+        const fileterUsers = res.filter(
+          (user: FullUser) =>
+            user.name?.toLowerCase()?.includes(query.toLowerCase()) ||
+            user.email?.toLowerCase()?.includes(query.toLowerCase()),
+        )
         if (sortBy === userSortBy.latest) {
           setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => getDate(b).getTime() - getDate(a).getTime()))
         } else if (sortBy === userSortBy.oldest) {
           setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => getDate(a).getTime() - getDate(b).getTime()))
         } else if (sortBy === userSortBy.alphabetical) {
-          setUsers(fileterUsers.sort((a: FullUser, b: FullUser) => a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())))
+          setUsers(
+            fileterUsers.sort((a: FullUser, b: FullUser) =>
+              a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase()),
+            ),
+          )
         } else {
           setUsers(fileterUsers)
         }
@@ -75,10 +90,7 @@ const UserTable = ({ query, adminFilter, sortBy }: UserTableProps) => {
               >
                 <td className='uppercase font-semibold'>{user.name}</td>
                 <td>{user.email}</td>
-                <td>
-                  <span className='mr-2'>({user.prefix ? user.prefix : ''})</span>
-                  {user.phone ? user.phone : 'NN'}
-                </td>
+                <td>{user.phone ? user.phone : 'NN'}</td>
                 <td className='uppercase font-semibold'>{user.role}</td>
                 <td className='flex justify-center'>
                   <Link

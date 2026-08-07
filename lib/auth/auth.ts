@@ -39,12 +39,24 @@ export const auth = betterAuth({
         required: false,
         defaultValue: NaN,
       },
+      defaultAddress: {
+        type: 'string',
+        required: false,
+      },
     },
   },
   session: {
     cookieCache: {
       enabled: true,
       maxAge: 60 * 3600,
+    },
+  },
+  account: {
+    accountLinking: {
+      enabled: true,
+      // Trust trusted providers like Google to automatically link accounts sharing the same email
+      trustedProviders: ['google'],
+      updateUserInfoOnLink: true,
     },
   },
   plugins: [

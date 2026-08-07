@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
       totalPrice: body.totalPrice,
       user: session.user.id,
     })
+
     return responseHandler.created(order)
   } catch (e) {
     console.error(e)

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { AiOutlineSearch } from 'react-icons/ai'
 import SugestionSearchBar from './SugestionSearchBar'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 const MiddleNav = () => {
   const pathname = usePathname()
@@ -18,7 +18,7 @@ const MiddleNav = () => {
     }
   }, [searchBarOpen])
 
-  const handleSearchClick = () => {
+  const handleSearchClick = useCallback(() => {
     if (searchBarOpen) {
       if (query === '') {
         setSearchBarOpen(false)
@@ -30,7 +30,7 @@ const MiddleNav = () => {
       return
     }
     setSearchBarOpen(true)
-  }
+  }, [query, router, searchBarOpen])
 
   return (
     <div className='hidden  md:inline-flex items-center space-x-4 absolute top-0 left-1/2 -translate-x-1/2 border-3 border-surface/70 py-0.5 px-1 rounded-full'>
@@ -40,6 +40,7 @@ const MiddleNav = () => {
             query={query}
             setQuery={setQuery}
             inputRef={inputRef}
+            handleSearchClick={handleSearchClick}
           />
         </div>
       ) : (
@@ -58,7 +59,7 @@ const MiddleNav = () => {
 
       <button
         onClick={handleSearchClick}
-        className='cursor-pointer mr-2'
+        className='cursor-pointer mr-2 hidden md:inline-flex'
       >
         <AiOutlineSearch size={28} />
       </button>

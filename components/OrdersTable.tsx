@@ -1,4 +1,4 @@
-import { IOrder } from '@/lib/types'
+import { IFullOrder } from '@/lib/types'
 import OrderNotFound from './OrderNotFound'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -14,7 +14,7 @@ const OrdersTable = () => {
   const dispatch = useAppDispatch()
   const params = useParams()
 
-  const [orders, setOrders] = useState<IOrder[]>([])
+  const [orders, setOrders] = useState<IFullOrder[]>([])
 
   useEffect(() => {
     const getUser = async () => {

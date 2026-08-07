@@ -1,4 +1,4 @@
-import { AiOutlineHome, AiOutlineShopping, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai'
+import { AiOutlineUser } from 'react-icons/ai'
 import { BiCommentCheck } from 'react-icons/bi'
 import { BsFillBagFill } from 'react-icons/bs'
 import { FaProductHunt, FaUsers } from 'react-icons/fa'
@@ -6,51 +6,34 @@ import { IoReceiptSharp } from 'react-icons/io5'
 
 import { MdOutlineFavorite } from 'react-icons/md'
 
-const main = [
-  {
-    display: 'home',
-    path: '/',
-    icon: AiOutlineHome,
-    state: 'home',
-  },
-  {
-    display: 'products',
-    path: '/products',
-    icon: AiOutlineShopping,
-    state: 'products',
-  },
-  {
-    display: 'cart',
-    path: '/cart',
-    icon: AiOutlineShoppingCart,
-    state: 'tv',
-  },
-]
-
 const user = [
   {
     display: 'User Profile',
-    path: '/profile',
+    path: '/profile?tab=user-info',
+    tab: 'user-info',
     icon: AiOutlineUser,
     state: 'profile',
   },
   {
     display: 'favorites',
-    path: '/favorites',
+    path: '/profile?tab=favorites',
+    tab: 'favorites',
     icon: MdOutlineFavorite,
     state: 'favorites',
   },
   {
-    display: 'reviews',
-    path: '/reviews',
-    icon: BiCommentCheck,
-    state: 'reviews',
-  },
-  {
     display: 'orders',
-    path: '/orders',
+    path: '/profile?tab=orders',
+    tab: 'orders',
     icon: BsFillBagFill,
     state: 'orders',
+  },
+  {
+    display: 'reviews',
+    path: '/profile?tab=reviews',
+    tab: 'reviews',
+    icon: BiCommentCheck,
+    state: 'reviews',
   },
 ]
 const admin = [
@@ -71,6 +54,6 @@ const admin = [
   },
 ]
 
-const menuConfigs = { main, user, admin }
+const menuConfigs = { user, admin }
 
 export default menuConfigs

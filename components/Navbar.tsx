@@ -5,23 +5,29 @@ import { TiThMenuOutline } from 'react-icons/ti'
 import Logo from './Logo'
 import SideBar from './SideBar'
 import MiddleNav from './MiddleNav'
-import { useState } from 'react'
 import RightNav from './RightNav'
+import { setModalService } from '@/lib/redux/features/modalSlice'
+import { useAppDispatch } from '@/lib/hooks/redux.hooks'
+import { ModalPositions } from '@/lib/constants'
 
 const Navbar = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const dispatch = useAppDispatch()
 
   const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen)
+    dispatch(
+      setModalService({
+        modalOpen: true,
+        children: <SideBar />,
+        position: ModalPositions.left,
+        closeButton: true,
+        logo: true,
+        icon: undefined,
+      }),
+    )
   }
 
   return (
-    <div className=' py-4 md:px-4 text-main max-w-[100vw] w-full z-50 font-plus-jakarta-sans uppercase'>
-      <SideBar
-        open={sidebarOpen}
-        toggleSidebar={toggleSidebar}
-      />
-
+    <div className=' py-4 md:px-4 text-main max-w-[100vw] w-full h-19 z-50 font-plus-jakarta-sans uppercase'>
       <nav className='relative flex items-center justify-between gap-0 px-4'>
         <div className='flex items-center gap-1'>
           <Link href='/'>

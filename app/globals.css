@@ -17,6 +17,10 @@ input {
   text-align: left;
 }
 
+button {
+  cursor: pointer;
+}
+
 :root {
   /* Light Theme Colors */
   --background: #fafafa;
@@ -24,7 +28,13 @@ input {
   --border: #e2e8f0;
   --primary: #2563eb;
   --secondary: #7c3aed;
-  --accent: #059669;
+  --tertiary: #059669; /* Neon emmerald */
+  --accent: #ffd600;
+  --foreground: #0f172a;
+  --foreground-muted: #64748b;
+  --foreground-on-accent: #ffffff;
+  --disabled: #e2e8f0;
+  --primary-to-secondary: linear-gradient(to right, var(--primary), var(--color-secondary));
 
   /* Text */
   --main: #0f172a;
@@ -40,7 +50,13 @@ input {
   --border: #334155;
   --primary: #00f0ff; /* Cyan Glow */
   --secondary: #ff007a; /* Neon Magenta */
+  --tertiary: #059669; /* Neon emmerald */
   --accent: #ffd600; /* Solar Yellow */
+  --foreground: #f8fafc;
+  --foreground-muted: #94a3b8;
+  --foreground-on-accent: #0f172a;
+  --disabled: #1e293b;
+  --primary-to-secondary: linear-gradient(to right, var(--primary), var(--secondary));
 
   /* Text */
   --main: #f8fafc;
@@ -57,15 +73,24 @@ input {
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
   --color-accent: var(--accent);
   --color-main: var(--main);
   --color-muted: var(--muted);
+  --color-disabled: var(--muted);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-accent: var(--foreground-on-accent);
+  --color-primary-to-secondary: var(--primary-to-secondary);
 
   /* fonts */
-
   --font-inter: var(--font-inter);
   --font-plus-jakarta-sans: var(--font-plus-jakarta-sans);
   --font-seaweed-script: var(--font-seaweed-script);
+
+  /* BreackPoints */
+  --breakpoint-xs: 30rem; /* 480px */
+  --breakpoint-3xl: 120rem; /* 1920px */
 }
 
 @layer utilities {
@@ -74,7 +99,7 @@ input {
     background-color: var(--bg-solid);
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
+    /* background-repeat: no-repeat; */
   }
 
   /* 1. Base Default Product Card */
@@ -82,14 +107,24 @@ input {
     position: relative;
     border-radius: 1.25rem;
     background:
-      radial-gradient(circle at top left, rgba(255, 255, 255, 0.25) 0%, rgba(22, 25, 34, 0.95) 35%, transparent 50%)
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-foreground) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
         padding-box,
-      radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.25) 0%, rgba(22, 25, 34, 0.95) 35%, transparent 50%)
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-foreground) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
         padding-box,
-      linear-gradient(rgba(22, 25, 34, 1), rgba(22, 25, 34, 1)) padding-box,
-      linear-gradient(135deg, #bdbdbd 0%, #bdbdbd 100%) border-box;
-    border: 2px solid rgba(255, 255, 255, 0.08);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-main) 0%, var(--color-main) 100%) border-box;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
     overflow: hidden;
   }
 
@@ -99,7 +134,6 @@ input {
     inset: 0;
     border-radius: inherit;
     background: var(--card-hover-background, transparent);
-    border: var(--card-hover-border);
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
@@ -111,42 +145,100 @@ input {
   }
 
   .card-base > * {
-    position: relative;
     z-index: 1;
   }
 
   .hover-gradient-cyan-magenta {
     --card-hover-background:
-      radial-gradient(circle at top left, rgba(0, 240, 255, 0.25) 0%, rgba(22, 25, 34, 0.95) 35%, transparent 50%)
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
         padding-box,
-      radial-gradient(circle at bottom right, rgba(217, 70, 239, 0.25) 0%, rgba(22, 25, 34, 0.95) 35%, transparent 50%)
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-secondary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
         padding-box,
-      linear-gradient(rgba(22, 25, 34, 1), rgba(22, 25, 34, 1)) padding-box,
-      linear-gradient(135deg, #00f0ff 0%, #d946ef 100%) border-box;
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%) border-box;
+  }
+
+  .hover-gradient-cyan-magenta:hover {
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-secondary) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-primary) r g b / 0.45);
   }
 
   .hover-gradient-emerald-cyan {
     --card-hover-background:
-      radial-gradient(circle at top left, rgba(16, 185, 129, 0.25) 0%, rgba(22, 25, 34, 0.95) 35%, transparent 50%)
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
         padding-box,
-      radial-gradient(circle at bottom right, rgba(0, 240, 255, 0.25) 0%, rgba(22, 25, 34, 0.95) 35%, transparent 50%)
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
         padding-box,
-      linear-gradient(rgba(22, 25, 34, 1), rgba(22, 25, 34, 1)) padding-box,
-      linear-gradient(135deg, #10b981 0%, #00f0ff 100%) border-box;
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-primary) 100%) border-box;
+  }
+
+  .hover-gradient-emerald-cyan:hover {
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-primary) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-tertiary) r g b / 0.45);
   }
 
   .hover-gradient-featured {
     --card-hover-background:
-      radial-gradient(circle at top left, rgba(99, 102, 241, 0.25) 0%, rgba(22, 25, 34, 0.95) 25%, transparent 40%)
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 40%
+        )
         padding-box,
-      radial-gradient(circle at top right, rgba(16, 185, 129, 0.25) 0%, rgba(22, 25, 34, 0.95) 25%, transparent 40%)
+      radial-gradient(
+          circle at top right,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 40%
+        )
         padding-box,
-      radial-gradient(circle at bottom right, rgba(245, 158, 11, 0.25) 0%, rgba(22, 25, 34, 0.95) 25%, transparent 40%)
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-secondary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 40%
+        )
         padding-box,
-      radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.25) 0%, rgba(22, 25, 34, 0.95) 25%, transparent 40%)
+      radial-gradient(
+          circle at bottom left,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 40%
+        )
         padding-box,
-      linear-gradient(rgba(22, 25, 34, 1), rgba(22, 25, 34, 1)) padding-box,
-      linear-gradient(135deg, #6366f1 0%, #10b981 50%, #f59e0b 100%) border-box;
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-primary) 0%, var(--color-tertiary) 50%, var(--color-secondary) 100%)
+        border-box;
+  }
+
+  .hover-gradient-featured:hover {
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-secondary) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-primary) r g b / 0.45);
   }
 
   /* 2. Cyan-to-Magenta Gradient Card (MoYu WeiLong) */
@@ -157,15 +249,27 @@ input {
     box-shadow: 0 0 25px -5px rgba(0, 240, 255, 0.2);
     transition: all 0.3s ease;
     background:
-      radial-gradient(circle at top left, rgba(0, 240, 255, 0.25) 0%, rgba(22, 25, 34, 0.95) 35%, transparent 50%)
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
         padding-box,
-      radial-gradient(circle at bottom right, rgba(217, 70, 239, 0.25) 0%, rgba(22, 25, 34, 0.95) 35%, transparent 50%)
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-secondary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
         padding-box,
-      linear-gradient(rgba(22, 25, 34, 1), rgba(22, 25, 34, 1)) padding-box,
-      linear-gradient(135deg, #00f0ff 0%, #d946ef 100%) border-box;
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%) border-box;
   }
   .card-gradient-cyan-magenta:hover {
-    box-shadow: 0 0 35px -2px rgba(217, 70, 239, 0.45);
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-secondary) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-primary) r g b / 0.45);
   }
 
   /* 3. Green-to-Cyan Gradient Card (Bottom-left green card) */
@@ -176,16 +280,28 @@ input {
     box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
     transition: all 0.3s ease;
     background:
-      radial-gradient(circle at top left, rgba(16, 185, 129, 0.25) 0%, rgba(22, 25, 34, 0.95) 35%, transparent 50%)
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
         padding-box,
-      radial-gradient(circle at bottom right, rgba(0, 240, 255, 0.25) 0%, rgba(22, 25, 34, 0.95) 35%, transparent 50%)
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
         padding-box,
-      linear-gradient(rgba(22, 25, 34, 1), rgba(22, 25, 34, 1)) padding-box,
-      linear-gradient(135deg, #10b981 0%, #00f0ff 100%) border-box;
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-primary) 100%) border-box;
   }
 
   .card-gradient-emerald-cyan:hover {
-    box-shadow: 0 0 35px -2px rgba(0, 240, 255, 0.45);
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-primary) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-tertiary) r g b / 0.45);
   }
 
   /* 4. Full Featured Spectrum Gradient Card (Top-right Square-1) */
@@ -194,23 +310,47 @@ input {
     position: relative;
     border-radius: 1.25rem;
     border: 2px solid transparent;
-    box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
+    box-shadow:
+      4px 4px 15px -2px rgba(from var(--color-accent) r g b / 0.45),
+      -4px -4px 15px -2px rgba(from var(--color-primary) r g b / 0.45);
     transition: all 0.3s ease;
     background:
-      radial-gradient(circle at top left, rgba(99, 102, 241, 0.25) 0%, rgba(22, 25, 34, 0.95) 25%, transparent 40%)
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 25%,
+          transparent 40%
+        )
         padding-box,
-      radial-gradient(circle at top right, rgba(16, 185, 129, 0.25) 0%, rgba(22, 25, 34, 0.95) 25%, transparent 40%)
+      radial-gradient(
+          circle at top right,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 25%,
+          transparent 40%
+        )
         padding-box,
-      radial-gradient(circle at bottom right, rgba(245, 158, 11, 0.25) 0%, rgba(22, 25, 34, 0.95) 25%, transparent 40%)
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-accent) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 25%,
+          transparent 40%
+        )
         padding-box,
-      radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.25) 0%, rgba(22, 25, 34, 0.95) 25%, transparent 40%)
+      radial-gradient(
+          circle at bottom left,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 25%,
+          transparent 40%
+        )
         padding-box,
-      linear-gradient(rgba(22, 25, 34, 1), rgba(22, 25, 34, 1)) padding-box,
-      linear-gradient(135deg, #6366f1 0%, #10b981 50%, #f59e0b 100%) border-box;
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-primary) 0%, var(--color-tertiary) 50%, var(--color-accent) 100%) border-box;
   }
 
   .card-gradient-featured:hover {
-    box-shadow: 0 0 35px -2px rgba(16, 185, 129, 0.45);
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-accent) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-primary) r g b / 0.45);
   }
 }
 
@@ -254,4 +394,45 @@ td {
 .center-nav-li {
   padding: 8px 16px;
   border-radius: calc(infinity * 1px);
+}
+
+.action-button {
+  background:
+    radial-gradient(
+        circle at top left,
+        rgba(from var(--color-foreground) r g b / 0.25) 0%,
+        rgba(from var(--color-surface) r g b / 0.95) 35%,
+        transparent 50%
+      )
+      padding-box,
+    radial-gradient(
+        circle at bottom right,
+        rgba(from var(--color-foreground) r g b / 0.25) 0%,
+        rgba(from var(--color-surface) r g b / 0.95) 35%,
+        transparent 50%
+      )
+      padding-box,
+    linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+    linear-gradient(135deg, var(--color-main) 0%, var(--color-main) 100%) border-box;
+  border: 1px solid transparent;
+  @apply mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-xl  text-xs font-bold text-main  transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-40;
+}
+
+.gradient-button {
+  @apply mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-xl
+    bg-linear-to-r from-primary via-blue-500 to-secondary
+    text-xs font-bold text-white
+    shadow-[0_0_25px_rgba(0,240,255,0.12)]
+    transition
+    hover:scale-[1.02]
+    hover:shadow-[0_0_35px_rgba(0,240,255,0.2)]
+    disabled:cursor-not-allowed
+    disabled:opacity-40;
+}
+
+.text-gradient-cyan-magenta {
+  @apply bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent;
+}
+.text-gradient-emerald-cyan {
+  @apply bg-linear-to-r from-tertiary to-primary bg-clip-text text-transparent;
 }

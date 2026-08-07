@@ -20,10 +20,10 @@ const UserList = () => {
         <h1 className='font-bold text-center uppercase text-xl'>User List</h1>
       </section>
       <section className='w-full flex items-center space-x-8'>
-        <SearchBar
+        {/* <SearchBar
           type='User'
           setQuery={setQuery}
-        />
+        /> */}
         <button
           onClick={() => setAdminFilter(!adminFilter)}
           className={`${adminFilter && selected} h-8 font-semibold border border-gray-50 rounded-xl px-4 py-1  cursor-pointer`}

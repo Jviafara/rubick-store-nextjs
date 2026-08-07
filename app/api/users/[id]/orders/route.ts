@@ -17,7 +17,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
     await connectDB()
 
-    console.log('user id', id)
     const user = await User.findById(id)
     const orders = await Order.find({ user: id }).sort({ createdAt: -1 })
 

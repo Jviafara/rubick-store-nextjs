@@ -7,8 +7,8 @@ const UserSchema = new Schema(
     image: String,
     emailVerified: Boolean,
     role: String,
-    phone: { type: Number, required: false },
-    prefix: { type: String, required: false },
+    phone: { type: String, required: false },
+    defaultAddress: { type: String },
   },
   {
     collection: 'user', // Better Auth collection name
