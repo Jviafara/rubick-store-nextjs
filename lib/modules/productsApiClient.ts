@@ -11,7 +11,19 @@ export const productApi = {
       const res = await response.json()
       return { res }
     } catch (error) {
-      console.error(error)
+      return { error }
+    }
+  },
+  getQueryList: async (query: string) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/${productsEndpoints.querySearch(query)}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const res = await response.json()
+      return { res }
+    } catch (error) {
       return { error }
     }
   },
@@ -25,7 +37,6 @@ export const productApi = {
       const res = await response.json()
       return { res }
     } catch (error) {
-      console.error(error)
       return { error }
     }
   },

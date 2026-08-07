@@ -7,72 +7,80 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import ProductCard from './ProductCard'
 import ProductNotFound from './ProductNotFound'
+import { useSearchParams } from 'next/navigation'
 
-const ProductGrid = ({ filter, priceFilter, priceSort, query }: ProductGridProps) => {
+const sortProducts = (products: IProduct[], priceSort: string) => {
+  const sortedProducts = [...products]
+
+  if (priceSort === 'Lower to Higher') {
+    return sortedProducts.sort((a, b) => a.price! - b.price!)
+  }
+
+  if (priceSort === 'Higher to Lower') {
+    return sortedProducts.sort((a, b) => b.price! - a.price!)
+  }
+
+  if (priceSort === 'Latest') {
+    return sortedProducts.sort((a, b) => getDate(a).getTime() - getDate(b).getTime())
+  }
+
+  if (priceSort === 'top_rated') {
+    return sortedProducts.sort((a, b) => b.rating! - a.rating!)
+  }
+
+  return sortedProducts
+}
+
+const ProductGrid = ({ filter, priceFilter, priceSort }: ProductGridProps) => {
+  const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
   const [products, setProducts] = useState<IProduct[]>([])
 
-  useEffect(() => {
-    const getProducts = async () => {
-      const { res, error } = await productApi.getList()
-      if (res) {
-        if (
-          res.filter(
-            (product: IProduct) =>
-              product.name?.toLowerCase()?.includes(query?.toLowerCase()) ||
-              product.category?.toLowerCase()?.includes(query?.toLowerCase()) ||
-              product._id?.toString().toLowerCase()?.includes(query?.toLowerCase()),
-          ).length <= 0
-        )
-          toast.error('Product not found')
-        setProducts(
-          res.filter(
-            (product: IProduct) =>
-              product.name?.toLowerCase()?.includes(query?.toLowerCase()) ||
-              product.category?.toLowerCase()?.includes(query?.toLowerCase()) ||
-              product._id?.toString().toLowerCase()?.includes(query?.toLowerCase()),
-          ),
-        )
-      }
-
-      if (error) toast.error(error.toString())
-    }
-    getProducts()
-  }, [query])
+  const activeQuery = searchParams.get('query') || ''
 
   useEffect(() => {
-    const getProducts = async () => {
-      const { res, error } = await productApi.getList()
-      if (res) {
-        if (priceSort === 'Lower to Higher') {
-          setProducts(res.sort((a: IProduct, b: IProduct) => a.price! - b.price!))
-        } else if (priceSort === 'Higher to Lower') {
-          setProducts(res.sort((a: IProduct, b: IProduct) => b.price! - a.price!))
-        } else if (priceSort === 'Latest') {
-          setProducts(res.sort((a: IProduct, b: IProduct) => getDate(b).getTime() - getDate(a).getTime()))
-        } else if (priceSort === 'top_rated') {
-          setProducts(res.sort((a: IProduct, b: IProduct) => b.rating! - a.rating!))
-        } else {
-          setProducts(res)
-        }
-      }
-      if (error) toast.error(error.toString())
-    }
-    getProducts()
-  }, [priceSort])
+    let isMounted = true
 
-  useEffect(() => {
     const getProducts = async () => {
       dispatch(setGlobalLoading(true))
-      const { res, error } = await productApi.getList()
-      if (res) {
-        setProducts(res)
+
+      try {
+        const { res, error } = activeQuery ? await productApi.getQueryList(activeQuery) : await productApi.getList()
+
+        if (error) {
+          throw new Error(error.toString())
+        }
+
+        const fetchedProducts = Array.isArray(res) ? res : (res?.products ?? [])
+
+        if (res?.status) {
+          if (isMounted) {
+            setProducts([])
+          }
+          return
+        }
+
+        if (isMounted) {
+          setProducts(sortProducts(fetchedProducts, priceSort))
+        }
+      } catch (error) {
+        if (isMounted) {
+          toast.error(error instanceof Error ? error.message : 'Something went wrong while loading products')
+          setProducts([])
+        }
+      } finally {
+        if (isMounted) {
+          dispatch(setGlobalLoading(false))
+        }
       }
-      if (error) toast.error(error.toString())
-      dispatch(setGlobalLoading(false))
     }
+
     getProducts()
-  }, [dispatch])
+
+    return () => {
+      isMounted = false
+    }
+  }, [activeQuery, dispatch, priceSort])
 
   return (
     <div className='w-[95vw] md:w-[90vw] flex flex-col items-center pb-12'>

@@ -1,6 +1,7 @@
 import mongoose, { Document } from 'mongoose'
 import { IconType } from 'react-icons/lib'
 import { userSortBy } from './constants'
+import { RefObject } from 'react'
 
 export interface FullUser extends Document {
   id: string
@@ -102,6 +103,7 @@ export interface RatingsProps {
 export interface SearchBarProps {
   setQuery: (value: string) => void
   type: string
+  query?: string
 }
 
 export interface ProductFiltersProps {
@@ -110,13 +112,13 @@ export interface ProductFiltersProps {
   setPriceFilter: (value: number[]) => void
   priceSort: string | number[]
   setPriceSort: (value: string) => void
+  clearQuery: () => void
 }
 
 export interface ProductGridProps {
   filter: string
   priceFilter: number[]
   priceSort: string
-  query: string
 }
 
 export interface IOrderItems extends ICartItem {
@@ -190,4 +192,10 @@ export interface UserTableProps {
   query: string
   adminFilter: boolean
   sortBy: userSortBy
+}
+
+export interface ISugestionSearchBar {
+  query: string
+  setQuery: React.Dispatch<React.SetStateAction<string>>
+  inputRef?: RefObject<HTMLInputElement | null>
 }
