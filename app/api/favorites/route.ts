@@ -1,10 +1,17 @@
 import { auth } from '@/lib/auth/auth'
 import Favorite from '@/lib/models/favorite'
+import Product from '@/lib/models/product'
 import connectDB from '@/lib/mongodb'
 import responseHandler from '@/lib/responseHandler'
 import { NextRequest } from 'next/server'
 
 export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
+
+  const page = Math.max(1, parseInt(searchParams.get('page') || '', 10))
+  const pageSize = Math.max(1, parseInt(searchParams.get('page_size') || ''))
+  const skip = (page - 1) * pageSize
+
   try {
     const session = await auth.api.getSession({
       headers: req.headers,
@@ -14,6 +21,40 @@ export async function GET(req: NextRequest) {
     }
 
     await connectDB()
+
+    if (page) {
+      const favoritesList = await Favorite.find({
+        user: session?.user.id,
+      })
+
+      const productIds = favoritesList.map(favorite => favorite.product)
+
+      const products = await Product.find({
+        _id: { $in: productIds },
+      })
+        .sort('-createdAt')
+        .skip(skip)
+        .limit(pageSize)
+
+      if (productIds.length <= 0) return responseHandler.notFound()
+
+      const total: number = await Favorite.countDocuments({
+        user: session?.user.id,
+      })
+      const totalPages = Math.ceil(total / pageSize)
+
+      const pagination = {
+        currentPage: page,
+        pageSize,
+        total,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      }
+
+      return responseHandler.ok({ products, pagination })
+    }
+
     const favorites = await Favorite.find({
       user: session?.user.id,
     }).sort('-createdAt')

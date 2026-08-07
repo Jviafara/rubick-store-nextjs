@@ -1,7 +1,14 @@
-import React from 'react'
+import Container from '@/components/Container'
+import TutorialSlide from '@/components/TutorialSlide'
 
 const TutorialsPage = () => {
-  return <div className='text-main'>Tutorials</div>
+  return (
+    <main className='w-full  mx-auto py-12 flex items-center justify-center overflow-visible'>
+      <Container header={'tutorials'}>
+        <TutorialSlide />
+      </Container>
+    </main>
+  )
 }
 
 export default TutorialsPage

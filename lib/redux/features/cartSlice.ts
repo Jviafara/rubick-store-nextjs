@@ -2,13 +2,6 @@ import { ICart, ICartItem } from '@/lib/types'
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState: ICart = {
-  shippingAddress: {
-    name: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: '',
-  },
   cartItems: [],
 }
 
@@ -16,10 +9,6 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    setShippingAddress: (state, action) => {
-      localStorage.setItem('shippingAddress', JSON.stringify(action.payload))
-      state.shippingAddress = action.payload
-    },
     removecartItem: (state, action) => {
       const { _id: productId } = action.payload
       state.cartItems = [...state.cartItems].filter(e => e._id !== productId)
@@ -60,6 +49,6 @@ export const cartSlice = createSlice({
   },
 })
 
-export const { clearCart, setShippingAddress, setcartItems, removecartItem, addcartItem } = cartSlice.actions
+export const { clearCart, setcartItems, removecartItem, addcartItem } = cartSlice.actions
 
 export default cartSlice.reducer

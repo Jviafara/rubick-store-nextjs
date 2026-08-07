@@ -2,20 +2,10 @@
 import { store } from '../lib/redux/store'
 import { Provider } from 'react-redux'
 import { useEffect } from 'react'
-import { setShippingAddress, setcartItems } from '@/lib/redux/features/cartSlice'
+import { setcartItems } from '@/lib/redux/features/cartSlice'
 
 function HydrateStore({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // Restore shipping address from localStorage
-    const savedShippingAddress = localStorage.getItem('shippingAddress')
-    if (savedShippingAddress) {
-      try {
-        store.dispatch(setShippingAddress(JSON.parse(savedShippingAddress)))
-      } catch (error) {
-        console.error('Failed to restore shipping address:', error)
-      }
-    }
-
     // Restore cart items from localStorage
     const savedCartItems = localStorage.getItem('cartItems')
     if (savedCartItems) {

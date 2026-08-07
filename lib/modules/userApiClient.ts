@@ -1,4 +1,5 @@
 import { BASE_URL, usersEndpoints } from '../constants'
+import { UpdatePasswordProps } from '../types'
 
 export const userApi = {
   getList: async () => {
@@ -35,6 +36,22 @@ export const userApi = {
         headers: {
           'Content-Type': 'application/json',
         },
+      })
+      const res = await response.json()
+      return { res }
+    } catch (error) {
+      console.error(error)
+      return { error }
+    }
+  },
+  updatePassword: async ({ id, body }: UpdatePasswordProps) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/${usersEndpoints.updatePassword(id)}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
       })
       const res = await response.json()
       return { res }

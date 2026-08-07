@@ -40,7 +40,7 @@ const UserMenu = ({ open, toggleMenu }: userMenuProps) => {
       onClick={toggleMenu}
     >
       <div
-        className='absolute top-12 right-4 z-9999 mt-4 w-64 bg-blue-400/80 rounded-lg p-4 '
+        className='absolute! top-12 right-4 z-9999 mt-4 w-64 card-gradient-cyan-magenta rounded-lg p-4 '
         onClick={e => e.stopPropagation()}
       >
         {session?.user && (

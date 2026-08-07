@@ -2,10 +2,9 @@ import { BASE_URL, orderEndpoints } from '../constants'
 import { CreateOrderProps, OrderPaymentProps, OrderUpdateProps } from '../types'
 
 export const OrdersApi = {
-  create: async ({ shippingAddress, paymentId, itemsPrice, shippingPrice, totalPrice, orderItems }: CreateOrderProps) => {
+  create: async ({ shippingAddress, itemsPrice, shippingPrice, totalPrice, orderItems }: CreateOrderProps) => {
     const body = {
       shippingAddress,
-      paymentId,
       itemsPrice,
       shippingPrice,
       totalPrice,
@@ -68,7 +67,7 @@ export const OrdersApi = {
       return { error }
     }
   },
-  orderPayment: async ({ orderId, amount, type }: OrderPaymentProps) => {
+  orderPayment: async ({ orderId, amount, type, paymentId }: OrderPaymentProps) => {
     try {
       const response = await fetch(`${BASE_URL}/api/${orderEndpoints.orderPayment(orderId)}`, {
         method: 'POST',
@@ -78,6 +77,7 @@ export const OrdersApi = {
         body: JSON.stringify({
           amount: amount,
           type,
+          paymentId,
         }),
       })
       const res = await response.json()

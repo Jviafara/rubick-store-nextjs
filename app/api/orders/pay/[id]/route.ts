@@ -1,6 +1,8 @@
 import { auth } from '@/lib/auth/auth'
 import Order from '@/lib/models/order'
+import Product from '@/lib/models/product'
 import responseHandler from '@/lib/responseHandler'
+import { IOrderItems } from '@/lib/types'
 import { NextRequest } from 'next/server'
 import Stripe from 'stripe'
 
@@ -21,9 +23,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       return responseHandler.unauthorize()
     }
 
-    const order = await Order.findById(id)
-    if (!order) return responseHandler.notFound()
-
     const body = await req.json()
 
     if (body.type === 'payment_intent') {
@@ -33,16 +32,27 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
         automatic_payment_methods: { enabled: true },
       })
 
-      order.paymentId = charge.id
-      await order.save()
-      return responseHandler.ok({ order, clientSecret: charge.client_secret })
+      return responseHandler.ok({ clientSecret: charge.client_secret })
     }
+    if (body.type === 'payment_confirmation') {
+      const order = await Order.findById(id)
+      if (!order) return responseHandler.notFound()
 
-    order.isPaid = true
-    order.paidAt = Date.now()
-    await order.save()
+      order.orderItems.forEach(async (prod: IOrderItems) => {
+        const product = await Product.findById(prod._id)
+        product.countInStock -= prod.quantity
+        product.totalSold += prod.quantity
+        product.save()
+      })
 
-    return responseHandler.ok({ order })
+      order.paymentId = body.paymentId
+      order.isPaid = true
+      order.paidAt = Date.now()
+      await order.save()
+
+      return responseHandler.ok({ order })
+    }
+    return responseHandler.ok({ ok: 'OK' })
   } catch (e) {
     console.error(e)
     return responseHandler.error()

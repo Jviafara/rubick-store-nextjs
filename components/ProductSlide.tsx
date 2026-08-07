@@ -8,56 +8,45 @@ import { toast } from 'react-toastify'
 import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
 import AutoSwiper from './AutoSwiper'
 import { SwiperSlide } from 'swiper/react'
-import { getDate } from '@/lib/utils'
+import { getParamsString } from '@/lib/utils'
 import ProductCard from './ProductCard'
 
 const ProductSlide = ({ slideType }: ProductSlideProps) => {
   const dispatch = useAppDispatch()
+  const sortBy = slideType
 
   const [products, setProducts] = useState<IProduct[]>([])
+  const paramsString = getParamsString({ query: '', page: '1', pageSize: '8', sortBy })
 
   useEffect(() => {
     const getProducts = async () => {
       dispatch(setGlobalLoading(true))
-      const { res, error } = await productApi.getList()
+      const { res, error } = await productApi.getList(paramsString)
       if (error) toast.error(String(error))
       if (res.status >= 400) {
         toast.error(res.message)
       } else if (res) {
-        setProducts(res)
+        setProducts(res.products ? res.products : res)
         dispatch(setGlobalLoading(false))
       }
     }
     getProducts()
-  }, [dispatch])
+  }, [dispatch, paramsString])
+
+  if (!products) return null
 
   return (
     <>
-      <AutoSwiper>
-        {slideType === 'latest' &&
-          products
-            .sort((a, b) => getDate(b).getTime() - getDate(a).getTime())
-            .slice(0, 8)
-            .map((product, index) => (
-              <SwiperSlide
-                key={index}
-                className='swiper-slide w-fit'
-              >
-                <ProductCard product={product} />
-              </SwiperSlide>
-            ))}
-        {slideType === 'top_rated' &&
-          products
-            .sort((a, b) => (b.rating || 0) - (a.rating || 0))
-            .slice(0, 8)
-            .map((product, index) => (
-              <SwiperSlide
-                key={index}
-                className='swiper-slide w-full '
-              >
-                <ProductCard product={product} />
-              </SwiperSlide>
-            ))}
+      <AutoSwiper slideNumber={products.length}>
+        {products &&
+          products.map((product, index) => (
+            <SwiperSlide
+              key={index}
+              className='swiper-slide w-fit overflow-visible'
+            >
+              <ProductCard product={product} />
+            </SwiperSlide>
+          ))}
       </AutoSwiper>
     </>
   )

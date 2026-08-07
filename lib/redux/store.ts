@@ -3,12 +3,14 @@ import globalLoadingSlice from './features/globalLoadingSlice'
 import cartSlice from './features/cartSlice'
 import favoriteSlice from './features/favoriteSlice'
 import themeModeSlice from './features/themeModeSlice'
+import modalSlice from './features/modalSlice'
 
 const rootReducer = combineReducers({
   themeMode: themeModeSlice,
   globalLoading: globalLoadingSlice,
   cart: cartSlice,
   favoriteList: favoriteSlice,
+  modalService: modalSlice,
 })
 
 export const store = configureStore({

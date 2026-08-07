@@ -3,6 +3,7 @@ import { signIn } from '@/lib/auth/auth-client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import LoadingThreeDotsPulse from './LoadingThreeDotsPulse'
 
 const SignInForm = () => {
   const [email, setEmail] = useState('')
@@ -34,18 +35,15 @@ const SignInForm = () => {
   return (
     <>
       <form
-        className='space-y-4 w-full'
+        className='space-y-4 w-full text-main'
         onSubmit={handleSubmit}
       >
         <div className='space-y-4 px-6'>
-          {/*  Error  */}
-          {error && <div className='rounded-md bg-red-100 p-3 text-sm text-red-600'>{error}</div>}
-
           {/* Email */}
           <div className='space-y-2'>
             <label
               htmlFor='email'
-              className='text-sm font-medium text-black'
+              className='text-sm font-medium'
             >
               E-mail
             </label>
@@ -57,7 +55,7 @@ const SignInForm = () => {
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className='w-full rounded-md border border-gray-400 px-3 py-2 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+              className={`w-full rounded-2xl border border-primary px-3 py-2 outline-none ${error && 'border-secondary'}`}
             />
           </div>
 
@@ -65,7 +63,7 @@ const SignInForm = () => {
           <div className='space-y-2'>
             <label
               htmlFor='password'
-              className='text-sm font-medium text-black'
+              className='text-sm font-medium '
             >
               Password
             </label>
@@ -78,26 +76,28 @@ const SignInForm = () => {
               minLength={8}
               value={password}
               onChange={e => setPassword(e.target.value)}
-              className='w-full rounded-md border border-gray-400 px-3 py-2 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+              className={`w-full rounded-2xl border border-primary px-3 py-2 outline-none ${error && 'border-secondary'}`}
             />
           </div>
         </div>
 
         {/* Actions */}
-        <div className='flex flex-col space-y-4 px-6 '>
+        <div className='flex flex-col space-y-4 px-6 w-full justify-center items-center'>
+          {/*  Error  */}
+          {error && <div className='text-sm text-red-600'>{error}</div>}
           <button
             type='submit'
             disabled={loading}
-            className={`w-full rounded-md  ${loading || password.length < 8 ? 'bg-gray-400' : 'bg-blue-600 transition hover:bg-blue-600/70 cursor-pointer'}  py-2 text-lg font-medium text-white `}
+            className={`w-1/2 bg-primary hover:bg-primary/90 px4 py-2 rounded-2xl text-lg font-medium  ${loading && 'bg-transparent!'} ${password.length < 8 && 'bg-disabled!'}`}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? <LoadingThreeDotsPulse /> : 'Sign In'}
           </button>
 
-          <p className='text-center text-sm text-gray-500'>
-            Don&apos;t have an account?
+          <p className='text-center text-sm text-muted  flex flex-col xs:flex-row justify-center items-center xs:gap-2'>
+            <span>Don&apos;t have an account?</span>
             <Link
               href='/sign-up'
-              className='font-semibold text-blue-600 hover:underline ml-2'
+              className='font-semibold text-primary hover:underline ml-2'
             >
               Sign Up
             </Link>
