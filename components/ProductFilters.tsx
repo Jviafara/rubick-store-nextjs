@@ -143,7 +143,7 @@ const ProductFilters = ({
                 />
                 <label
                   htmlFor='checkbox-item-1'
-                  className='w-full py-1 px-2 rounded-full text-sm font-medium text-mutted cursor-pointer hover:bg-surface/70 peer-checked:bg-surface'
+                  className='w-full py-1 px-2 rounded-full text-sm font-medium text-muted cursor-pointer hover:bg-surface/70 peer-checked:bg-surface peer-checked:text-main'
                 >
                   Lower to Higher
                 </label>
@@ -157,11 +157,11 @@ const ProductFilters = ({
                   onChange={e => {
                     setPriceSort(e.target.value)
                   }}
-                  className='hidden peer '
+                  className='hidden peer'
                 />
                 <label
                   htmlFor='checkbox-item-2'
-                  className='w-full py-1 px-2 rounded-full text-sm font-medium text-mutted cursor-pointer hover:bg-surface/70 peer-checked:bg-surface'
+                  className='w-full py-1 px-2 rounded-full text-sm font-medium text-muted cursor-pointer hover:bg-surface/70 peer-checked:bg-surface peer-checked:text-main'
                 >
                   Higher to Lower
                 </label>
@@ -179,7 +179,7 @@ const ProductFilters = ({
                 />
                 <label
                   htmlFor='checkbox-item-3'
-                  className='w-full py-1 px-2 rounded-full text-sm font-medium text-mutted cursor-pointer hover:bg-surface/70 peer-checked:bg-surface'
+                  className='w-full py-1 px-2 rounded-full text-sm font-medium text-muted cursor-pointer hover:bg-surface/70 peer-checked:bg-surface peer-checked:text-main'
                 >
                   Latest
                 </label>
@@ -197,7 +197,7 @@ const ProductFilters = ({
                 />
                 <label
                   htmlFor='checkbox-item-4'
-                  className='w-full py-1 px-2 rounded-full text-sm font-medium text-mutted/70 cursor-pointer hover:bg-surface/70 peer-checked:bg-surface'
+                  className='w-full py-1 px-2 rounded-full text-sm font-medium text-muted/70 cursor-pointer hover:bg-surface/70 peer-checked:bg-surface peer-checked:text-main'
                 >
                   Top rated
                 </label>

@@ -6,6 +6,7 @@ import UserMenu from './UserMenu'
 import { useSession } from '@/lib/auth/auth-client'
 import { useAppSelector } from '@/lib/hooks/redux.hooks'
 import { FaUserCircle } from 'react-icons/fa'
+import { MdOutlineShoppingBag } from 'react-icons/md'
 
 const RightNav = () => {
   const { data: session } = useSession()
@@ -44,11 +45,19 @@ const RightNav = () => {
         toggleMenu={toggleMenu}
       />
       <ul className='list-none flex justify-between items-center gap-1 font-semibold'>
-        <li className='py-2 px-1 flex items-center  hover:shadow-lg rounded-full text-lg'>
+        <li className='py-2 px-1 flex items-center cursor-pointer  text-lg'>
           <ThemeButton />
         </li>
 
-        <li className='py-2 px-1 flex items-center  hover:shadow-lg rounded-full text-lg'>
+        <li className='py-2 px-1 flex items-center text-lg'>
+          <Link
+            href='/orders'
+            className='flex items-center gap-1'
+          >
+            <MdOutlineShoppingBag size={24} />
+          </Link>
+        </li>
+        <li className='py-2 px-1 flex items-center text-lg'>
           <Link
             href='/cart'
             className='flex items-center gap-1'
@@ -62,17 +71,17 @@ const RightNav = () => {
           </Link>
         </li>
         {!session?.user && (
-          <li className='p-2 hover:shadow-lg rounded-full text-lg'>
+          <li>
             <Link
               href='/sign-in'
-              className='cursor-pointer flex items-center gap-1'
+              className='cursor-pointer  border border-primary py-1 px-2 rounded-2xl hover:bg-primary hover:text-foreground'
             >
-              <h1>Sign In</h1>
+              Sign In
             </Link>
           </li>
         )}
         {session?.user && (
-          <li className='p-2 hover:shadow-lg rounded-full text-lg '>
+          <li className='p-2 text-lg '>
             <div
               onClick={toggleMenu}
               className='flex gap-2 items-center'
