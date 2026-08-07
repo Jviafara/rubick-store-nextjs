@@ -105,7 +105,7 @@ const ProductDetail = () => {
 
   return (
     <div className='w-[95vw] md:max-w-[90vw] mx-auto  flex flex-col md:flex-row gap-4 p-4 justify-evenly'>
-      <div className='md:w-[50vw] lg:w-[45vw] xl:w-[40vw] shadow-lg'>
+      <div className='md:w-[50vw] lg:w-[45vw] xl:w-[40vw] shadow-lg relative -z-10'>
         <ImageSlide images={product.images || []} />{' '}
       </div>
       <div className='w-full lg:w-[50%] xl:w-[30%]  flex flex-col xl:flex-row xl:justify-center gap-4 shadow-lg rounded-lg border border-yellow h-fit'>
@@ -153,7 +153,9 @@ const ProductDetail = () => {
               <hr className='border border-yellow' />
               <li>
                 {alreadyInCart ? (
-                  <div className='w-full py-3 px-4 text-white font-bold font-serif text-lg mt-4'>Already in the Cart</div>
+                  <div className='w-full py-3 px-4 text-white font-bold font-serif text-lg mt-4'>
+                    Already in the Cart
+                  </div>
                 ) : (
                   <button
                     onClick={addToCartHandler}

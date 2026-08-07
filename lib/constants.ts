@@ -4,6 +4,7 @@ export const productsEndpoints = {
   list: 'products',
   add: 'products',
   remove: (productId: string) => `products/${productId}`,
+  querySearch: (query: string) => `products/query/${query}`,
   info: (slug: string) => `products/slug/${slug}`,
   infoById: (productId: string) => `products/${productId}`,
   update: (productId: string) => `products/${productId}`,
