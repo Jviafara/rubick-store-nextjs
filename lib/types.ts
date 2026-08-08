@@ -1,6 +1,6 @@
 import mongoose, { Document } from 'mongoose'
 import { IconType } from 'react-icons/lib'
-import { userSortBy } from './constants'
+import { ModalPositions, userSortBy } from './constants'
 import { RefObject } from 'react'
 
 export interface FullUser extends Document {
@@ -198,4 +198,12 @@ export interface ISugestionSearchBar {
   query: string
   setQuery: React.Dispatch<React.SetStateAction<string>>
   inputRef?: RefObject<HTMLInputElement | null>
+}
+
+export interface ImodalSlice {
+  modalService: boolean
+}
+
+export interface IModalConfig {
+  position: ModalPositions
 }

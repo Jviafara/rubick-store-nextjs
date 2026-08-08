@@ -215,7 +215,7 @@ const ProductFilters = ({
               <button
                 type='button'
                 onClick={handleClear}
-                className='flex gap-1 items-centerpx-2 py-1 rounded-2xl bg-red-400 hover:scale-105 hover:font-bold'
+                className='flex gap-1 items-center px-2 py-1 rounded-2xl bg-red-400 hover:scale-105 hover:font-bold'
               >
                 <FiFilter />
                 Clear Filters

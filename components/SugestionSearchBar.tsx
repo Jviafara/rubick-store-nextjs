@@ -1,5 +1,5 @@
 import { IProduct, ISugestionSearchBar } from '@/lib/types'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
 import SugestionsBox from './SugestionsBox'
 import { productApi } from '@/lib/modules/productsApiClient'
@@ -7,7 +7,12 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) => {
   const router = useRouter()
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const suggestionRef = useRef<HTMLDivElement>(null)
   const [products, setProducts] = useState<IProduct[]>([])
+  const [isFocused, setIsFocused] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [isOutOfView, setIsOutOfView] = useState(false)
 
   const searchParams = useSearchParams()
   const activeQuery = searchParams.get('query') || ''
@@ -41,10 +46,12 @@ const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) 
     setQuery(newQuery)
 
     if (newQuery.length >= 3) {
-      console.log(newQuery)
       getProducts(newQuery.toLocaleLowerCase())
+      setShowSuggestions(true)
       return
     }
+
+    setShowSuggestions(false)
   }
 
   useEffect(() => {
@@ -63,12 +70,71 @@ const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) 
     }
   }, [query, router, setQuery])
 
+  useEffect(() => {
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target
+      if (!(target instanceof Node)) return
+
+      const clickedInsideWrapper = wrapperRef.current?.contains(target)
+      const clickedInsideSuggestions = suggestionRef.current?.contains(target)
+
+      if (!clickedInsideWrapper && !clickedInsideSuggestions) {
+        setIsFocused(false)
+        setShowSuggestions(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handlePointerDown)
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown)
+    }
+  }, [])
+
+  useEffect(() => {
+    const currentElement = inputRef!.current
+    if (!currentElement) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // isIntersecting is false when the element leaves the viewport
+        setIsOutOfView(!entry.isIntersecting)
+
+        // Fire your custom out-of-view event here if needed
+        if (!entry.isIntersecting) {
+          console.log('Element has gone out of view!')
+        }
+      },
+      {
+        root: null, // Defaults to the browser viewport
+        threshold: 0, // Triggers as soon as even 1 pixel leaves/enters
+      },
+    )
+
+    observer.observe(currentElement)
+
+    return () => {
+      if (currentElement) observer.unobserve(currentElement)
+    }
+  }, [inputRef])
+
+  // useEffect(() => {
+  //   const checkOutOfView = () => {
+  //     if (isOutOfView) setIsFocused(!isOutOfView)
+  //   }
+  //   checkOutOfView()
+  // }, [isOutOfView])
+
   const handleClearSearch = () => {
     setQuery('')
     setProducts([])
+    setShowSuggestions(false)
   }
   return (
-    <div className='w-full relative'>
+    <div
+      ref={wrapperRef}
+      className='relative'
+    >
       <input
         ref={inputRef}
         type='text'
@@ -76,19 +142,24 @@ const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) 
         id='address'
         value={query}
         onChange={onQueryChange}
-        className='w-lg h-8 rounded-lg text-lg py-1 px-4 text-center  focus:outline-none'
+        onFocus={() => {
+          setIsFocused(true)
+          if (query.length >= 3) setShowSuggestions(true)
+        }}
+        className='w-[33vw]  h-8 rounded-lg text-lg py-1 px-4 text-center  focus:outline-none peer'
       />
       {query && (
         <MdOutlineClose
           size={24}
           onClick={handleClearSearch}
-          className='absolute right-0 top-1/2 -translate-y-1/2 text-main cursor-pointer'
+          className='absolute right-0 top-1/2 -translate-y-1/2 text-main cursor-pointer '
         />
       )}
-      {query.length >= 3 && query !== activeQuery && (
+      {isFocused && showSuggestions && query.length >= 3 && query !== activeQuery && !isOutOfView && (
         <SugestionsBox
           products={products}
           setQuery={setQuery}
+          suggestionsRef={suggestionRef}
         />
       )}
     </div>

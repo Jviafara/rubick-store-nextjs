@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import GlobalLoading from '@/components/GlobalLoading'
 import { ToastContainer } from 'react-toastify'
+import ScrollUpButton from './ScrollUpButton'
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -21,7 +22,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
       <GlobalLoading />
 
-      {children}
+      <main className='relative z-0'>{children}</main>
 
       <ToastContainer
         position='bottom-left'
@@ -32,6 +33,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         pauseOnFocusLoss
         pauseOnHover
       />
+
+      {/* Scroll up button */}
+      <ScrollUpButton />
     </>
   )
 }

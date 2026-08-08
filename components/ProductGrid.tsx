@@ -103,7 +103,7 @@ const ProductGrid = ({ filter, priceFilter, priceSort }: ProductGridProps) => {
       {filter === 'All products' &&
         products?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])?.length <=
           0 && <ProductNotFound />}
-      <div className='w-[80vw] grid gap-8 xl:gap-12 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center justify-stretch'>
+      <div className='w-[80vw] grid gap-8 xl:gap-12 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center justify-stretch'>
         {filter !== 'All products' &&
           products
             ?.filter(product => product.category === filter)

@@ -31,14 +31,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
     >
       {/* Image */}
       <Link href={`/product/slug/${product.slug}`}>
-        <div className='relative w-full aspect-square'>
+        <div className='relative w-full aspect-square '>
           <Image
             src={product.images![0]}
             alt={'Image'}
             fill
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             loading='eager'
-            className='object-cover z-0'
+            className='object-cover z-0 rounded-2xl'
           />
         </div>
         <div></div>

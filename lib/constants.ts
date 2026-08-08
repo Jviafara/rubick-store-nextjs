@@ -72,3 +72,15 @@ export enum shippingStatus {
   shipped = 'shipped',
   pending = 'pending',
 }
+
+export enum ModalPositions {
+  top_center = 'top_center',
+  top_left = 'top_left',
+  top_right = 'top_right',
+  center = 'center',
+  left = 'left',
+  right = 'right',
+  bottom_center = 'bottom_center',
+  botom_left = 'bottom_left',
+  bottom_right = 'bottom_right',
+}
