@@ -18,7 +18,7 @@ const SignIn = () => {
   }, [session, router])
 
   return (
-    <div className='max-w-screen flex items-center justify-center text-main'>
+    <div className='h-[calc(100vh-72px)] max-w-screen  top-0 flex items-center justify-center text-main'>
       <motion.div
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
