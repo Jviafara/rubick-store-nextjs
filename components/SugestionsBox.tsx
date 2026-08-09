@@ -23,7 +23,7 @@ const SugestionsBox = ({ products, setQuery, suggestionsRef }: Props) => {
   if (!mounted || typeof document === 'undefined') return null
 
   return createPortal(
-    <div className='absolute top-18 left-0 z-0 w-full h-screen max-w-[100vw] bg-black/30 '>
+    <div className='absolute top-18 left-0 z-0 w-full h-[calc(100vh-76px)] max-w-screen max-h-screen bg-black/30 '>
       <div
         ref={suggestionsRef}
         className='relative top-0 left-1/2 -translate-x-1/2 z-50 w-[33vw] max-w-xl hidden md:inline-flex bg-surface rounded-lg p-4 max-h-[35vh] overflow-y-scroll scrollbar-none  flex-col space-y-2'

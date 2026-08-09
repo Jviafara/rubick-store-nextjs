@@ -118,13 +118,6 @@ const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) 
     }
   }, [inputRef])
 
-  // useEffect(() => {
-  //   const checkOutOfView = () => {
-  //     if (isOutOfView) setIsFocused(!isOutOfView)
-  //   }
-  //   checkOutOfView()
-  // }, [isOutOfView])
-
   const handleClearSearch = () => {
     setQuery('')
     setProducts([])
