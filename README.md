@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rubik Store Next.js (Currently on development)
 
-## Getting Started
+A modern fullstack e-commerce application built with Next.js, TypeScript, and MongoDB.
 
-First, run the development server:
+##Project Demo live on vercel
+-URL: (https://rubick-store-nextjs.vercel.app/)
+
+## Project Summary
+
+- Frontend: `Next.js`, React, TypeScript, Tailwind CSS, and modern component-driven UI.
+- Backend: Next.js API routes with MongoDB for data persistence.
+- Authentication: migrated from the original MERN auth flow to a full Next.js implementation with `betterauth`.
+- State management: Redux Toolkit and custom React hooks for cart, favorites, and global loading state.
+- API: custom modules for products, orders, and favorites with secure route handling.
+- On this personal project is where i apply and use all the new slkills and technologie that i learn.
+
+## Technologies and Skills
+
+- Languages: `TypeScript`, `JavaScript`, `HTML`, `CSS`
+- Frameworks / Libraries: `Next.js`, `React`, `Redux Toolkit`
+- Database: `MongoDB`
+- Authentication: `betterauth` implementation for secure user sign-in and sign-up flows
+- Server: Next.js serverless API routes
+- Tooling: `npm`, `ESLint`, `PostCSS`, `TailwindCss`
+
+## Migration History
+
+This application was originally developed as a MERN stack project: (Original Project repository: https://github.com/Jviafara/RubicksStore/)
+- MongoDB
+- Express
+- React
+- Node.js
+
+It was later migrated to a fullstack Next.js project to unify frontend and backend logic, improve performance, and simplify deployment.
+
+## Run Locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Notes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The current project structure uses Next.js `app/` routing and React Server Components.
+- Authentication is now handled with `betterauth` instead of the earlier MERN-based auth stack.
+- When running locally the project will not run without the enviroment variables needed to run.
+- env.local file needed: `GOOGLE_CLIENT_ID`,`GOOGLE_CLIENT_SECRET`,`MONGODB_URI`,`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`,`STRIPE_SECRET_KEY`,`BETTER_AUTH_SECRET`,`BETTER_AUTH_URL`,`NEXT_PUBLIC_BASE_URL`.
+- The version deployed on versel is tracking the main branch, but the project is currently under a redesign and you can see it on the new-design branch although is not deployed yet.
+- Althouh this project dont have any ai functionality yet, i expect on the near future with the new design to implement some AI functionalities especially on a new cube speed stopwatch, this funcionality is expected to receive a cube scramble and return a image previsualization of the cube scrambled.
