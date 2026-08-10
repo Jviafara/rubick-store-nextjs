@@ -1,10 +1,9 @@
 'use client'
 
+import { ScrambleGeneratorProps } from '@/lib/types'
 import { useState, useEffect } from 'react'
 
-export default function ScrambleGenerator() {
-  const [scramble, setScramble] = useState('')
-  const [scrambleHistory, setScrambleHistory] = useState<string[]>([])
+export default function ScrambleGenerator({ scramble, setScramble, scrambleHistory }: ScrambleGeneratorProps) {
   const [lastSave, setLastSave] = useState('')
 
   async function fetchScramble() {
@@ -35,14 +34,14 @@ export default function ScrambleGenerator() {
 
   useEffect(() => {
     let active = true
-
     async function loadScramble() {
       const res = await fetch(`/api/scramble?type=${''}`)
       const data = await res.json()
-      console.log(data)
       if (active && data) {
         setScramble(data)
+        console.log(scrambleHistory)
         scrambleHistory.push(data)
+        if (scrambleHistory.length >= 11) scrambleHistory.shift()
       }
     }
 
@@ -50,7 +49,7 @@ export default function ScrambleGenerator() {
     return () => {
       active = false
     }
-  }, [scrambleHistory])
+  }, [scrambleHistory, setScramble])
 
   return (
     <div className='flex flex-col w-full items-center justify-center space-y-2'>
@@ -58,7 +57,7 @@ export default function ScrambleGenerator() {
         <button
           onClick={prevScramble}
           disabled={lastSave === scramble}
-          className='px-1 py-1 text-main text-sm text-nowrap hover:bg-surface/60 rounded-full  disabled:text-muted  disabled:cursor-not-allowed'
+          className='px-1 py-1 text-muted text-sm text-nowrap hover:bg-surface/60 rounded-full  disabled:text-muted  disabled:cursor-not-allowed'
         >
           Prev Scramble
         </button>
@@ -70,7 +69,7 @@ export default function ScrambleGenerator() {
           Next Scramble
         </button>
       </div>
-      <div className='w-full h-fit flex items-center justify-center font-bold text-main text-2xl bg-surface/90 rounded-xl p-4 '>
+      <div className='w-fit h-fit flex items-center justify-center font-bold text-main text-2xl bg-surface/90 rounded-xl p-4 '>
         {scramble || 'Generating...'}
       </div>
     </div>

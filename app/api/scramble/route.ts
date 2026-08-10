@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
 
-    const type = searchParams.get('type') // e.g., ?query=hello
+    const type = searchParams.get('type')
     if (!type) {
       const scrambler = new Scrambow().get()
       return responseHandler.ok(scrambler[0].scramble_string)

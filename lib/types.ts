@@ -207,3 +207,35 @@ export interface ImodalSlice {
 export interface IModalConfig {
   position: ModalPositions
 }
+
+export interface ScrambleGeneratorProps {
+  scramble: string
+  setScramble: React.Dispatch<React.SetStateAction<string>>
+  scrambleHistory: string[]
+}
+
+export interface ISolve extends Document {
+  scramble: string
+  time: number
+  mo3?: number
+  ao5?: number
+  ao12?: number
+  ao25?: number
+  ao50?: number
+  ao100?: number
+}
+
+export interface ISolves extends Document {
+  user: mongoose.Types.ObjectId
+  solvesHistory: ISolve[]
+}
+
+export interface Averages {
+  time: ISolve
+  mo3?: ISolve
+  ao5?: ISolve
+  ao12?: ISolve
+  ao25?: ISolve
+  ao50?: ISolve
+  ao100?: ISolve
+}
