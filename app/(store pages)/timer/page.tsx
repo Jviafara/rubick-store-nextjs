@@ -83,7 +83,7 @@ const TimerPage = () => {
       }, 300)
     }
 
-    const handleKeyup = (event: KeyboardEvent) => {
+    const handleKeyup = async (event: KeyboardEvent) => {
       event.preventDefault() // Stops page scroll
       if (event.key !== ' ') return
       if (inspectionRef.current) {
@@ -109,9 +109,9 @@ const TimerPage = () => {
         }
         if (isRunningRef.current) {
           cleanupLongPress()
-          addNewSolve(segundos, scramble)
           setInspectionRunning(false)
           setIsRunning(false)
+          await addNewSolve(segundos, scramble)
           setFinalTime(segundos)
           return
         }
