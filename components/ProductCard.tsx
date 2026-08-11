@@ -1,11 +1,14 @@
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/redux.hooks'
 import { addcartItem } from '@/lib/redux/features/cartSlice'
-import { ProductCardProps } from '@/lib/types'
+import { ICartItem, ProductCardProps } from '@/lib/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { toast } from 'react-toastify'
 import { FaHeart } from 'react-icons/fa'
+import { BsCurrencyDollar } from 'react-icons/bs'
+import Ratings from './Ratings'
+import { useEffect, useState } from 'react'
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const dispatch = useAppDispatch()
@@ -13,6 +16,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const { favoriteList } = useAppSelector(state => state.favoriteList)
   const { cartItems } = useAppSelector(state => state.cart)
   const isFavorito = Boolean(favoriteList.some(item => item.product === product._id))
+  const [inCart, setInCart] = useState<ICartItem | null>(null)
+
+  useEffect(() => {
+    const checkInCart = () => {
+      if (cartItems.filter(item => item._id === product._id)) setInCart(cartItems.filter(item => item._id === product._id)[0])
+    }
+    checkInCart()
+  }, [cartItems, product])
 
   const addToCartHandler = async () => {
     const existItem = cartItems?.find(x => x._id === product._id)
@@ -25,10 +36,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
     dispatch(addcartItem({ ...product, quantity }))
   }
+
   return (
-    <div
-      className={`relative w-full h-full flex flex-col justify-between gap-4 rounded-xl ${isFavorito ? 'card-gradient-featured' : 'card-base hover-gradient-cyan-magenta'}  text-main p-3`}
-    >
+    <div className={`relative w-full h-full flex flex-col gap-4 rounded-xl ${isFavorito ? 'card-gradient-featured' : 'card-base hover-gradient-cyan-magenta'}  text-main p-3`}>
       {/* Image */}
       <Link href={`/product/slug/${product.slug}`}>
         <div className='relative w-full aspect-square '>
@@ -44,26 +54,46 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <div></div>
       </Link>
 
+      {/* name */}
       <section className='w-full'>
-        <div className=''>{product.category}</div>
+        <div className='flex justify-between items-center pb-2'>
+          <p className='bg-muted/30 rounded-full px-2 py-1'>{product.category}</p>
+          <h1 className='flex items-center text-lg font-bold'>
+            <BsCurrencyDollar />
+            {product.price}
+          </h1>
+        </div>
         <div className='w-full flex justify-between items-center'>
           <Link
             href={`/product/slug/${product.slug}`}
-            className='font-inter font-bold text-lg max-w-[75%] text-nowrap truncate hover:text-muted'
+            className='font-inter font-bold text-lg text-nowrap truncate hover:text-muted'
           >
             {product.name}
           </Link>
-          <button
-            onClick={addToCartHandler}
-            type='button'
-            className={`rounded-full ${isFavorito ? 'hover:text-accent/70' : 'hover:text-secondary/70'}   p-1`}
-          >
-            <AiOutlineShoppingCart size={32} />
-          </button>
         </div>
       </section>
 
-      {/* name */}
+      <section className='w-full'>
+        <div className='w-full flex justify-between items-center'>
+          <Ratings
+            rating={product.rating}
+            numReviews={product.numReviews}
+          />
+          {product.countInStock! > 0 && (
+            <button
+              onClick={addToCartHandler}
+              type='button'
+              className={`rounded-full ${isFavorito ? 'hover:text-accent/70' : 'hover:text-secondary/70'} flex items-center gap-1 relative`}
+            >
+              <AiOutlineShoppingCart
+                size={28}
+                className={`${inCart && 'text-secondary'}`}
+              />
+              {inCart && <span className='  text-xs  font-bold px-1 lg:px-1.5 py-0.5 rounded-full h-fit absolute -top-1 left-4  bg-red-600 text-white'>{inCart.quantity}</span>}
+            </button>
+          )}
+        </div>
+      </section>
 
       {/* Favorite heart */}
       {isFavorito && (
@@ -75,61 +105,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
       )}
 
-      {/* <div className='bg-gray-200  bg-opacity-50 backdrop-blur-2xl flex flex-col gap-2 w-fit h-full border border-pink rounded-lg shadow-md group-hover:shadow-xl duration-300 '>
-        <div className='object-center flex items-center justify-center '>
-          <Link href={`/product/slug/${product.slug}`}>
-            <Image
-              src={product.images![0]}
-              width={500}
-              height={500}
-              loading='eager'
-              alt={product.name}
-              className='w-37.5 h-37.5 sm:w-50 sm:h-50 lg:w-75 lg:h-75 rounded-lg'
-            />
-          </Link>
+      {/* Out of Stock */}
+      {product.countInStock! <= 0 && (
+        <div className='absolute top-2 left-2'>
+          <button
+            onClick={addToCartHandler}
+            type='button'
+            disabled
+            className='rounded-2xl bg-secondary/80 p-1 w-fit font-bold text-sm'
+          >
+            Out of Stock
+          </button>
         </div>
-        <div className='px-2 py-4 lg:py-8 text-center flex flex-col items-center font-bold'>
-          <Link href={`/product/slug/${product.slug}`}>
-            <p className='text-lg xl:text-xl'>{product.name}</p>
-          </Link>
-          <Ratings
-            rating={product.rating}
-            numReviews={product.numReviews}
-          />
-          <p className='mt-1 text-lg'>
-            <strong>${product.price}</strong>
-          </p>
-          {product.countInStock === 0 ? (
-            <button
-              onClick={addToCartHandler}
-              type='button'
-              disabled
-              className='rounded-lg bg-[#faa784] mt-1 p-1 w-fullfont-bold text-sm'
-            >
-              Out of Stock
-            </button>
-          ) : (
-            <button
-              onClick={addToCartHandler}
-              type='button'
-              className='rounded-lg hover:bg-[#faa784] px-2 py-1'
-            >
-              <AiOutlineShoppingCart
-                size={28}
-                color='black'
-              />
-            </button>
-          )}
-        </div>
-        {isFavorito && (
-          <div className='absolute top-0 right-0'>
-            <AiFillHeart
-              size={32}
-              co lor='red'
-            />
-          </div>
-        )}
-      </div> */}
+      )}
     </div>
   )
 }

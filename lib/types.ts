@@ -110,15 +110,15 @@ export interface ProductFiltersProps {
   filter: string
   setFilter: (value: string) => void
   setPriceFilter: (value: number[]) => void
-  priceSort: string | number[]
-  setPriceSort: (value: string) => void
+  sortBy: string
+  setSortBy: (value: string) => void
   clearQuery: () => void
 }
 
 export interface ProductGridProps {
   filter: string
   priceFilter: number[]
-  priceSort: string
+  sortBy: string
 }
 
 export interface IOrderItems extends ICartItem {

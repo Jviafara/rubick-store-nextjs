@@ -84,3 +84,10 @@ export enum ModalPositions {
   botom_left = 'bottom_left',
   bottom_right = 'bottom_right',
 }
+
+export enum SortByEnum {
+  latest = 'Latest',
+  top_rated = 'Top rated',
+  lower_higher = 'Lower to Higher',
+  higher_lower = 'Higher to Lower',
+}

@@ -3,35 +3,36 @@ import { productApi } from '@/lib/modules/productsApiClient'
 import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
 import { IProduct, ProductGridProps } from '@/lib/types'
 import { getDate } from '@/lib/utils'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import ProductCard from './ProductCard'
 import ProductNotFound from './ProductNotFound'
 import { useSearchParams } from 'next/navigation'
+import { SortByEnum } from '@/lib/constants'
 
-const sortProducts = (products: IProduct[], priceSort: string) => {
+const sortProducts = (products: IProduct[], sortBy: string) => {
   const sortedProducts = [...products]
 
-  if (priceSort === 'Lower to Higher') {
+  if (sortBy === SortByEnum.lower_higher) {
     return sortedProducts.sort((a, b) => a.price! - b.price!)
   }
 
-  if (priceSort === 'Higher to Lower') {
+  if (sortBy === SortByEnum.higher_lower) {
     return sortedProducts.sort((a, b) => b.price! - a.price!)
   }
 
-  if (priceSort === 'Latest') {
+  if (sortBy === SortByEnum.latest) {
     return sortedProducts.sort((a, b) => getDate(a).getTime() - getDate(b).getTime())
   }
 
-  if (priceSort === 'top_rated') {
+  if (sortBy === SortByEnum.top_rated) {
     return sortedProducts.sort((a, b) => b.rating! - a.rating!)
   }
 
   return sortedProducts
 }
 
-const ProductGrid = ({ filter, priceFilter, priceSort }: ProductGridProps) => {
+const ProductGrid = ({ filter, priceFilter, sortBy }: ProductGridProps) => {
   const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
   const [products, setProducts] = useState<IProduct[]>([])
@@ -61,7 +62,7 @@ const ProductGrid = ({ filter, priceFilter, priceSort }: ProductGridProps) => {
         }
 
         if (isMounted) {
-          setProducts(sortProducts(fetchedProducts, priceSort))
+          setProducts(sortProducts(fetchedProducts, sortBy))
         }
       } catch (error) {
         if (isMounted) {
@@ -80,20 +81,16 @@ const ProductGrid = ({ filter, priceFilter, priceSort }: ProductGridProps) => {
     return () => {
       isMounted = false
     }
-  }, [activeQuery, dispatch, priceSort])
+  }, [activeQuery, dispatch, sortBy])
 
   return (
-    <div className='w-full flex flex-col items-center pb-12 col-span-4 lg:col-span-3 xl:col-span-4'>
+    <div className='w-full flex flex-col items-center pb-12 row-span-1 lg:col-span-4 xl:col-span-3 '>
       {filter !== 'All products' &&
-        products
-          ?.filter(product => product.category === filter)
-          ?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1]).length <= 0 && (
+        products?.filter(product => product.category === filter)?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1]).length <= 0 && (
           <ProductNotFound />
         )}
-      {filter === 'All products' &&
-        products?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])?.length <=
-          0 && <ProductNotFound />}
-      <div className='w-full grid gap-8 xl:gap-12 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-4 justify-items-center justify-stretch'>
+      {filter === 'All products' && products?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])?.length <= 0 && <ProductNotFound />}
+      <div className='w-full grid gap-8 xl:gap-12 grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-4 justify-items-center justify-stretch'>
         {filter !== 'All products' &&
           products
             ?.filter(product => product.category === filter)

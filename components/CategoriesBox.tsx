@@ -17,29 +17,27 @@ const CategoriesBox = ({ filter, setFilter }: CategoriesBoxProps) => {
   }
 
   return (
-    <div className='flex flex-col items-center capitalize group card-gradient-cyan-magenta'>
+    <div className='flex flex-col h-fit items-center capitalize group card-gradient-featured'>
       <section
         onClick={() => setOpenCategories(!openCategories)}
         className='w-full flex items-center justify-between cursor-pointer px-2'
       >
-        <div className='p-2 rounded-2xl w-fit  text-main group-hover:text-primary hidden 2xl:block'>
+        <div className='p-2 rounded-2xl w-fit  text-main group-hover:text-primary '>
           <BiCategory size={28} />
         </div>
-        <p className='text-main font-bold text-xl group-hover:bg-linear-to-r group-hover:from-primary group-hover:to-secondary group-hover:bg-clip-text group-hover:text-transparent'>
+        <p className='text-main font-bold text-xl group-hover:bg-linear-to-r group-hover:from-primary group-hover:via-tertiary  group-hover:to-accent group-hover:bg-clip-text group-hover:text-transparent'>
           Categories
         </p>
-        <div
-          className={`p-2 rounded-2xl w-fit  text-main group-hover:text-secondary ${openCategories && 'rotate-180'} transition-all ease-in-out duration-300 hidden lg:block`}
-        >
+        <div className={`p-2 rounded-2xl w-fit  text-main group-hover:text-accent ${openCategories && 'rotate-180'} transition-all ease-in-out duration-300`}>
           <CiCircleChevDown size={28} />
         </div>
       </section>
       {openCategories && (
-        <div className='pb-4'>
+        <div className='pb-4 px-1 w-full '>
           <ul>
             <li
               onClick={() => handleCategorySelect('All products')}
-              className='hover:bg-surface/70 hover:font-bold  uppercase flex items-center gap-2 '
+              className='hover:bg-muted/30 hover:font-bold  rounded-2xl py-1 px-2 uppercase flex items-center gap-2 '
             >
               {filter === 'All products' ? (
                 <BsSuitDiamondFill
@@ -55,7 +53,7 @@ const CategoriesBox = ({ filter, setFilter }: CategoriesBoxProps) => {
               <li
                 key={index}
                 onClick={() => handleCategorySelect(cat)}
-                className='hover:bg-surface/70 hover:font-bold  uppercase flex items-center gap-2'
+                className='hover:bg-muted/30 rounded-2xl py-1 px-2  hover:font-bold  uppercase flex items-center gap-2'
               >
                 {filter === cat ? (
                   <BsSuitDiamondFill
