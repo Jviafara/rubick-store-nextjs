@@ -83,17 +83,7 @@ const ProductGrid = ({ filter, priceFilter, priceSort }: ProductGridProps) => {
   }, [activeQuery, dispatch, priceSort])
 
   return (
-    <div className='w-[95vw] md:w-[90vw] flex flex-col items-center pb-12'>
-      <p className='my-2'>
-        {'Category: ' +
-          filter.toUpperCase() +
-          ' / Min Price: ' +
-          priceFilter[0] +
-          ' / Max Price: ' +
-          priceFilter[1] +
-          ' / Sort: ' +
-          priceSort.toUpperCase()}
-      </p>
+    <div className='w-full flex flex-col items-center pb-12 col-span-4 lg:col-span-3 xl:col-span-4'>
       {filter !== 'All products' &&
         products
           ?.filter(product => product.category === filter)
@@ -103,7 +93,7 @@ const ProductGrid = ({ filter, priceFilter, priceSort }: ProductGridProps) => {
       {filter === 'All products' &&
         products?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])?.length <=
           0 && <ProductNotFound />}
-      <div className='w-[80vw] grid gap-8 xl:gap-12 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 justify-items-center justify-stretch'>
+      <div className='w-full grid gap-8 xl:gap-12 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-4 justify-items-center justify-stretch'>
         {filter !== 'All products' &&
           products
             ?.filter(product => product.category === filter)

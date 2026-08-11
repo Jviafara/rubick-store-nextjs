@@ -1,7 +1,6 @@
 import Container from '@/components/Container'
 import InfoPanel from '@/components/InfoPanel'
 import ProductSlide from '@/components/ProductSlide'
-import TutorialSlide from '@/components/TutorialSlide'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -23,9 +22,6 @@ export default function Home() {
         seeMore={'/products'}
       >
         <ProductSlide slideType='top_rated' />
-      </Container>
-      <Container header={'tutorials'}>
-        <TutorialSlide />
       </Container>
     </div>
   )

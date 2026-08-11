@@ -12,7 +12,7 @@ const ProductsList = () => {
   const [priceSort, setPriceSort] = useState('')
 
   return (
-    <div className='w-full flex flex-col items-center'>
+    <div className='grid grid-cols-4 xl:grid-cols-5 w-[95%] lg:w-[90%] mx-auto gap-8 py-4'>
       <ProductFilters
         filter={filter}
         setFilter={setFilter}
