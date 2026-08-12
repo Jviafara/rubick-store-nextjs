@@ -239,3 +239,21 @@ export interface Averages {
   ao50?: ISolve
   ao100?: ISolve
 }
+
+export interface ProductSearchParamsProps {
+  query?: string
+  page?: string
+  pageSize?: string
+  filter?: string
+  priceFilter?: number[]
+  sortBy?: string
+}
+
+export interface IPagination {
+  currentPage: number
+  pageSize: number
+  total: number
+  totalPages: number
+  hasNextPage: boolean
+  hasPrevPage: boolean
+}

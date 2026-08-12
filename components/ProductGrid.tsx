@@ -1,43 +1,54 @@
+'use client'
+
 import { useAppDispatch } from '@/lib/hooks/redux.hooks'
 import { productApi } from '@/lib/modules/productsApiClient'
 import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
-import { IProduct, ProductGridProps } from '@/lib/types'
-import { getDate } from '@/lib/utils'
+import { IPagination, IProduct, ProductGridProps } from '@/lib/types'
+import { getParamsString } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import ProductCard from './ProductCard'
 import ProductNotFound from './ProductNotFound'
 import { useSearchParams } from 'next/navigation'
-import { SortByEnum } from '@/lib/constants'
-
-const sortProducts = (products: IProduct[], sortBy: string) => {
-  const sortedProducts = [...products]
-
-  if (sortBy === SortByEnum.lower_higher) {
-    return sortedProducts.sort((a, b) => a.price! - b.price!)
-  }
-
-  if (sortBy === SortByEnum.higher_lower) {
-    return sortedProducts.sort((a, b) => b.price! - a.price!)
-  }
-
-  if (sortBy === SortByEnum.latest) {
-    return sortedProducts.sort((a, b) => getDate(a).getTime() - getDate(b).getTime())
-  }
-
-  if (sortBy === SortByEnum.top_rated) {
-    return sortedProducts.sort((a, b) => b.rating! - a.rating!)
-  }
-
-  return sortedProducts
-}
+import { useRouter } from 'next/navigation'
 
 const ProductGrid = ({ filter, priceFilter, sortBy }: ProductGridProps) => {
   const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
   const [products, setProducts] = useState<IProduct[]>([])
+  const [pagination, setPagination] = useState<IPagination | null>(null)
 
   const activeQuery = searchParams.get('query') || ''
+  const page = searchParams.get('page') || ''
+  const pageSize = searchParams.get('page_size') || ''
+
+  const paramsString = getParamsString({ query: activeQuery, page, pageSize, filter, priceFilter, sortBy })
+  const router = useRouter()
+
+  const handlePageChange = (pageNumber: number) => {
+    try {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set('page', String(pageNumber))
+      router.push(`?${params.toString()}`)
+    } catch (e) {
+      if (e) toast.error('Redirecing')
+      router.push(getParamsString({ query: activeQuery, page, pageSize, filter, priceFilter, sortBy }))
+    }
+  }
+
+  const getPageNumbers = (totalPages: number, current: number) => {
+    const pages: number[] = []
+    const maxButtons = 7
+    let start = Math.max(1, current - Math.floor(maxButtons / 2))
+    const end = Math.min(totalPages, start + maxButtons - 1)
+
+    if (end - start + 1 < maxButtons) {
+      start = Math.max(1, end - maxButtons + 1)
+    }
+
+    for (let i = start; i <= end; i++) pages.push(i)
+    return pages
+  }
 
   useEffect(() => {
     let isMounted = true
@@ -46,28 +57,28 @@ const ProductGrid = ({ filter, priceFilter, sortBy }: ProductGridProps) => {
       dispatch(setGlobalLoading(true))
 
       try {
-        const { res, error } = activeQuery ? await productApi.getQueryList(activeQuery) : await productApi.getList()
-
-        if (error) {
-          throw new Error(error.toString())
-        }
+        const { res, error } = await productApi.getList(paramsString)
 
         const fetchedProducts = Array.isArray(res) ? res : (res?.products ?? [])
+        const fetchedPagination = res.pagination
 
-        if (res?.status) {
+        if (res?.status || error) {
           if (isMounted) {
             setProducts([])
+            toast.error(res.message)
           }
           return
         }
 
         if (isMounted) {
-          setProducts(sortProducts(fetchedProducts, sortBy))
+          setProducts(fetchedProducts)
+          setPagination(fetchedPagination)
         }
       } catch (error) {
         if (isMounted) {
           toast.error(error instanceof Error ? error.message : 'Something went wrong while loading products')
           setProducts([])
+          setPagination(null)
         }
       } finally {
         if (isMounted) {
@@ -81,36 +92,50 @@ const ProductGrid = ({ filter, priceFilter, sortBy }: ProductGridProps) => {
     return () => {
       isMounted = false
     }
-  }, [activeQuery, dispatch, sortBy])
+  }, [activeQuery, dispatch, sortBy, paramsString])
 
   return (
     <div className='w-full flex flex-col items-center pb-12 row-span-1 lg:col-span-4 xl:col-span-3 '>
-      {filter !== 'All products' &&
-        products?.filter(product => product.category === filter)?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1]).length <= 0 && (
-          <ProductNotFound />
-        )}
-      {filter === 'All products' && products?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])?.length <= 0 && <ProductNotFound />}
+      {products.length <= 0 && <ProductNotFound />}
       <div className='w-full grid gap-8 xl:gap-12 grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-4 justify-items-center justify-stretch'>
-        {filter !== 'All products' &&
-          products
-            ?.filter(product => product.category === filter)
-            ?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])
-            ?.map(product => (
-              <ProductCard
-                key={product._id.toString()}
-                product={product}
-              />
-            ))}
-        {filter === 'All products' &&
-          products
-            ?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])
-            ?.map(product => (
-              <ProductCard
-                key={product._id.toString()}
-                product={product}
-              />
-            ))}
+        {products.length > 0 &&
+          products.map(product => (
+            <ProductCard
+              key={product._id.toString()}
+              product={product}
+            />
+          ))}
       </div>
+      {/* Pagination controls */}
+      {pagination && pagination.totalPages > 1 && (
+        <div className='w-full mt-8 flex items-center justify-center gap-2'>
+          <button
+            onClick={() => handlePageChange(Math.max(1, (pagination.currentPage || 1) - 1))}
+            disabled={!pagination.hasPrevPage}
+            className={`px-3 py-1 rounded-xl border ${!pagination.hasPrevPage ? 'opacity-40 cursor-not-allowed' : 'hover:bg-muted/30'}`}
+          >
+            Prev
+          </button>
+
+          {getPageNumbers(pagination.totalPages, pagination.currentPage).map(p => (
+            <button
+              key={p}
+              onClick={() => handlePageChange(p)}
+              className={`px-3 py-1 rounded-xl border ${p === pagination.currentPage ? 'bg-muted/40 text-white' : 'hover:bg-muted/30'}`}
+            >
+              {p}
+            </button>
+          ))}
+
+          <button
+            onClick={() => handlePageChange(Math.min(pagination.totalPages, (pagination.currentPage || 1) + 1))}
+            disabled={!pagination.hasNextPage}
+            className={`px-3 py-1 rounded-xl border ${!pagination.hasNextPage ? 'opacity-40 cursor-not-allowed' : 'hover:bg-muted/30'}`}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   )
 }

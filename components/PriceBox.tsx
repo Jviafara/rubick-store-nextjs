@@ -23,6 +23,12 @@ const PriceBox = ({ setPriceFilter }: PriceBoxProps) => {
   const handleCategorySelect = (opt: number[]) => {
     setPriceMin(opt[0])
     setPriceMax(opt[1])
+    setPriceFilter([opt[0], opt[1]])
+  }
+  const handleClear = () => {
+    setPriceMin(0)
+    setPriceMax(Infinity)
+    setPriceFilter([0, Infinity])
   }
 
   const selected = 'bg-muted/30 scale-110'
@@ -91,7 +97,7 @@ const PriceBox = ({ setPriceFilter }: PriceBoxProps) => {
               Set filter
             </button>
             <button
-              onClick={() => setPriceFilter([0, Infinity])}
+              onClick={handleClear}
               className='border border-secondary rounded-2xl px-2 py-1 cursor-pointer hover:bg-secondary/90 text-main'
             >
               Clear

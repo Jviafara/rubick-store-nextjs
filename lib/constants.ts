@@ -1,10 +1,9 @@
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
 
 export const productsEndpoints = {
-  list: 'products',
+  list: (params: string) => `products${params}`,
   add: 'products',
   remove: (productId: string) => `products/${productId}`,
-  querySearch: (query: string) => `products/query/${query}`,
   info: (slug: string) => `products/slug/${slug}`,
   infoById: (productId: string) => `products/${productId}`,
   update: (productId: string) => `products/${productId}`,

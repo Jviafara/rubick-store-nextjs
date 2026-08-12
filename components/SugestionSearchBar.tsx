@@ -4,6 +4,7 @@ import { MdOutlineClose } from 'react-icons/md'
 import SugestionsBox from './SugestionsBox'
 import { productApi } from '@/lib/modules/productsApiClient'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { getParamsString } from '@/lib/utils'
 
 const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) => {
   const router = useRouter()
@@ -15,6 +16,7 @@ const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) 
   const [isOutOfView, setIsOutOfView] = useState(false)
 
   const searchParams = useSearchParams()
+
   const activeQuery = searchParams.get('query') || ''
 
   useEffect(() => {
@@ -29,7 +31,8 @@ const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) 
   }, [activeQuery, setQuery])
 
   const getProducts = async (query: string) => {
-    const { res, error } = await productApi.getQueryList(query)
+    const paramsString = getParamsString({ query })
+    const { res, error } = await productApi.getList(paramsString)
 
     if (res?.status || error) {
       setProducts([])
@@ -37,7 +40,7 @@ const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) 
     }
 
     if (res) {
-      setProducts(res.slice(0, 8))
+      setProducts(res.products.slice(0, 8))
     }
   }
 
@@ -57,7 +60,8 @@ const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Enter' && event.target instanceof HTMLInputElement) {
-        router.push(`/products/?query=${query}`)
+        setIsFocused(false)
+        router.push(`/products?query=${query}`)
         setQuery('')
         event.preventDefault()
       }
@@ -101,9 +105,6 @@ const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) 
         setIsOutOfView(!entry.isIntersecting)
 
         // Fire your custom out-of-view event here if needed
-        if (!entry.isIntersecting) {
-          console.log('Element has gone out of view!')
-        }
       },
       {
         root: null, // Defaults to the browser viewport
@@ -134,6 +135,7 @@ const SugestionSearchBar = ({ query, setQuery, inputRef }: ISugestionSearchBar) 
         name='address'
         id='address'
         value={query}
+        autoComplete='off'
         onChange={onQueryChange}
         onFocus={() => {
           setIsFocused(true)

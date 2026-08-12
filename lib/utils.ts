@@ -1,7 +1,8 @@
 import { Stripe, loadStripe } from '@stripe/stripe-js'
-import { FullUser, IOrder, IProduct, ISolve } from './types'
+import { FullUser, IOrder, IProduct, ISolve, ProductSearchParamsProps } from './types'
 // import { ModalPositions } from './constants'
 import { toast } from 'react-toastify'
+import { SortByEnum } from './constants'
 
 export const getDate = (product: IProduct | IOrder | FullUser) => {
   const date = new Date(product.createdAt || '')
@@ -34,8 +35,7 @@ export const formatearTiempo = (type: string, segundos: number, timeLeft?: numbe
     const decimal = Math.floor((segundos - Math.floor(segundos)) * 10)
 
     const formatoMinutos = minutos.toString().padStart(2, '0')
-    const formatoSegundos =
-      segundosRestantes < 10 ? segundosRestantes.toString() : segundosRestantes.toString().padStart(2, '0')
+    const formatoSegundos = segundosRestantes < 10 ? segundosRestantes.toString() : segundosRestantes.toString().padStart(2, '0')
     const formatoDecimal = decimal.toString()
 
     return `${formatoMinutos !== '00' ? formatoMinutos + ':' : ''}${formatoSegundos}.${formatoDecimal}`
@@ -46,8 +46,7 @@ export const formatearTiempo = (type: string, segundos: number, timeLeft?: numbe
     const decimal = Math.floor((segundos - Math.floor(segundos)) * 100)
 
     const formatoMinutos = minutos.toString().padStart(2, '0')
-    const formatoSegundos =
-      segundosRestantes < 10 ? segundosRestantes.toString() : segundosRestantes.toString().padStart(2, '0')
+    const formatoSegundos = segundosRestantes < 10 ? segundosRestantes.toString() : segundosRestantes.toString().padStart(2, '0')
     const formatoDecimal = decimal.toString().padStart(2, '0')
 
     return `${formatoMinutos !== '00' ? formatoMinutos + ':' : ''}${formatoSegundos}.${formatoDecimal}`
@@ -261,4 +260,29 @@ export const findHighest = (solves: ISolve[]) => {
   })
 
   return { time, mo3, ao5, ao12, ao25, ao50, ao100 }
+}
+
+export const getParamsString = ({ query, page, pageSize, filter, priceFilter, sortBy }: ProductSearchParamsProps) => {
+  return `?query=${query || ''}&page=${page || '1'}&page_size=${pageSize || '10'}&filter=${filter || 'All products'}&price_min=${priceFilter ? priceFilter[0] : '0'}&price_max=${priceFilter ? priceFilter[1] : 'Infinity'}&sort_by=${sortBy}`
+}
+
+export const getSortRule = (sortBy: string) => {
+  if (sortBy === SortByEnum.lower_higher) {
+    return JSON.stringify({ price: 1 })
+  }
+
+  if (sortBy === SortByEnum.higher_lower) {
+    return JSON.stringify({ price: -1 })
+  }
+
+  if (sortBy === SortByEnum.latest) {
+    return JSON.stringify({ createdAt: -1 })
+    // return sortedProducts.sort((a, b) => getDate(a).getTime() - getDate(b).getTime())
+  }
+
+  if (sortBy === SortByEnum.top_rated) {
+    return JSON.stringify({ rating: -1 })
+  }
+
+  return JSON.stringify({ price: 1 })
 }
