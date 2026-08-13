@@ -212,6 +212,7 @@ export interface ScrambleGeneratorProps {
   scramble: string
   setScramble: React.Dispatch<React.SetStateAction<string>>
   scrambleHistory: string[]
+  setScrambleHistory: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 export interface ISolve extends Document {

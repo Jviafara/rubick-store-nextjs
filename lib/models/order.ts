@@ -43,6 +43,6 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true },
 )
 
-const Order = mongoose.models.Order || mongoose.model<IOrddeer>('Order', orderSchema)
+const Order = mongoose.models.Order || mongoose.model<IOrder>('Order', orderSchema)
 
 export default Order

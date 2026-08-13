@@ -56,7 +56,7 @@ const SolvesHistory = ({ time }: { time: number }) => {
   }
 
   return (
-    <aside className='flex flex-col min-w-fit h-[calc(100vh-76px)] overflow-y-hidden w-[30%] bg-surface/70 px-4 py-8 space-y-4'>
+    <aside className='flex flex-col min-w-fit h-[calc(100vh-76px)] overflow-y-hidden w-full max-w-[20%] bg-surface/70 px-4 py-8 space-y-4'>
       <div className='w-full flex-none flex flex-col'>
         <h1 className='text-2xl text-center'>Solves History</h1>
         {!session?.user && (

@@ -49,14 +49,14 @@ const TimerPage = () => {
     if (isRunning) {
       intervalId = setInterval(() => {
         setSegundos(prevSegundos => prevSegundos + 0.01)
-      }, 10) // Cambiado a 100ms para que avance rápido
+      }, 10)
     }
     if (timeLeft <= 0) return
 
     if (isInspectionRunning) {
       intervalId = setInterval(() => {
         setTimeLeft(prev => prev - 1)
-      }, 1000) // Cambiado a 100ms para que avance rápido
+      }, 1000)
     }
 
     return () => {
@@ -92,7 +92,6 @@ const TimerPage = () => {
           setSegundos(0)
           setInspectionRunning(true)
           setFinalTime(segundos)
-          // iniciarDetenerInspectionCronometro()
           return
         }
         if (isInspectionRunningRef.current && readyRef.current) {
@@ -144,6 +143,7 @@ const TimerPage = () => {
               scramble={scramble}
               setScramble={setScramble}
               scrambleHistory={scrambleHistory}
+              setScrambleHistory={setScrambleHistory}
             />
           )}
         </section>

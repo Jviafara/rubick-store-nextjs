@@ -3,7 +3,12 @@
 import { ScrambleGeneratorProps } from '@/lib/types'
 import { useState, useEffect } from 'react'
 
-export default function ScrambleGenerator({ scramble, setScramble, scrambleHistory }: ScrambleGeneratorProps) {
+export default function ScrambleGenerator({
+  scramble,
+  setScramble,
+  scrambleHistory,
+  setScrambleHistory,
+}: ScrambleGeneratorProps) {
   const [lastSave, setLastSave] = useState('')
 
   async function fetchScramble() {
@@ -11,25 +16,31 @@ export default function ScrambleGenerator({ scramble, setScramble, scrambleHisto
     const data = await res.json()
     if (data) {
       setScramble(data)
-      scrambleHistory.push(data)
-      if (scrambleHistory.length >= 11) scrambleHistory.shift()
+      setScrambleHistory(prev => {
+        const next = [...prev, data]
+        if (next.length > 10) next.shift()
+        return next
+      })
     }
   }
 
   async function prevScramble() {
-    if (scramble === scrambleHistory[0]) {
+    const index = scrambleHistory.findIndex(s => s === scramble)
+    if (index <= 0) {
       setLastSave(scramble)
       return
     }
-    setScramble(scrambleHistory[scrambleHistory.findIndex(s => s === scramble) - 1])
+    setScramble(scrambleHistory[index - 1])
   }
 
   async function nextScramble() {
-    if (scramble === scrambleHistory[scrambleHistory.length - 1]) {
+    const lastIndex = scrambleHistory.length - 1
+    const index = scrambleHistory.findIndex(s => s === scramble)
+    if (index === -1 || index === lastIndex) {
       fetchScramble()
-    } else {
-      setScramble(scrambleHistory[scrambleHistory.findIndex(s => s === scramble) + 1])
+      return
     }
+    setScramble(scrambleHistory[index + 1])
   }
 
   useEffect(() => {
@@ -39,9 +50,11 @@ export default function ScrambleGenerator({ scramble, setScramble, scrambleHisto
       const data = await res.json()
       if (active && data) {
         setScramble(data)
-        console.log(scrambleHistory)
-        scrambleHistory.push(data)
-        if (scrambleHistory.length >= 11) scrambleHistory.shift()
+        setScrambleHistory(prev => {
+          const next = [...prev, data]
+          if (next.length > 10) next.shift()
+          return next
+        })
       }
     }
 
@@ -49,7 +62,7 @@ export default function ScrambleGenerator({ scramble, setScramble, scrambleHisto
     return () => {
       active = false
     }
-  }, [scrambleHistory, setScramble])
+  }, [setScramble, setScrambleHistory])
 
   return (
     <div className='flex flex-col w-full items-center justify-center space-y-2'>
