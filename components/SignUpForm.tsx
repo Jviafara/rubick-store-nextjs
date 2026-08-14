@@ -34,18 +34,15 @@ const SignUpForm = () => {
   return (
     <>
       <form
-        className='space-y-4 w-full'
+        className='space-y-4 w-full text-main'
         onSubmit={handleSubmit}
       >
         <div className='space-y-4 px-6'>
-          {/*  Error  */}
-          {error && <div className='rounded-md bg-red-100 p-3 text-sm text-red-600'>{error}</div>}
-
           {/* Name */}
           <div className='space-y-2'>
             <label
               htmlFor='name'
-              className='text-sm font-medium text-black'
+              className='text-sm font-medium'
             >
               Name
             </label>
@@ -57,7 +54,7 @@ const SignUpForm = () => {
               required
               value={name}
               onChange={e => setName(e.target.value)}
-              className='w-full rounded-md border border-gray-400 px-3 py-2 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+              className={`w-full rounded-2xl border border-primary px-3 py-2 outline-none ${error && 'border-secondary'}`}
             />
           </div>
 
@@ -77,7 +74,7 @@ const SignUpForm = () => {
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className='w-full rounded-md border border-gray-400 px-3 py-2 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+              className={`w-full rounded-2xl border border-primary px-3 py-2 outline-none ${error && 'border-secondary'}`}
             />
           </div>
 
@@ -98,26 +95,28 @@ const SignUpForm = () => {
               value={password}
               onChange={e => setPassword(e.target.value)}
               minLength={8}
-              className='w-full rounded-md border border-gray-400 px-3 py-2 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+              className={`w-full rounded-2xl border border-primary px-3 py-2 outline-none ${error && 'border-secondary'}`}
             />
           </div>
         </div>
 
         {/* Actions */}
-        <div className='flex flex-col space-y-4 px-6 pb-6'>
+        <div className='flex flex-col space-y-4 px-6 w-full justify-center items-center'>
+          {/*  Error  */}
+          {error && <div className=' text-sm text-red-600'>{error}</div>}
           <button
             type='submit'
             disabled={loading}
-            className={`w-full rounded-md  ${loading || password.length < 8 ? 'bg-gray-400' : 'bg-secondary/70 transition hover:bg-primary cursor-pointer'}  py-2 text-lg font-medium text-white `}
+            className={`w-1/2 bg-secondary hover:bg-secondary/90 px4 py-2 rounded-2xl text-lg font-medium  ${loading && 'bg-transparent!'} ${password.length < 8 && 'bg-disabled!'}`}
           >
             {loading ? 'Signing up...' : 'Sign Up'}
           </button>
 
-          <p className='text-center text-sm text-gray-500'>
-            Already have an account?
+          <p className='text-center text-sm text-muted  flex flex-col xs:flex-row justify-center items-center xs:gap-2'>
+            <span>Already have an account?</span>
             <Link
               href='/sign-in'
-              className='font-semibold text-blue-600 hover:underline ml-2'
+              className='font-semibold text-secondary hover:underline ml-2'
             >
               Sign In
             </Link>

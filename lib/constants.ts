@@ -1,10 +1,9 @@
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
 
 export const productsEndpoints = {
-  list: 'products',
+  list: (params: string) => `products${params}`,
   add: 'products',
   remove: (productId: string) => `products/${productId}`,
-  querySearch: (query: string) => `products/query/${query}`,
   info: (slug: string) => `products/slug/${slug}`,
   infoById: (productId: string) => `products/${productId}`,
   update: (productId: string) => `products/${productId}`,
@@ -71,4 +70,24 @@ export enum shippingStatus {
   delivered = 'delivered',
   shipped = 'shipped',
   pending = 'pending',
+}
+
+export enum ModalPositions {
+  top_center = 'top_center',
+  top_left = 'top_left',
+  top_right = 'top_right',
+  center = 'center',
+  left = 'left',
+  right = 'right',
+  bottom_center = 'bottom_center',
+  botom_left = 'bottom_left',
+  bottom_right = 'bottom_right',
+}
+
+export enum SortByEnum {
+  latest = 'Latest',
+  top_rated = 'Top rated',
+  lower_higher = 'Lower to Higher',
+  higher_lower = 'Higher to Lower',
+  best_sellers = 'Best Sellers',
 }

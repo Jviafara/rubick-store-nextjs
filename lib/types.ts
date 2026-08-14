@@ -1,6 +1,6 @@
 import mongoose, { Document } from 'mongoose'
 import { IconType } from 'react-icons/lib'
-import { userSortBy } from './constants'
+import { ModalPositions, userSortBy } from './constants'
 import { RefObject } from 'react'
 
 export interface FullUser extends Document {
@@ -59,6 +59,7 @@ export interface IProduct extends Document {
   rating?: number
   numReviews?: number
   description?: string
+  totalSold?: number
   createdAt?: Date
   updatedAt?: Date
 }
@@ -73,6 +74,7 @@ export interface ProductSlideProps {
 
 export interface AutoSwiperProps {
   children: React.ReactNode
+  slideNumber?: number
 }
 export interface NavigationSwiperProps {
   children: React.ReactNode
@@ -98,6 +100,7 @@ export interface IFavorite extends Document {
 export interface RatingsProps {
   rating?: number
   numReviews?: number
+  totalSold?: number
 }
 
 export interface SearchBarProps {
@@ -110,15 +113,15 @@ export interface ProductFiltersProps {
   filter: string
   setFilter: (value: string) => void
   setPriceFilter: (value: number[]) => void
-  priceSort: string | number[]
-  setPriceSort: (value: string) => void
+  sortBy: string
+  setSortBy: (value: string) => void
   clearQuery: () => void
 }
 
 export interface ProductGridProps {
   filter: string
   priceFilter: number[]
-  priceSort: string
+  sortBy: string
 }
 
 export interface IOrderItems extends ICartItem {
@@ -198,4 +201,63 @@ export interface ISugestionSearchBar {
   query: string
   setQuery: React.Dispatch<React.SetStateAction<string>>
   inputRef?: RefObject<HTMLInputElement | null>
+}
+
+export interface ImodalSlice {
+  modalService: boolean
+}
+
+export interface IModalConfig {
+  position: ModalPositions
+}
+
+export interface ScrambleGeneratorProps {
+  scramble: string
+  setScramble: React.Dispatch<React.SetStateAction<string>>
+  scrambleHistory: string[]
+  setScrambleHistory: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+export interface ISolve extends Document {
+  scramble: string
+  time: number
+  mo3?: number
+  ao5?: number
+  ao12?: number
+  ao25?: number
+  ao50?: number
+  ao100?: number
+}
+
+export interface ISolves extends Document {
+  user: mongoose.Types.ObjectId
+  solvesHistory: ISolve[]
+}
+
+export interface Averages {
+  time: ISolve
+  mo3?: ISolve
+  ao5?: ISolve
+  ao12?: ISolve
+  ao25?: ISolve
+  ao50?: ISolve
+  ao100?: ISolve
+}
+
+export interface ProductSearchParamsProps {
+  query?: string
+  page?: string
+  pageSize?: string
+  filter?: string
+  priceFilter?: number[]
+  sortBy?: string
+}
+
+export interface IPagination {
+  currentPage: number
+  pageSize: number
+  total: number
+  totalPages: number
+  hasNextPage: boolean
+  hasPrevPage: boolean
 }

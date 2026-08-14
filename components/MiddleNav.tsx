@@ -58,7 +58,7 @@ const MiddleNav = () => {
 
       <button
         onClick={handleSearchClick}
-        className='cursor-pointer mr-2'
+        className='cursor-pointer mr-2 hidden md:inline-flex'
       >
         <AiOutlineSearch size={28} />
       </button>
