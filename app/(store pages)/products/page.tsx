@@ -5,7 +5,7 @@ import ProductGrid from '@/components/ProductGrid'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
 
-const ProductsList = () => {
+const ProductsListContent = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [filter, setFilter] = useState('All products')
@@ -41,24 +41,28 @@ const ProductsList = () => {
   }
 
   return (
-    <Suspense fallback={null}>
-      <div className='grid lg:grid-cols-6 xl:grid-cols-4 place-items-center md:place-items-start w-[95%] lg:w-[90%] max-w-[100vw] md:mx-auto gap-4 xl:gap-8 py-4'>
-        <ProductFilters
-          filter={filter}
-          setFilter={handleFilterChange}
-          sortBy={sortBy}
-          setSortBy={handleSortChange}
-          setPriceFilter={handlePriceFilterChange}
-          clearQuery={() => router.push('/products')}
-        />
-        <ProductGrid
-          filter={filter}
-          priceFilter={priceFilter}
-          sortBy={sortBy}
-        />
-      </div>
-    </Suspense>
+    <div className='grid lg:grid-cols-6 xl:grid-cols-4 place-items-center md:place-items-start w-[95%] lg:w-[90%] max-w-[100vw] md:mx-auto gap-4 xl:gap-8 py-4'>
+      <ProductFilters
+        filter={filter}
+        setFilter={handleFilterChange}
+        sortBy={sortBy}
+        setSortBy={handleSortChange}
+        setPriceFilter={handlePriceFilterChange}
+        clearQuery={() => router.push('/products')}
+      />
+      <ProductGrid
+        filter={filter}
+        priceFilter={priceFilter}
+        sortBy={sortBy}
+      />
+    </div>
   )
 }
+
+const ProductsList = () => (
+  <Suspense fallback={null}>
+    <ProductsListContent />
+  </Suspense>
+)
 
 export default ProductsList
