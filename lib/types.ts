@@ -59,6 +59,7 @@ export interface IProduct extends Document {
   rating?: number
   numReviews?: number
   description?: string
+  totalSold?: number
   createdAt?: Date
   updatedAt?: Date
 }
@@ -73,6 +74,7 @@ export interface ProductSlideProps {
 
 export interface AutoSwiperProps {
   children: React.ReactNode
+  slideNumber?: number
 }
 export interface NavigationSwiperProps {
   children: React.ReactNode
@@ -98,6 +100,7 @@ export interface IFavorite extends Document {
 export interface RatingsProps {
   rating?: number
   numReviews?: number
+  totalSold?: number
 }
 
 export interface SearchBarProps {

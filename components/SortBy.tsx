@@ -28,7 +28,9 @@ const SortBy = ({ sortBy, setSortBy }: SortByProps) => {
         <p className='text-main font-bold text-xl group-hover:bg-linear-to-r group-hover:from-primary   group-hover:to-secondary group-hover:bg-clip-text group-hover:text-transparent'>
           Sort By
         </p>
-        <div className={`p-2 rounded-2xl w-fit  text-main group-hover:text-secondary ${openSortBy && 'rotate-180'} transition-all ease-in-out duration-300 `}>
+        <div
+          className={`p-2 rounded-2xl w-fit  text-main group-hover:text-secondary ${openSortBy && 'rotate-180'} transition-all ease-in-out duration-300 `}
+        >
           <CiCircleChevDown size={28} />
         </div>
       </section>

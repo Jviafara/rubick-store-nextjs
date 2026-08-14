@@ -17,8 +17,8 @@ const ProductFilters = ({ filter, setFilter, setPriceFilter, sortBy, setSortBy, 
   }
 
   return (
-    <section className='lg:col-span-2 xl:col-span-1 w-full max-h-fit bg-surface py-4 px-2 md:px-4 2xl:px-8 rounded-2xl  overflow-hidden flex flex-col space-y-4'>
-      <div className='w-full flex lg:flex-col justify-evenly gap-4'>
+    <section className='lg:col-span-2 xl:col-span-1 w-full max-w-[95vw] max-h-fit bg-surface py-4 px-2 md:px-4 2xl:px-8 rounded-2xl  overflow-hidden flex flex-col space-y-4'>
+      <div className='w-full flex flex-col md:flex-row lg:flex-col justify-evenly gap-4'>
         <CategoriesBox
           filter={filter}
           setFilter={setFilter}

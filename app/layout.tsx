@@ -43,7 +43,7 @@ export default function RootLayout({
       lang='en'
       className={`${inter.variable} ${plusJakartaSans.variable} ${seaweedScript.variable} h-full antialiased `}
     >
-      <body className='min-h-screen bg-polygon-responsive relative'>
+      <body className='min-h-screen w-full max-w-[100vw] bg-polygon-responsive relative'>
         <StoreProvider>
           <ThemeProvider />
           <ToastProvider>

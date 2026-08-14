@@ -2,11 +2,12 @@
 
 import ProductFilters from '@/components/ProductFilters'
 import ProductGrid from '@/components/ProductGrid'
-import { useRouter } from 'next/navigation'
-import { Suspense, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
 
 const ProductsList = () => {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [filter, setFilter] = useState('All products')
   const [priceFilter, setPriceFilter] = useState([0, 1000])
   const [sortBy, setSortBy] = useState('')
@@ -14,6 +15,15 @@ const ProductsList = () => {
   const resetToFirstPage = () => {
     router.push('/products?page=1')
   }
+
+  useEffect(() => {
+    const getSortByParams = () => {
+      const sortParam = searchParams.get('sort_by')
+
+      if (sortParam) setSortBy(sortParam)
+    }
+    getSortByParams()
+  }, [searchParams, setSortBy])
 
   const handleFilterChange = (nextFilter: string) => {
     setFilter(nextFilter)
@@ -32,7 +42,7 @@ const ProductsList = () => {
 
   return (
     <Suspense fallback={null}>
-      <div className='grid lg:grid-cols-6 xl:grid-cols-4 w-[95%] lg:w-[90%] mx-auto gap-8 py-4'>
+      <div className='grid lg:grid-cols-6 xl:grid-cols-4 place-items-center md:place-items-start w-[95%] lg:w-[90%] max-w-[100vw] md:mx-auto gap-4 xl:gap-8 py-4'>
         <ProductFilters
           filter={filter}
           setFilter={handleFilterChange}

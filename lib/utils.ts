@@ -35,7 +35,8 @@ export const formatearTiempo = (type: string, segundos: number, timeLeft?: numbe
     const decimal = Math.floor((segundos - Math.floor(segundos)) * 10)
 
     const formatoMinutos = minutos.toString().padStart(2, '0')
-    const formatoSegundos = segundosRestantes < 10 ? segundosRestantes.toString() : segundosRestantes.toString().padStart(2, '0')
+    const formatoSegundos =
+      segundosRestantes < 10 ? segundosRestantes.toString() : segundosRestantes.toString().padStart(2, '0')
     const formatoDecimal = decimal.toString()
 
     return `${formatoMinutos !== '00' ? formatoMinutos + ':' : ''}${formatoSegundos}.${formatoDecimal}`
@@ -46,7 +47,8 @@ export const formatearTiempo = (type: string, segundos: number, timeLeft?: numbe
     const decimal = Math.floor((segundos - Math.floor(segundos)) * 100)
 
     const formatoMinutos = minutos.toString().padStart(2, '0')
-    const formatoSegundos = segundosRestantes < 10 ? segundosRestantes.toString() : segundosRestantes.toString().padStart(2, '0')
+    const formatoSegundos =
+      segundosRestantes < 10 ? segundosRestantes.toString() : segundosRestantes.toString().padStart(2, '0')
     const formatoDecimal = decimal.toString().padStart(2, '0')
 
     return `${formatoMinutos !== '00' ? formatoMinutos + ':' : ''}${formatoSegundos}.${formatoDecimal}`
@@ -277,12 +279,22 @@ export const getSortRule = (sortBy: string) => {
 
   if (sortBy === SortByEnum.latest) {
     return JSON.stringify({ createdAt: -1 })
-    // return sortedProducts.sort((a, b) => getDate(a).getTime() - getDate(b).getTime())
   }
 
   if (sortBy === SortByEnum.top_rated) {
     return JSON.stringify({ rating: -1 })
   }
 
-  return JSON.stringify({ price: 1 })
+  if (sortBy === SortByEnum.best_sellers) {
+    return JSON.stringify({ totalSold: -1 })
+  }
+
+  return JSON.stringify({ createdAt: -1 })
+}
+
+export const getRamdomInt = (min: number, max: number) => {
+  const minCeiled = Math.ceil(min)
+  const maxFlored = Math.floor(max)
+  console.log(minCeiled, maxFlored, Math.floor(Math.random() * (maxFlored - minCeiled + 1) + minCeiled))
+  return Math.floor(Math.random() * (maxFlored - minCeiled + 1) + minCeiled)
 }

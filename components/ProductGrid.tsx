@@ -19,8 +19,8 @@ const ProductGrid = ({ filter, priceFilter, sortBy }: ProductGridProps) => {
   const [pagination, setPagination] = useState<IPagination | null>(null)
 
   const activeQuery = searchParams.get('query') || ''
-  const page = searchParams.get('page') || ''
-  const pageSize = searchParams.get('page_size') || ''
+  const page = searchParams.get('page') || '1'
+  const pageSize = searchParams.get('page_size') || '24'
 
   const paramsString = getParamsString({ query: activeQuery, page, pageSize, filter, priceFilter, sortBy })
   const router = useRouter()
@@ -95,9 +95,9 @@ const ProductGrid = ({ filter, priceFilter, sortBy }: ProductGridProps) => {
   }, [activeQuery, dispatch, sortBy, paramsString])
 
   return (
-    <div className='w-full flex flex-col items-center pb-12 row-span-1 lg:col-span-4 xl:col-span-3 '>
+    <div className='w-full flex flex-col items-center pb-12 row-span-1 lg:col-span-4 xl:col-span-3 overflow-y-visible'>
       {products.length <= 0 && <ProductNotFound />}
-      <div className='w-full grid gap-8 xl:gap-12 grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-4 justify-items-center justify-stretch'>
+      <div className='w-full grid gap-4 xl:gap-8  grid-cols-1  md:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-6  place-items-center justify-center md:justify-stretch'>
         {products.length > 0 &&
           products.map(product => (
             <ProductCard
@@ -108,7 +108,7 @@ const ProductGrid = ({ filter, priceFilter, sortBy }: ProductGridProps) => {
       </div>
       {/* Pagination controls */}
       {pagination && pagination.totalPages > 1 && (
-        <div className='w-full mt-8 flex items-center justify-center gap-2'>
+        <div className='w-fit max-w-[80vw] mt-8 flex items-center justify-center flex-wrap gap-2'>
           <button
             onClick={() => handlePageChange(Math.max(1, (pagination.currentPage || 1) - 1))}
             disabled={!pagination.hasPrevPage}

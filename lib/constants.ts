@@ -89,4 +89,5 @@ export enum SortByEnum {
   top_rated = 'Top rated',
   lower_higher = 'Lower to Higher',
   higher_lower = 'Higher to Lower',
+  best_sellers = 'Best Sellers',
 }

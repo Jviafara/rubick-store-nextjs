@@ -19,7 +19,11 @@ const FavoriteSlide = () => {
       dispatch(setGlobalLoading(true))
       const { res, error } = await productApi.getList()
       if (res) {
-        setProducts(favoriteList.map((favorites: IFavorite) => res.find((product: IProduct) => product._id === favorites.product)))
+        setProducts(
+          favoriteList.map((favorites: IFavorite) =>
+            res.find((product: IProduct) => product._id === favorites.product),
+          ),
+        )
       }
       if (error) toast.error(error.toString())
       dispatch(setGlobalLoading(false))
@@ -38,7 +42,7 @@ const FavoriteSlide = () => {
       </div>
     )
   return (
-    <AutoSwiper>
+    <AutoSwiper slideNumber={products.length}>
       {products.slice(0, 8).map((product, index) => (
         <SwiperSlide
           key={index}

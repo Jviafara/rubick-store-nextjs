@@ -13,12 +13,16 @@ export async function GET(req: NextRequest) {
   const sortBy = searchParams.get('sort_by') || 'Latest'
 
   const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10))
-  const pageSize = Math.max(1, parseInt(searchParams.get('page_size') || '10'))
+  const pageSize = Math.max(1, parseInt(searchParams.get('page_size') || '12'))
   const skip = (page - 1) * pageSize
 
   const mongoQuery = {
     name: { $regex: query, $options: 'i' },
-    $and: [{ price: { $gte: priceMin } }, { price: { $lte: priceMax } }, { category: filter !== 'All products' ? filter : { $exists: true } }],
+    $and: [
+      { price: { $gte: priceMin } },
+      { price: { $lte: priceMax } },
+      { category: filter !== 'All products' ? filter : { $exists: true } },
+    ],
   }
 
   const sortRule = JSON.parse(getSortRule(sortBy))

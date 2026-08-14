@@ -20,7 +20,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   useEffect(() => {
     const checkInCart = () => {
-      if (cartItems.filter(item => item._id === product._id)) setInCart(cartItems.filter(item => item._id === product._id)[0])
+      if (cartItems.filter(item => item._id === product._id))
+        setInCart(cartItems.filter(item => item._id === product._id)[0])
     }
     checkInCart()
   }, [cartItems, product])
@@ -38,7 +39,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
   }
 
   return (
-    <div className={`relative w-full h-full flex flex-col gap-4 rounded-xl ${isFavorito ? 'card-gradient-featured' : 'card-base hover-gradient-cyan-magenta'}  text-main p-3`}>
+    <div
+      className={`relative w-full max-w-[90vw] h-full flex flex-col gap-4 rounded-xl ${isFavorito ? 'card-gradient-featured' : 'card-base hover-gradient-cyan-magenta'}  text-main p-3`}
+    >
       {/* Image */}
       <Link href={`/product/slug/${product.slug}`}>
         <div className='relative w-full aspect-square '>
@@ -76,6 +79,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <section className='w-full'>
         <div className='w-full flex justify-between items-center'>
           <Ratings
+            totalSold={product.totalSold}
             rating={product.rating}
             numReviews={product.numReviews}
           />
@@ -89,7 +93,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 size={28}
                 className={`${inCart && 'text-secondary'}`}
               />
-              {inCart && <span className='  text-xs  font-bold px-1 lg:px-1.5 py-0.5 rounded-full h-fit absolute -top-1 left-4  bg-red-600 text-white'>{inCart.quantity}</span>}
+              {inCart && (
+                <span className='  text-xs  font-bold px-1 lg:px-1.5 py-0.5 rounded-full h-fit absolute -top-1 left-4  bg-red-600 text-white'>
+                  {inCart.quantity}
+                </span>
+              )}
             </button>
           )}
         </div>
@@ -105,19 +113,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
       )}
 
-      {/* Out of Stock */}
-      {product.countInStock! <= 0 && (
-        <div className='absolute top-2 left-2'>
-          <button
-            onClick={addToCartHandler}
-            type='button'
-            disabled
-            className='rounded-2xl bg-secondary/80 p-1 w-fit font-bold text-sm'
-          >
+      {/* Out of Stock or Total sold */}
+      <div className='absolute top-2 left-2'>
+        {product.countInStock! <= 0 && (
+          <div className='rounded-2xl bg-secondary/80 py-1 px-2 w-fit font-bold text-nowrap text-xs  md:text-sm'>
             Out of Stock
-          </button>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

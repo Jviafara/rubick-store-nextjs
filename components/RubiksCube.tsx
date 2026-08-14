@@ -7,6 +7,8 @@ import CubeSolver from 'cubejs'
 import Cube from './Cube'
 import { FaCogs } from 'react-icons/fa'
 import Scrambler from './Scrambler'
+import { useWindowWidth } from '@/lib/hooks/useWindowWidth'
+import * as THREE from 'three'
 
 // Initialize CubeSolver lookup tables
 CubeSolver.initSolver()
@@ -64,6 +66,8 @@ export default function RubiksCube() {
   // Track abstract cube state using cubejs solver
   const cubeStateRef = useRef(new CubeSolver())
   const currentAnimationRef = useRef<'idle' | 'scramble' | 'solve'>('idle')
+
+  const width = useWindowWidth() || 1024
 
   useEffect(() => {
     let active = true
@@ -134,9 +138,9 @@ export default function RubiksCube() {
   }, [])
 
   return (
-    <div className='w-full max-w-screen h-[calc(100vh-76px)] relative'>
+    <div className='w-screen max-w-screen h-[75%] relative overflow-clip'>
       <div
-        className={`absolute ${openScrambler ? 'w-full' : 'w-fit'} max-w-[25%] top-20 right-20 z-50 flex flex-col bg-surface/70 py-3 px-4 rounded-2xl bg-blur-lg gap-4`}
+        className={`absolute ${openScrambler ? 'w-full' : 'w-fit'} max-w-[95%] md:max-w-[60%] lg:max-w-[45%] xl:max-w-[30%]  2xl:max-w-[25%]  top-15 md:top-20 right-2 md:right-[2%] z-50 flex flex-col bg-surface/70 py-3 px-4 rounded-2xl bg-blur-lg gap-4`}
       >
         <div className='w-full flex justify-end'>
           <button
@@ -164,12 +168,13 @@ export default function RubiksCube() {
           position: [5.2, 5.2, 5.2],
           fov: 38,
         }}
-        shadows
+        gl={{
+          alpha: true,
+        }}
+        shadows={{
+          type: THREE.PCFShadowMap,
+        }}
       >
-        <color
-          attach='transparent'
-          args={['#00000000']}
-        />
         <Environment
           preset='studio'
           environmentIntensity={0.45}
@@ -189,7 +194,10 @@ export default function RubiksCube() {
           castShadow
         />
 
-        <group rotation={[0.08, -0.15, 0]}>
+        <group
+          rotation={[0.08, -0.15, 0]}
+          scale={width < 768 ? 0.5 : 0.8}
+        >
           <Cube
             moveQueue={queue}
             onMoveComplete={handleMoveComplete}
@@ -199,8 +207,7 @@ export default function RubiksCube() {
         <OrbitControls
           makeDefault
           enablePan={false}
-          minDistance={7}
-          maxDistance={14}
+          enableZoom={false}
         />
       </Canvas>
     </div>

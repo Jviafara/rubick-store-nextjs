@@ -26,7 +26,7 @@ const MediaVideo = ({ video }: mediaVideoProps) => {
   }, [])
 
   return (
-    <div className='w-full aspect-video'>
+    <div className='w-[70%] aspect-video'>
       <iframe
         key={video.id}
         src={`https://youtube.com/embed/${video.id}?autoplay=0`}
@@ -41,12 +41,12 @@ const MediaVideo = ({ video }: mediaVideoProps) => {
 
 const TutorialSlide = () => {
   return (
-    <div className='container mx-auto'>
+    <div className='container max-h-[70vh]  mx-auto'>
       <NavigationSwiper>
         {videos.map((video, index) => (
           <SwiperSlide
             key={index}
-            className='swipper-slide px-10 pt-4 pb-10'
+            className='swipper-slide px-10 pt-4 pb-10 flex! items-center justify-center'
           >
             <MediaVideo video={video} />
           </SwiperSlide>

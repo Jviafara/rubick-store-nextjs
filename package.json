@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "upload:images": "tsx --env-file=.env.local scripts/product_images_upload.ts"
+    "upload:images": "tsx --env-file=.env.local scripts/product_images_upload.ts",
+    "populate:totalSold": "tsx --env-file=.env.local scripts/product_populate_totalSold.ts"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.12",
