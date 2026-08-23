@@ -28,7 +28,7 @@ const UserInfo = ({ user }: { user: FullUser }) => {
       }
     }
     getOrders()
-    getDefaultAddress()
+    if (user.defaultAddress) getDefaultAddress()
   }, [user])
 
   return (

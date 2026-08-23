@@ -215,6 +215,12 @@ export const rightAnimations = {
 }
 
 // Yup validation schema
+export const validateEditProfile = Yup.object().shape({
+  name: Yup.string().required('Full name required'),
+  email: Yup.string().email('Invalid email').required('Email required'),
+  phone: Yup.string(),
+})
+
 export const validateCreatePassword = Yup.object().shape({
   newPassword: Yup.string()
     .min(8, 'Password minimum 8 characters')

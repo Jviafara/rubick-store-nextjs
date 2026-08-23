@@ -367,3 +367,11 @@ export interface UpdatePasswordProps {
     type: string
   }
 }
+export interface UpdateUserProps {
+  id: string
+  body: {
+    name: string
+    phone?: string
+    type?: string
+  }
+}

@@ -43,6 +43,6 @@ next-env.d.ts
 
 #Images
 /public/products
-/lib/scripts
+/scripts
 
 
