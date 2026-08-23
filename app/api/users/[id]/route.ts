@@ -11,11 +11,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const session = await auth.api.getSession({
       headers: req.headers,
     })
-    if (!session?.user || session?.user.role !== 'admin') {
-      return responseHandler.unauthorize()
-    }
+    // if (!session?.user || session?.user.role !== 'admin') {
+    //   return responseHandler.unauthorize()
+    // }
 
-    if (session.user.id !== id) {
+    if (!session?.user || session?.user.id !== id) {
       return responseHandler.unauthorize()
     }
 
@@ -24,6 +24,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const body = await req.json()
 
     const user = await User.findById(id)
+
     if (!user) return responseHandler.notFound()
 
     if (body.type === 'create') {
@@ -32,13 +33,25 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
         return responseHandler.ok({ message: 'Password created' })
       }
       return responseHandler.badRequest('Error Creating password')
+    } else if (body.type === 'change') {
+      const result = await changeUserPassword({ newPassword: body.newPassword, currentPassword: body.currentPassword })
+      if (result.success) {
+        return responseHandler.ok({ message: 'Password changed' })
+      }
+      return responseHandler.badRequest(result.error || 'Error changing password')
     }
 
-    const result = await changeUserPassword({ newPassword: body.newPassword, currentPassword: body.currentPassword })
-    if (result.success) {
-      return responseHandler.ok({ message: 'Password changed' })
-    }
-    return responseHandler.badRequest(result.error || 'Error changing password')
+    user.name = body.name
+    user.phone = body.phone
+
+    await auth.api.updateUser({
+      headers: req.headers,
+      body: { name: user.name, phone: user.phone },
+    })
+
+    await user.save()
+
+    return responseHandler.ok(user)
   } catch (e) {
     console.error(e)
     return responseHandler.error()

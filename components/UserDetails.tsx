@@ -8,7 +8,8 @@ import { MdEdit } from 'react-icons/md'
 import { Field, FormikProvider, useFormik } from 'formik'
 import { toast } from 'react-toastify'
 import { userApi } from '@/lib/modules/userApiClient'
-import { validateChangePassword, validateCreatePassword } from '@/lib/constants'
+import { validateChangePassword, validateCreatePassword, validateEditProfile } from '@/lib/constants'
+import { CiUser } from 'react-icons/ci'
 
 interface IUserDetails {
   user: FullUser
@@ -22,9 +23,7 @@ const inputStyle = {
 }
 
 const UserDetails = ({ user, totalOrders, defaultAddress }: IUserDetails) => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
+  const { refetch } = authClient.useSession()
   const [edit, setEdit] = useState(false)
 
   const [openChangePassword, setOpenChangePassword] = useState(false)
@@ -44,20 +43,28 @@ const UserDetails = ({ user, totalOrders, defaultAddress }: IUserDetails) => {
     checkPassword()
   }, [])
 
-  useEffect(() => {
-    const hydrateUserData = () => {
-      setName(user.name)
-      setEmail(user.email)
-      setPhoneNumber(user.phone)
-    }
-    if (user) {
-      hydrateUserData()
-    }
-  }, [user])
-
   const toogleEdit = () => {
     setEdit(prev => !prev)
   }
+
+  const editProfile = useFormik({
+    initialValues: { ...user },
+    validationSchema: validateEditProfile,
+    onSubmit: async values => {
+      const body = { name: values.name, phone: values.phone, type: 'edit-profile' }
+      const { res, error } = await userApi.update({ id: user.id, body })
+      if (res.status || error) {
+        toast.error(res.message)
+        return
+      }
+
+      changePassword.resetForm()
+      setOpenChangePassword(false)
+      toast.success('User Info Updated Successfully!')
+      await refetch()
+      setEdit(false)
+    },
+  })
 
   const changePassword = useFormik({
     initialValues: { newPassword: '', confirmPassword: '', currentPassword: '' },
@@ -96,14 +103,18 @@ const UserDetails = ({ user, totalOrders, defaultAddress }: IUserDetails) => {
         {user && (
           <div className='w-full flex flex-col items-center text-center gap-4'>
             <div className='relative w-32 h-32 card-gradient-cyan-magenta rounded-full!'>
-              <Image
-                src={user.image || ''}
-                alt='Profile Image'
-                fill
-                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                loading='eager'
-                className='object-cover rounded-full'
-              />
+              {user.image ? (
+                <Image
+                  src={user.image || ''}
+                  alt='Profile Image'
+                  fill
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                  loading='eager'
+                  className='object-cover rounded-full'
+                />
+              ) : (
+                <CiUser className='w-full h-full' />
+              )}
             </div>
             <div>
               <h1 className='text-center text-2xl font-semibold font-plus-jakarta-sans relative'>
@@ -123,20 +134,21 @@ const UserDetails = ({ user, totalOrders, defaultAddress }: IUserDetails) => {
             <div className='card-gradient-cyan-magenta w-[90%]'>
               {edit ? (
                 <button
-                  onClick={toogleEdit}
+                  type='submit'
+                  form='edit-profile-form'
                   className='w-full px-4 py-2 upper text-lg flex gap-2 items-center justify-center'
                 >
                   <IoIosSave />
                   Save Profile
                 </button>
               ) : (
-                <button
+                <div
                   onClick={toogleEdit}
                   className='w-full px-4 py-2 upper text-lg  flex gap-2 items-center justify-center'
                 >
                   <MdEdit />
                   Edit Profile
-                </button>
+                </div>
               )}
             </div>
           </div>
@@ -145,99 +157,101 @@ const UserDetails = ({ user, totalOrders, defaultAddress }: IUserDetails) => {
       {/* User Full information */}
       <div className='border border-muted rounded-xl bg-surface py-8 w-full max-w-[95%] lg:max-w-[85%] lg:flex-2 h-full'>
         {user && (
-          <form className='w-full flex flex-col items-center gap-4 text-lg'>
-            <div className='w-[90%] flex flex-col md:flex-row gap-4 items-center '>
-              <label
-                htmlFor='name'
-                className='flex-1 w-full text-muted'
-              >
-                Full Name
-              </label>
-              {!edit ? (
-                <h1 className='flex-2 xl:flex-3'>
-                  {user.name
-                    .split(' ')
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(' ')}
-                </h1>
-              ) : (
-                <input
-                  type='text'
-                  id='name'
-                  onChange={e => setName(e.target.value)}
-                  disabled={!edit}
-                  value={name}
-                  className='w-full flex-2 xl:flex-3 border border-muted focus:outline focus:outline-primary focus:border-none rounded-2xl px-2 py-1'
-                />
-              )}
-            </div>
-            <div className='w-[90%] flex flex-col md:flex-row gap-4 items-center '>
-              <label
-                htmlFor='email'
-                className='flex-1 w-full text-muted'
-              >
-                Email
-              </label>
-              {!edit ? (
-                <h1 className='flex-2 xl:flex-3'>{user.email}</h1>
-              ) : (
-                <input
-                  type='email'
-                  id='email'
-                  onChange={e => setName(e.target.value)}
-                  disabled={!edit}
-                  value={email}
-                  className='w-full flex-2 xl:flex-3 border border-muted focus:outline focus:outline-primary focus:border-none rounded-2xl px-2 py-1'
-                />
-              )}
-            </div>
-            <div className='w-[90%] flex flex-col md:flex-row gap-4 items-center '>
-              <label
-                htmlFor='phone'
-                className='flex-1 w-full text-muted'
-              >
-                Phone
-              </label>
-              {!edit ? (
-                <h1 className='flex-2 xl:flex-3'>{user.phone}</h1>
-              ) : (
-                <input
-                  type='text'
-                  id='phone'
-                  onChange={e => setPhoneNumber(e.target.value)}
-                  disabled={!edit}
-                  value={phoneNumber}
-                  className='w-full flex-2 xl:flex-3 border border-muted focus:outline focus:outline-primary focus:border-none rounded-2xl px-2 py-1'
-                />
-              )}
-            </div>
-            {!edit && (
-              <section className='w-full flex flex-col items-center gap-4'>
-                <div className='w-[90%] flex flex-col md:flex-row gap-4 items-center '>
-                  <h1 className='flex-1 w-full text-muted text-nowrap'>Member Since</h1>
+          <FormikProvider value={editProfile}>
+            <form
+              id='edit-profile-form'
+              onSubmit={editProfile.handleSubmit}
+              className='w-full flex flex-col items-center gap-4 text-lg'
+            >
+              <div className='w-[90%] flex flex-col md:flex-row gap-4 items-center '>
+                <label
+                  htmlFor='name'
+                  className='flex-1 w-full text-muted'
+                >
+                  Full Name
+                </label>
+                {!edit ? (
                   <h1 className='flex-2 xl:flex-3'>
-                    {new Date(user.createdAt!).toLocaleDateString('en-US', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric',
-                    })}
+                    {user.name
+                      .split(' ')
+                      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                      .join(' ')}
                   </h1>
-                </div>
-                <div className='w-[90%] flex gap-4 items-center '>
-                  <h1 className='flex-1 w-full text-muted text-nowrap'>Total Orders</h1>
-                  <h1 className='flex-2 xl:flex-3'>{totalOrders}</h1>
-                </div>
-                {defaultAddress && (
-                  <div className='w-[90%] flex flex-col md:flex-row gap-4 items-center '>
-                    <h1 className='flex-1 w-full text-muted text-nowrap'>Address</h1>
-                    <h1 className='flex-2 xl:flex-3 text-muted text-sm line-clamp-2 text-center md:text-left'>
-                      {defaultAddress.address}, {defaultAddress.city}, {defaultAddress.country}
-                    </h1>
+                ) : (
+                  <div className='w-full flex-2 xl:flex-3'>
+                    <Field
+                      type='text'
+                      id='name'
+                      name='name'
+                      onChange={editProfile.handleChange}
+                      value={editProfile.values.name}
+                      className='w-full  border border-muted focus:outline focus:outline-primary focus:border-none rounded-2xl px-2 py-1'
+                    />
+                    <p className='text-sm text-red-600'>{editProfile.touched.name && editProfile.errors.name}</p>
                   </div>
                 )}
-              </section>
-            )}
-          </form>
+              </div>
+              <div className='w-[90%] flex flex-col md:flex-row gap-4 items-center '>
+                <label
+                  htmlFor='email'
+                  className='flex-1 w-full text-muted'
+                >
+                  Email
+                </label>
+                <h1 className='flex-2 xl:flex-3'>{user.email}</h1>
+              </div>
+              <div className='w-[90%] flex flex-col md:flex-row gap-4 items-center '>
+                <label
+                  htmlFor='phone'
+                  className='flex-1 w-full text-muted'
+                >
+                  Phone
+                </label>
+                {!edit ? (
+                  <h1 className='flex-2 xl:flex-3'>{user.phone}</h1>
+                ) : (
+                  <div className='w-full flex-2 xl:flex-3'>
+                    <p className='text-muted text-xs ml-4'>Include yor country code</p>
+                    <Field
+                      type='text'
+                      id='phone'
+                      name='phone'
+                      onChange={editProfile.handleChange}
+                      value={editProfile.values.phone}
+                      className='w-full flex-2 xl:flex-3 border border-muted focus:outline focus:outline-primary focus:border-none rounded-2xl px-2 py-1'
+                    />
+                    <p className='text-sm text-red-600'>{editProfile.touched.phone && editProfile.errors.phone}</p>
+                  </div>
+                )}
+              </div>
+              {!edit && (
+                <section className='w-full flex flex-col items-center gap-4'>
+                  <div className='w-[90%] flex flex-col md:flex-row gap-4 items-center '>
+                    <h1 className='flex-1 w-full text-muted text-nowrap'>Member Since</h1>
+                    <h1 className='flex-2 xl:flex-3'>
+                      {new Date(user.createdAt!).toLocaleDateString('en-US', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      })}
+                    </h1>
+                  </div>
+                  <div className='w-[90%] flex gap-4 items-center '>
+                    <h1 className='flex-1 w-full text-muted text-nowrap'>Total Orders</h1>
+                    <h1 className='flex-2 xl:flex-3'>{totalOrders}</h1>
+                  </div>
+                  {defaultAddress && (
+                    <div className='w-[90%] flex flex-col md:flex-row gap-4 items-center '>
+                      <h1 className='flex-1 w-full text-muted text-nowrap'>Address</h1>
+                      <h1 className='flex-2 xl:flex-3 text-muted text-sm line-clamp-2 text-center md:text-left'>
+                        {defaultAddress.address}, {defaultAddress.city}, {defaultAddress.country}
+                      </h1>
+                    </div>
+                  )}
+                </section>
+              )}
+            </form>
+          </FormikProvider>
         )}
 
         {openChangePassword ? (
@@ -322,6 +336,7 @@ const UserDetails = ({ user, totalOrders, defaultAddress }: IUserDetails) => {
         ) : (
           <div className='w-[50%] mt-6 py-2 flex justify-center card-base hover-gradient-emerald-cyan justify-self-center'>
             <button
+              type='button'
               onClick={() => setOpenChangePassword(prev => !prev)}
               className='text-lg'
             >

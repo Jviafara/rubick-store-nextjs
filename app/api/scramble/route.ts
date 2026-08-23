@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
     const scrambler = new Scrambow().setType(type).get()
     return responseHandler.ok(scrambler[0].scramble_string)
   } catch (error) {
+    console.error(error)
     return NextResponse.json({ success: false, error: 'Failed to generate scramble' }, { status: 500 })
   }
 }
