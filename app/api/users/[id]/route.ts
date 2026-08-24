@@ -26,7 +26,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (!user) return responseHandler.notFound()
 
     const { searchParams } = new URL(req.url)
-    const defaultAddress = searchParams.get('default-address')
+    const defaultAddress = searchParams.get('default-address') || ''
     if (defaultAddress) {
       user.defaultAddress = defaultAddress
       await auth.api.updateUser({

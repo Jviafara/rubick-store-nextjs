@@ -46,13 +46,16 @@ export const userApi = {
   },
   update: async ({ id, body, defaultAddress }: UpdateUserProps) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/${usersEndpoints.update(id)}?default-address=${defaultAddress}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${BASE_URL}/api/${usersEndpoints.update(id)}${defaultAddress ? `?default-address=${defaultAddress}` : ''}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
         },
-        body: JSON.stringify(body),
-      })
+      )
       const res = await response.json()
       return { res }
     } catch (error) {

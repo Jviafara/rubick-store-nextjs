@@ -82,13 +82,16 @@ const AdressesSlider = () => {
             <CiCirclePlus size={24} /> Add Address
           </button>
         </SwiperSlide>
-        <SwiperSlide className='swiper-slide w-fit overflow-x-visible'>
-          <AddressCard
-            address={addresses.find(address => address._id === (session?.user as FullUser).defaultAddress)}
-            handleEditModalOpen={handleModalOpen}
-            handleDelete={handleDelete}
-          />
-        </SwiperSlide>
+        {addresses.find(address => address._id === (session?.user as FullUser).defaultAddress) && (
+          <SwiperSlide className='swiper-slide w-fit overflow-x-visible'>
+            <AddressCard
+              address={addresses.find(address => address._id === (session?.user as FullUser).defaultAddress)}
+              handleEditModalOpen={handleModalOpen}
+              handleDelete={handleDelete}
+            />
+          </SwiperSlide>
+        )}
+
         {addresses &&
           addresses
             .filter((address: IShippingAddress) => address._id !== (session?.user as FullUser).defaultAddress)
