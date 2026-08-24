@@ -40,24 +40,6 @@ const ProfilePageContent = () => {
         {activeTab === 'orders' && <OrderList />}
         {activeTab === 'reviews' && <CommingSoon />}
       </main>
-      {/* <Container>
-        <h1 className='text-3xl  font-bold -my-10'>Welcome! {session?.user.name?.split(' ')[0].toLocaleUpperCase()} </h1>
-      </Container>
-      <Container
-        header={'favorites'}
-        seeMore={'/favorites'}
-      >
-        <FavoriteSlide />
-      </Container>
-      <Container header={'Reviews'}>
-        <CommingSoon />
-      </Container>
-      <Container
-        header={'orders'}
-        seeMore={'/orders'}
-      >
-        <OrderList max={4} />
-      </Container> */}
     </div>
   )
 }

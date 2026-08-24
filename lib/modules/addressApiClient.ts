@@ -2,7 +2,7 @@ import { addressEndpoints, BASE_URL } from '../constants'
 import { CreateAddressProps, UpdateAddressProps } from '../types'
 
 export const AddressApi = {
-  create: async ({ name, address, city, phone, country, postalCode }: CreateAddressProps) => {
+  create: async ({ name, address, city, phone, country, postalCode, isDefault }: CreateAddressProps) => {
     const body = {
       name,
       address,
@@ -10,6 +10,7 @@ export const AddressApi = {
       phone,
       country,
       postalCode,
+      isDefault,
     }
     try {
       const response = await fetch(`${BASE_URL}/api/${addressEndpoints.create}`, {

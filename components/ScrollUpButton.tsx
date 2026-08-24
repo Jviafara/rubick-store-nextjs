@@ -11,7 +11,7 @@ const ScrollUpButton = () => {
             behavior: 'smooth',
           })
         }
-        className='hidden md:inline-flex cursor-pointer text-primary '
+        className=' cursor-pointer text-primary '
       >
         <SquareArrowUp size={32} />
       </button>

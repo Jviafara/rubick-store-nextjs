@@ -1,5 +1,6 @@
 import { auth } from '@/lib/auth/auth'
 import Address from '@/lib/models/address'
+import { User } from '@/lib/models/user'
 import connectDB from '@/lib/mongodb'
 import responseHandler from '@/lib/responseHandler'
 import { NextRequest } from 'next/server'
@@ -62,6 +63,26 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
 
     await connectDB()
     const address = await Address.findByIdAndDelete(id)
+
+    const user = await User.findById(session.user.id)
+    if (user.defaultAddress === id) {
+      const userAddresses = await Address.find({ user: user._id })
+      if (userAddresses.length > 0) {
+        user.defaultAddress = userAddresses[0]._id
+        await user.save()
+        await auth.api.updateUser({
+          headers: req.headers,
+          body: { defaultAddress: user.defaultAddress },
+        })
+      } else {
+        user.defaultAddress = null
+        await user.save()
+        await auth.api.updateUser({
+          headers: req.headers,
+          body: { defaultAddress: null },
+        })
+      }
+    }
 
     return responseHandler.ok(address)
   } catch (e) {

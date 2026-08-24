@@ -20,7 +20,7 @@ const FavoritesGridContent = () => {
   const { favoriteList } = useAppSelector(state => state.favoriteList)
 
   const page = searchParams.get('page') || '1'
-  const pageSize = searchParams.get('page_size') || '24'
+  const pageSize = searchParams.get('page_size') || '12'
 
   const paramsString = getParamsString({ page, pageSize })
   const router = useRouter()
