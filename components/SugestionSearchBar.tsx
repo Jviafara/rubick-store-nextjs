@@ -115,6 +115,51 @@ const SugestionSearchBar = ({ query, setQuery, inputRef, handleSearchClick }: IS
     }
   }, [inputRef])
 
+  useEffect(() => {
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target
+      if (!(target instanceof Node)) return
+
+      const clickedInsideWrapper = wrapperRef.current?.contains(target)
+      const clickedInsideSuggestions = suggestionRef.current?.contains(target)
+
+      if (!clickedInsideWrapper && !clickedInsideSuggestions) {
+        setIsFocused(false)
+        setShowSuggestions(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handlePointerDown)
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown)
+    }
+  }, [])
+
+  useEffect(() => {
+    const currentElement = inputRef!.current
+    if (!currentElement) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // isIntersecting is false when the element leaves the viewport
+        setIsOutOfView(!entry.isIntersecting)
+
+        // Fire your custom out-of-view event here if needed
+      },
+      {
+        root: null, // Defaults to the browser viewport
+        threshold: 0, // Triggers as soon as even 1 pixel leaves/enters
+      },
+    )
+
+    observer.observe(currentElement)
+
+    return () => {
+      if (currentElement) observer.unobserve(currentElement)
+    }
+  }, [inputRef])
+
   const handleClearSearch = () => {
     setQuery('')
     setProducts([])
