@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const user = await User.findById(session.user.id)
     const defaultAddress = await Address.findById(user.defaultAddress)
 
-    if (!user.defaultAddress || !defaultAddress) {
+    if (!user.defaultAddress || !defaultAddress || body.isDefault) {
       user.defaultAddress = address._id
       await user.save()
 

@@ -6,6 +6,8 @@ import { X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import Link from 'next/link'
 import Logo from './Logo'
+import { useEffect, useState } from 'react'
+import { useScrollLock } from '@/lib/hooks/useScrollLock'
 
 const Modal = () => {
   const dispatch = useAppDispatch()
@@ -27,6 +29,17 @@ const Modal = () => {
   const confirmClasses = colorClasses[(confirmButton?.color || 'primary') as keyof typeof colorClasses]
 
   const cancelClasses = colorClasses[(cancelButton?.color || 'secondary') as keyof typeof colorClasses]
+
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const closeModal = () => {
     dispatch(toogleModalService(false))
@@ -57,12 +70,13 @@ const Modal = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className='absolute inset-0 z-50 h-screen w-full max-w-screen overflow-clip bg-muted/30 backdrop-blur-sm'
+          style={{ marginTop: scrollY }}
+          className='absolute top-0 left-0 z-50 max-h-screen h-full w-full max-w-screen overflow-clip bg-muted/30 backdrop-blur-sm'
           onClick={closeModal}
         >
           {/* CENTER */}
           {position === ModalPositions.Center && (
-            <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-fit max-w-[90vw] h-fit'>
+            <div className={`absolute top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2  w-fit max-w-[90vw] h-fit`}>
               <ModalContent
                 animations={animations}
                 header={header}
@@ -139,6 +153,7 @@ const ModalContent = ({
   cancelClasses,
   onClose,
 }: ModalContentProps) => {
+  useScrollLock(true)
   return (
     <motion.div
       initial={animations.initial}
@@ -146,7 +161,7 @@ const ModalContent = ({
       exit={animations.exit}
       transition={{ duration: 0.5 }}
       onClick={event => event.stopPropagation()}
-      className='card-gradient-cyan-magenta flex h-full w-fit max-w-[100vw] md:max-w-[50vw] flex-col items-center gap-8 overflow-x-clip overflow-y-auto rounded-2xl px-4 py-8'
+      className='card-gradient-cyan-magenta flex h-full w-[90vw] md:w-fit md:max-w-[50vw] flex-col items-center gap-8 overflow-x-clip overflow-y-auto rounded-2xl px-4 py-8'
     >
       {/* Header */}
       <section className='relative flex min-h-6 w-full items-center justify-start gap-4 has-only:justify-center'>

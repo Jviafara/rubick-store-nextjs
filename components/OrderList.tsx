@@ -47,7 +47,7 @@ const OrderList = ({ max }: { max?: number }) => {
 
   return (
     <section className='w-full flex flex-col items-center space-y-4 overflow-visible'>
-      <div className='w-full mb-8'>
+      <div className='w-full flex mb-8 gap-8'>
         <h1 className='font-bold uppercase text-lg md:txt-xl lg:text-2xl font-inter max-w-fit group'>
           Order History
           <span
@@ -62,6 +62,11 @@ const OrderList = ({ max }: { max?: number }) => {
                 '
           />
         </h1>
+        {max && (
+          <div className='border border-primary text-xs sm:text-sm rounded-2xl bg-muted/20  py-2 px-4 hover:scale-105 text-nowrap'>
+            <Link href={'/profile?tab=orders'}>See More</Link>
+          </div>
+        )}
       </div>
       {orders.map(order => (
         <div

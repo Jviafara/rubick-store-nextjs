@@ -149,6 +149,7 @@ export interface CreateAddressProps {
   phone: string
   postalCode: string
   country: string
+  isDefault?: boolean
 }
 export interface UpdateAddressProps extends CreateAddressProps {
   id: string
@@ -369,7 +370,8 @@ export interface UpdatePasswordProps {
 }
 export interface UpdateUserProps {
   id: string
-  body: {
+  defaultAddress?: string
+  body?: {
     name: string
     phone?: string
     type?: string

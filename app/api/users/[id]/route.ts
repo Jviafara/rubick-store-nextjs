@@ -21,11 +21,25 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     await connectDB()
 
-    const body = await req.json()
-
     const user = await User.findById(id)
 
     if (!user) return responseHandler.notFound()
+
+    const { searchParams } = new URL(req.url)
+    const defaultAddress = searchParams.get('default-address')
+    if (defaultAddress) {
+      user.defaultAddress = defaultAddress
+      await auth.api.updateUser({
+        headers: req.headers,
+        body: { defaultAddress },
+      })
+
+      await user.save()
+
+      return responseHandler.ok(user)
+    }
+
+    const body = await req.json()
 
     if (body.type === 'create') {
       const result = await setUserPassword(body.newPassword)

@@ -23,7 +23,7 @@ const Container = ({ header, children, seeMore }: ContainerProps) => {
             </h1>
             {seeMore && (
               <div className='border border-primary text-xs sm:text-sm rounded-2xl bg-muted/20  py-2 px-4 hover:scale-105 text-nowrap'>
-                <Link href={seeMore}>See More...!</Link>
+                <Link href={seeMore}>See More</Link>
               </div>
             )}
           </div>

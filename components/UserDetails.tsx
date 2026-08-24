@@ -303,7 +303,7 @@ const UserDetails = ({ user, totalOrders, defaultAddress }: IUserDetails) => {
                   </p>
                 </div>
               </div>
-              <div className='w-[90%] flex flex-col md:flex-row gap-4 items-center'>
+              <div className='w-[90%] lg:w-[50%] flex flex-col md:flex-row gap-4 items-center'>
                 <label
                   htmlFor='confirm-password'
                   className='flex-1 w-full text-muted'
@@ -323,7 +323,7 @@ const UserDetails = ({ user, totalOrders, defaultAddress }: IUserDetails) => {
                   </p>
                 </div>
               </div>
-              <div className='w-[50%] mt-4 py-2 flex justify-center card-base hover-gradient-emerald-cyan justify-self-center'>
+              <div className='w-[50%] mt-4 py-2 flex justify-center card-base hover-gradient-emerald-cyan justify-self-center text-nowrap'>
                 <button
                   type='submit'
                   className='text-lg'
@@ -334,7 +334,7 @@ const UserDetails = ({ user, totalOrders, defaultAddress }: IUserDetails) => {
             </form>
           </FormikProvider>
         ) : (
-          <div className='w-[50%] mt-6 py-2 flex justify-center card-base hover-gradient-emerald-cyan justify-self-center'>
+          <div className='w-[90%] lg:w-[50%] mt-6 py-2 flex justify-center card-base hover-gradient-emerald-cyan justify-self-center text-nowrap'>
             <button
               type='button'
               onClick={() => setOpenChangePassword(prev => !prev)}

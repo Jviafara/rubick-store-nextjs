@@ -1,33 +1,32 @@
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/redux.hooks'
-import { productApi } from '@/lib/modules/productsApiClient'
-import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
-import { IFavorite, IProduct } from '@/lib/types'
 import React, { useEffect, useState } from 'react'
 import AutoSwiper from './AutoSwiper'
 import { SwiperSlide } from 'swiper/react'
 import ProductCard from './ProductCard'
 import { AiFillExclamationCircle } from 'react-icons/ai'
+import favoriteApi from '@/lib/modules/favoriteApiClient'
+import { IProduct } from '@/lib/types'
+import { getParamsString } from '@/lib/utils'
 
 const FavoriteSlide = () => {
-  const dispatch = useAppDispatch()
   const [products, setProducts] = useState<IProduct[]>([])
-  const { favoriteList } = useAppSelector(state => state.favoriteList)
+  const page = '1'
+  const pageSize = '8'
+  const paramsString = getParamsString({ page, pageSize })
 
   useEffect(() => {
     const getProducts = async () => {
-      dispatch(setGlobalLoading(true))
-      const { res, error } = await productApi.getList()
-      if (res.status || error) {
-        dispatch(setGlobalLoading(false))
+      const { res, err } = await favoriteApi.getList(paramsString)
+
+      if (res.status || err) {
         return
       }
+
       if (res) {
-        setProducts(favoriteList.map((favorites: IFavorite) => res.find((product: IProduct) => product._id === favorites.product)))
+        setProducts(res.products)
       }
-      dispatch(setGlobalLoading(false))
     }
     getProducts()
-  }, [dispatch, favoriteList])
+  }, [paramsString])
 
   if (products.length <= 0)
     return (
@@ -41,16 +40,18 @@ const FavoriteSlide = () => {
     )
 
   return (
-    <AutoSwiper slideNumber={products.length}>
-      {products.slice(0, 8).map((product, index) => (
-        <SwiperSlide
-          key={index}
-          className='swiper-slide w-fit'
-        >
-          <ProductCard product={product} />
-        </SwiperSlide>
-      ))}
-    </AutoSwiper>
+    <>
+      <AutoSwiper slideNumber={products.length}>
+        {products.slice(0, 8).map((product, index) => (
+          <SwiperSlide
+            key={index}
+            className='swiper-slide w-fit overflow-x-visible'
+          >
+            <ProductCard product={product} />
+          </SwiperSlide>
+        ))}
+      </AutoSwiper>
+    </>
   )
 }
 

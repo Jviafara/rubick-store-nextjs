@@ -4,7 +4,7 @@ import { Swiper } from 'swiper/react'
 
 const AutoSwiper = ({ children, slideNumber }: AutoSwiperProps) => {
   return (
-    <div className='flex w-full md:max-w-[80vw]'>
+    <div className='flex w-full md:max-w-[80vw] overflow-visible'>
       <Swiper
         // slidesPerView={2}
         loop={(slideNumber || 1) >= 4}
@@ -39,7 +39,7 @@ const AutoSwiper = ({ children, slideNumber }: AutoSwiperProps) => {
           },
         }}
         modules={[Pagination]}
-        style={{ padding: '20px 0 40px 0', width: '100%' }}
+        style={{ padding: '20px 0 40px 0', width: '100%', overflow: 'visible' }}
       >
         {children}
       </Swiper>

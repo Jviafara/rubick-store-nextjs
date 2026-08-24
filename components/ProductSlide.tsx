@@ -42,7 +42,7 @@ const ProductSlide = ({ slideType }: ProductSlideProps) => {
           products.map((product, index) => (
             <SwiperSlide
               key={index}
-              className='swiper-slide w-fit overflow-visible'
+              className='swiper-slide w-fit overflow-x-visible'
             >
               <ProductCard product={product} />
             </SwiperSlide>
