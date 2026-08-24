@@ -30,7 +30,6 @@ const UserMenu = ({ open, toggleMenu }: userMenuProps) => {
     } else {
       alert('Error cerrar sesión, Intenta nuevamente.')
     }
-    toggleMenu()
   }
   if (!open || !mounted || typeof document === 'undefined') return null
 
