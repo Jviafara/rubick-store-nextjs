@@ -2,27 +2,27 @@ import { AutoSwiperProps } from '@/lib/types'
 import { Pagination } from 'swiper/modules'
 import { Swiper } from 'swiper/react'
 
-const AutoSwiper = ({ children }: AutoSwiperProps) => {
+const AutoSwiper = ({ children, slideNumber }: AutoSwiperProps) => {
   return (
-    <div className='flex w-full md:max-w-[80vw]'>
+    <div className='flex w-full md:max-w-[80vw] overflow-visible'>
       <Swiper
         // slidesPerView={2}
-        loop={true}
+        loop={(slideNumber || 1) >= 4}
         // spaceBetween={2}
         pagination={{
           dynamicBullets: true,
         }}
         breakpoints={{
           375: {
-            slidesPerView: 3,
+            slidesPerView: 1,
             spaceBetween: 15,
           },
-          640: {
-            slidesPerView: 3,
+          425: {
+            slidesPerView: 1.5,
             spaceBetween: 25,
           },
           768: {
-            slidesPerView: 3,
+            slidesPerView: 2.5,
             spaceBetween: 15,
           },
           1024: {
@@ -30,16 +30,16 @@ const AutoSwiper = ({ children }: AutoSwiperProps) => {
             spaceBetween: 30,
           },
           1280: {
-            slidesPerView: 3,
+            slidesPerView: 4,
             spaceBetween: 35,
           },
           1536: {
-            slidesPerView: 4,
+            slidesPerView: 5,
             spaceBetween: 50,
           },
         }}
         modules={[Pagination]}
-        style={{ padding: '20px 0 40px 0' }}
+        style={{ padding: '20px 0 40px 0', width: '100%', overflow: 'visible' }}
       >
         {children}
       </Swiper>

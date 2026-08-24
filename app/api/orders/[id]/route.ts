@@ -16,12 +16,39 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 
     await connectDB()
-    const order = await Order.findById(id)
-
+    const order = await Order.findById(id).populate('shippingAddress')
     if (!order) return responseHandler.notFound()
     return responseHandler.ok(order)
   } catch (e) {
     console.error(e)
+    return responseHandler.error()
+  }
+}
+
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  try {
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    })
+    if (!session?.user || session.user.role !== 'admin') {
+      return responseHandler.unauthorize()
+    }
+
+    const body = await req.json()
+    await connectDB()
+
+    const order = await Order.findById(id)
+    if (!order) return responseHandler.notFound()
+
+    order.shippingStatus = body.shippingStatus || order.shippingStatus
+    order.isPaid = body.isPaid !== undefined ? body.isPaid : order.isPaid
+
+    await order.save()
+
+    return responseHandler.ok(order)
+  } catch (err) {
+    console.error(err)
     return responseHandler.error()
   }
 }

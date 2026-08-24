@@ -1,9 +1,9 @@
 import { BASE_URL, productsEndpoints } from '../constants'
 
 export const productApi = {
-  getList: async () => {
+  getList: async (params?: string) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/${productsEndpoints.list}`, {
+      const response = await fetch(`${BASE_URL}/api/${productsEndpoints.list(params ?? '')}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -11,7 +11,6 @@ export const productApi = {
       const res = await response.json()
       return { res }
     } catch (error) {
-      console.error(error)
       return { error }
     }
   },
@@ -25,7 +24,6 @@ export const productApi = {
       const res = await response.json()
       return { res }
     } catch (error) {
-      console.error(error)
       return { error }
     }
   },

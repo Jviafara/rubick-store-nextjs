@@ -1,9 +1,9 @@
 import { BASE_URL, favoriteEndpoints } from '../constants'
 
 const favoriteApi = {
-  getList: async () => {
+  getList: async (params?: string) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/${favoriteEndpoints.list}`, {
+      const response = await fetch(`${BASE_URL}/api/${favoriteEndpoints.list(params ?? '')}`, {
         headers: {
           'Content-Type': 'application/json',
         },

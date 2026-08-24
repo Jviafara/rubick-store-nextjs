@@ -1,7 +1,7 @@
 import { signIn } from '@/lib/auth/auth-client'
 import Image from 'next/image'
 
-const GoogleSignIn = () => {
+const GoogleSignIn = ({ type }: { type: string }) => {
   const handleGoogleSignIn = async () => {
     try {
       await signIn.social({ provider: 'google' })
@@ -14,7 +14,7 @@ const GoogleSignIn = () => {
     <button
       type='button'
       onClick={() => handleGoogleSignIn()}
-      className='flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl  py-3 transition hover:bg-gray-200'
+      className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl  py-3 transition ${type === 'primary' ? 'hover:bg-primary' : 'hover:bg-secondary'}/20`}
     >
       <Image
         src='/google.png'
@@ -24,7 +24,7 @@ const GoogleSignIn = () => {
         className='h-5 w-5'
       />
 
-      <p className='font-semibold text-gray-700'>Sign In with Google</p>
+      <p className='font-semibold'>Sign In with Google</p>
     </button>
   )
 }

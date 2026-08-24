@@ -2,18 +2,20 @@
 import { useAppDispatch } from '@/lib/hooks/redux.hooks'
 import { OrdersApi } from '@/lib/modules/orderApiClient'
 import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
-import { IOrder } from '@/lib/types'
+import { IFullOrder, IOrder } from '@/lib/types'
 import { getDate } from '@/lib/utils'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import Container from './Container'
 import Link from 'next/link'
+import EmptyBanner from './EmptyBanner'
+import { LuShoppingBag } from 'react-icons/lu'
+import Image from 'next/image'
+import ShippingStatusSelector from './ShippingStatusSelector'
+import { FaChevronRight } from 'react-icons/fa'
 
 const OrderList = ({ max }: { max?: number }) => {
-  const router = useRouter()
   const dispatch = useAppDispatch()
-  const [orders, setOrders] = useState<IOrder[]>([])
+  const [orders, setOrders] = useState<IFullOrder[]>([])
 
   useEffect(() => {
     const getOrders = async () => {
@@ -23,10 +25,10 @@ const OrderList = ({ max }: { max?: number }) => {
 
       dispatch(setGlobalLoading(false))
 
-      if (error) toast.error(res.message)
+      if (res.status || error) toast.error(res.message)
       if (res) {
         if (max) {
-          setOrders(res.sort((a: IOrder, b: IOrder) => getDate(b).getTime() - getDate(a).getTime()).slice(0, 4))
+          setOrders(res.sort((a: IOrder, b: IOrder) => getDate(b).getTime() - getDate(a).getTime()).slice(0, max))
         } else {
           setOrders(res.sort((a: IOrder, b: IOrder) => getDate(b).getTime() - getDate(a).getTime()))
         }
@@ -35,163 +37,93 @@ const OrderList = ({ max }: { max?: number }) => {
     getOrders()
   }, [dispatch, max])
 
-  if (orders.length <= 0) return null
+  if (orders.length <= 0)
+    return (
+      <EmptyBanner
+        header="Don't have any orders yet"
+        Icon={LuShoppingBag}
+      />
+    )
 
   return (
-    <Container
-      header={'Orders'}
-      seeMore={max ? '/orders' : ''}
-    >
-      <div className='hidden md:inline-flex '>
-        <ul className='w-[95vw] lg:w-[90vw]  flex flex-col gap-2'>
-          {orders.map(order => (
-            <li
-              key={order._id.toString()}
-              className='w-full border border-pink rounded-xl flex items-center justify-between py-2 px-4 bg-gray-200 bg-opacity-50 backdrop-blur-2xl'
-            >
-              <div className='flex justify-between items-center xl:gap-5 w-1/3 lg:w-[40%] '>
-                <p className='truncate w-full'>
-                  <strong>ID:</strong> {order._id.toString()}
-                </p>
-                <div className='flex flex-col lg:flex-row lg:gap-4 lg:justify-evenly items-center w-full'>
-                  <p>
-                    <strong>Price:</strong> ${order.totalPrice}
-                  </p>
-                  <p className='flex flex-col xl:flex-row items-center'>
-                    <strong>Date:</strong>
-                    <span>{order.createdAt!.toString().slice(0, 10)}</span>
-                  </p>
-                </div>
-              </div>
-              <div className='w-1/4 lg:w-[20%] flex justify-center'>
-                {order.isPaid ? (
-                  <p
-                    className='min-w-fit border border-green-300 rounded-lg shadow-sm shadow-green-300
-                         bg-green-200 p-1 font-bold text-green-800 px-4 py-2'
-                  >
-                    Order Paid
-                  </p>
-                ) : (
-                  <Link
-                    href={`/orders/${order._id}`}
-                    className='border min-w-fit border-red-300 rounded-lg shadow-sm shadow-red-300
-                         bg-red-200 p-1 font-bold text-red-800 px-4 py-2'
-                  >
-                    Go to pay
-                  </Link>
-                )}
-              </div>
-              <div className='w-1/4 lg:w-[20%] flex justify-center'>
-                {order.isDelivered ? (
-                  <p
-                    className='min-w-fit border border-green-300 rounded-lg shadow-sm shadow-green-300
-                         bg-green-200 p-1 font-bold text-green-800 px-4 py-2'
-                  >
-                    Order Delivered
-                  </p>
-                ) : (
-                  <p
-                    className='border min-w-fit border-red-300 rounded-lg shadow-sm shadow-red-300
-                         bg-red-200 p-1 font-bold text-red-800 px-4 py-2'
-                  >
-                    Waiting Delivery
-                  </p>
-                )}
-              </div>
-
-              <div className='w-[8%]'>
-                <button
-                  type='button'
-                  onClick={() => router.push(`/orders/${order._id}`)}
-                  className='rounded-lg border hover:bg-blue-500 bg-yellow p-2
-                    text-black font-medium font-roboto '
-                >
-                  Details
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+    <section className='w-full flex flex-col items-center space-y-4 overflow-visible'>
+      <div className='w-full flex mb-8 gap-8'>
+        <h1 className='font-bold uppercase text-lg md:txt-xl lg:text-2xl font-inter max-w-fit group'>
+          Order History
+          <span
+            className='
+                  left-0
+                  bottom-0
+                  block
+                  w-2/3
+                  h-1.25
+                  bg-primary
+                  group-hover:w-full
+                '
+          />
+        </h1>
+        {max && (
+          <div className='border border-primary text-xs sm:text-sm rounded-2xl bg-muted/20  py-2 px-4 hover:scale-105 text-nowrap'>
+            <Link href={'/profile?tab=orders'}>See More</Link>
+          </div>
+        )}
       </div>
-      <div className='md:hidden'>
-        <ul className='w-[90vw]  flex flex-col gap-3'>
-          {orders.map(order => (
-            <li
-              key={order._id.toString()}
-              className='border rounded-xl border-pink flex items-center gap-3 p-2 bg-gray-200 bg-opacity-50 backdrop-blur-2xl'
+      {orders.map(order => (
+        <div
+          key={order._id.toString()}
+          className='card-gradient-cyan-magenta px-4 py-4 mx-4 max-w-[90vw] w-full flex flex-col md:flex-row  gap-4 items-center'
+        >
+          <Link
+            href={`/orders/${order._id}`}
+            className='w-fit shrink-0  rounded-2xl mg:rounded-l-2xl flex justify-center'
+          >
+            <div className='relative w-20 aspect-square  '>
+              <Image
+                src={order.orderItems[0].images![0]}
+                alt={'Image'}
+                fill
+                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                loading='eager'
+                className='object-contain z-0 rounded-2xl p-1'
+              />
+            </div>
+          </Link>
+          <section className='flex flex-col space-y-4 md:space-y-0 space-x-8 xl:flex-row xl:items-center justify-between min-w-0 w-full'>
+            <div className='w-full text-center md:text-left'>
+              <h1 className='line-clamp-1 truncate text-lg font-semibold'>{order._id.toString()}</h1>
+              <p className='text-muted text-nowrap '>
+                {new Date(order.createdAt!).toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              </p>
+            </div>
+            <div className='flex flex-col lg:flex-row w-full space-x-8 space-y-2  text-left justify-center items-center md:items-start lg:justify-start lg:items-baseline'>
+              <p className='text-nowrap'>{order.orderItems.reduce((a, c) => a + c.quantity, 0)} items</p>
+              <p className='text-xl font-bold font-plus-jakarta-sans'>${order.totalPrice}</p>
+            </div>
+          </section>
+
+          <div className='flex flex-col xl:flex-row items-center gap-4 justify-end w-fit lg:w-full'>
+            <div className='lg:flex lg:items-center lg:justify-center lg:w-full'>
+              <ShippingStatusSelector
+                order={order}
+                setOrders={setOrders}
+              />
+            </div>
+
+            <Link
+              href={`/orders/${order._id}`}
+              className='flex shrink gap-1 items-center px-4 py-2 rounded-2xl text-nowrap hover:text-muted hover:bg-muted/30'
             >
-              <div className='w-full flex flex-col gap4'>
-                <div className='flex flex-col sm:flex-row sm:gap-3 sx:items-center'>
-                  <p className='truncate'>
-                    <strong>ID:</strong> {order._id.toString()}
-                  </p>
-                  <p className='flex gap-1'>
-                    <strong>Date:</strong>
-                    <span>{order.createdAt!.toString().slice(0, 10)}</span>
-                  </p>
-                </div>
-
-                <div className='w-full flex flex-col sm:flex-row gap-4 sm:items-center'>
-                  <p>
-                    <strong>Price:</strong> ${order.totalPrice}
-                  </p>
-                  {order.isPaid ? (
-                    <p
-                      className='min-w-fit border border-green-300 rounded-lg shadow-sm shadow-green-300
-                         bg-green-200 p-1 font-bold text-green-800 text-center sm:mt-2'
-                    >
-                      Order Paid
-                    </p>
-                  ) : (
-                    <Link
-                      href={`/orders/${order._id}`}
-                      className='border min-w-fit border-red-300 rounded-lg shadow-sm shadow-red-300
-                         bg-red-200 p-1 font-bold text-red-800 px-4 py-2'
-                    >
-                      Go to pay
-                    </Link>
-                  )}
-
-                  {order.isDelivered ? (
-                    <p
-                      className='min-w-fit text-center border border-green-300 rounded-lg shadow-sm shadow-green-300
-                         bg-green-200 p-1 font-bold text-green-800 sm:mt-2'
-                    >
-                      Order Delivered
-                    </p>
-                  ) : (
-                    <p
-                      className='border min-w-fit border-red-300 rounded-lg shadow-sm shadow-red-300
-                         bg-red-200 p-1 font-bold text-red-800 text-center sm:mt-2'
-                    >
-                      Waiting Delivery
-                    </p>
-                  )}
-                  <button
-                    type='button'
-                    onClick={() => router.push(`/orders/${order._id}`)}
-                    className='w-[60vw] mx-auto sm:hidden rounded-lg border hover:bg-blue-500 bg-yellow py-3 px-4
-                    text-black font-medium font-serif '
-                  >
-                    Details
-                  </button>
-                </div>
-              </div>
-              <div className='hidden sm:inline-flex w-1/4'>
-                <button
-                  type='button'
-                  onClick={() => router.push(`/orders/${order._id}`)}
-                  className='w-full rounded-lg border hover:bg-blue-500 bg-yellow py-3 px-4
-                    text-black font-medium font-serif '
-                >
-                  Details
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Container>
+              View Details
+              <FaChevronRight />
+            </Link>
+          </div>
+        </div>
+      ))}
+    </section>
   )
 }
 

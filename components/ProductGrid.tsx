@@ -1,108 +1,141 @@
+'use client'
+
 import { useAppDispatch } from '@/lib/hooks/redux.hooks'
 import { productApi } from '@/lib/modules/productsApiClient'
 import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
-import { IProduct, ProductGridProps } from '@/lib/types'
-import { getDate } from '@/lib/utils'
-import React, { useEffect, useState } from 'react'
+import { IPagination, IProduct, ProductGridProps } from '@/lib/types'
+import { getParamsString } from '@/lib/utils'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import ProductCard from './ProductCard'
 import ProductNotFound from './ProductNotFound'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
-const ProductGrid = ({ filter, priceFilter, priceSort, query }: ProductGridProps) => {
+const ProductGrid = ({ filter, priceFilter, sortBy }: ProductGridProps) => {
+  const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
   const [products, setProducts] = useState<IProduct[]>([])
+  const [pagination, setPagination] = useState<IPagination | null>(null)
 
-  useEffect(() => {
-    const getProducts = async () => {
-      const { res, error } = await productApi.getList()
-      if (res) {
-        if (
-          res.filter(
-            (product: IProduct) =>
-              product.name?.toLowerCase()?.includes(query?.toLowerCase()) ||
-              product.category?.toLowerCase()?.includes(query?.toLowerCase()) ||
-              product._id?.toString().toLowerCase()?.includes(query?.toLowerCase()),
-          ).length <= 0
-        )
-          toast.error('Product not found')
-        setProducts(
-          res.filter(
-            (product: IProduct) =>
-              product.name?.toLowerCase()?.includes(query?.toLowerCase()) ||
-              product.category?.toLowerCase()?.includes(query?.toLowerCase()) ||
-              product._id?.toString().toLowerCase()?.includes(query?.toLowerCase()),
-          ),
-        )
-      }
+  const activeQuery = searchParams.get('query') || ''
+  const page = searchParams.get('page') || '1'
+  const pageSize = searchParams.get('page_size') || '24'
 
-      if (error) toast.error(error.toString())
+  const paramsString = getParamsString({ query: activeQuery, page, pageSize, filter, priceFilter, sortBy })
+  const router = useRouter()
+
+  const handlePageChange = (pageNumber: number) => {
+    try {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set('page', String(pageNumber))
+      router.push(`?${params.toString()}`)
+    } catch (e) {
+      if (e) toast.error('Redirecing')
+      router.push(getParamsString({ query: activeQuery, page, pageSize, filter, priceFilter, sortBy }))
     }
-    getProducts()
-  }, [query])
+  }
 
-  useEffect(() => {
-    const getProducts = async () => {
-      const { res, error } = await productApi.getList()
-      if (res) {
-        if (priceSort === 'Lower to Higher') {
-          setProducts(res.sort((a: IProduct, b: IProduct) => a.price! - b.price!))
-        } else if (priceSort === 'Higher to Lower') {
-          setProducts(res.sort((a: IProduct, b: IProduct) => b.price! - a.price!))
-        } else if (priceSort === 'Latest') {
-          setProducts(res.sort((a: IProduct, b: IProduct) => getDate(b).getTime() - getDate(a).getTime()))
-        } else if (priceSort === 'top_rated') {
-          setProducts(res.sort((a: IProduct, b: IProduct) => b.rating! - a.rating!))
-        } else {
-          setProducts(res)
-        }
-      }
-      if (error) toast.error(error.toString())
+  const getPageNumbers = (totalPages: number, current: number) => {
+    const pages: number[] = []
+    const maxButtons = 7
+    let start = Math.max(1, current - Math.floor(maxButtons / 2))
+    const end = Math.min(totalPages, start + maxButtons - 1)
+
+    if (end - start + 1 < maxButtons) {
+      start = Math.max(1, end - maxButtons + 1)
     }
-    getProducts()
-  }, [priceSort])
+
+    for (let i = start; i <= end; i++) pages.push(i)
+    return pages
+  }
 
   useEffect(() => {
+    let isMounted = true
+
     const getProducts = async () => {
       dispatch(setGlobalLoading(true))
-      const { res, error } = await productApi.getList()
-      if (res) {
-        setProducts(res)
+
+      try {
+        const { res, error } = await productApi.getList(paramsString)
+
+        const fetchedProducts = Array.isArray(res) ? res : (res?.products ?? [])
+        const fetchedPagination = res.pagination
+
+        if (res?.status || error) {
+          if (isMounted) {
+            setProducts([])
+            toast.error(res.message)
+          }
+          return
+        }
+
+        if (isMounted) {
+          setProducts(fetchedProducts)
+          setPagination(fetchedPagination)
+        }
+      } catch (error) {
+        if (isMounted) {
+          toast.error(error instanceof Error ? error.message : 'Something went wrong while loading products')
+          setProducts([])
+          setPagination(null)
+        }
+      } finally {
+        if (isMounted) {
+          dispatch(setGlobalLoading(false))
+        }
       }
-      if (error) toast.error(error.toString())
-      dispatch(setGlobalLoading(false))
     }
+
     getProducts()
-  }, [dispatch])
+
+    return () => {
+      isMounted = false
+    }
+  }, [activeQuery, dispatch, sortBy, paramsString])
 
   return (
-    <div className='w-[95vw] md:w-[90vw] flex flex-col items-center pb-12'>
-      <p className='my-2'>{'Category: ' + filter.toUpperCase() + ' / Min Price: ' + priceFilter[0] + ' / Max Price: ' + priceFilter[1] + ' / Sort: ' + priceSort.toUpperCase()}</p>
-      {filter !== 'All products' &&
-        products?.filter(product => product.category === filter)?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1]).length <= 0 && (
-          <ProductNotFound />
-        )}
-      {filter === 'All products' && products?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])?.length <= 0 && <ProductNotFound />}
-      <div className='w-[80vw] grid gap-8 xl:gap-12 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center justify-stretch'>
-        {filter !== 'All products' &&
-          products
-            ?.filter(product => product.category === filter)
-            ?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])
-            ?.map(product => (
-              <ProductCard
-                key={product._id.toString()}
-                product={product}
-              />
-            ))}
-        {filter === 'All products' &&
-          products
-            ?.filter(product => product.price! >= priceFilter[0] && product.price! <= priceFilter[1])
-            ?.map(product => (
-              <ProductCard
-                key={product._id.toString()}
-                product={product}
-              />
-            ))}
+    <div className='w-full flex flex-col items-center pb-12 row-span-1 lg:col-span-4 xl:col-span-3 overflow-y-visible'>
+      {products.length <= 0 && <ProductNotFound />}
+      <div className='w-full grid gap-4 xl:gap-8  grid-cols-1  md:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-6  place-items-center justify-center md:justify-stretch'>
+        {products.length > 0 &&
+          products.map(product => (
+            <ProductCard
+              key={product._id.toString()}
+              product={product}
+            />
+          ))}
       </div>
+      {/* Pagination controls */}
+      {pagination && pagination.totalPages > 1 && products.length > 0 && (
+        <div className='w-fit max-w-[80vw] mt-8 flex items-center justify-center flex-wrap gap-2'>
+          <button
+            onClick={() => handlePageChange(Math.max(1, (pagination.currentPage || 1) - 1))}
+            disabled={!pagination.hasPrevPage}
+            className={`px-3 py-1 rounded-xl border ${!pagination.hasPrevPage ? 'opacity-40 cursor-not-allowed' : 'hover:bg-muted/30'}`}
+          >
+            Prev
+          </button>
+
+          {getPageNumbers(pagination.totalPages, pagination.currentPage).map(p => (
+            <button
+              key={p}
+              onClick={() => handlePageChange(p)}
+              className={`px-3 py-1 rounded-xl border ${p === pagination.currentPage ? 'bg-muted/40 text-white' : 'hover:bg-muted/30'}`}
+            >
+              {p}
+            </button>
+          ))}
+
+          <button
+            onClick={() => handlePageChange(Math.min(pagination.totalPages, (pagination.currentPage || 1) + 1))}
+            disabled={!pagination.hasNextPage}
+            className={`px-3 py-1 rounded-xl border ${!pagination.hasNextPage ? 'opacity-40 cursor-not-allowed' : 'hover:bg-muted/30'}`}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   )
 }

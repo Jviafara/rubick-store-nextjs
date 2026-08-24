@@ -1,26 +1,438 @@
 @import 'tailwindcss';
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  color: var(--foreground);
+  scroll-behavior: smooth;
+  min-height: 100vh;
+}
+
 input {
   text-align: left;
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+button {
+  cursor: pointer;
 }
 
-@theme {
-  /* Custom spacing */
-  --spacing-5px: 5px;
+:root {
+  /* Light Theme Colors */
+  --background: #fafafa;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --primary: #2563eb;
+  --secondary: #7c3aed;
+  --tertiary: #059669; /* Neon emmerald */
+  --accent: #ffd600;
+  --foreground: #0f172a;
+  --foreground-muted: #64748b;
+  --foreground-on-accent: #ffffff;
+  --disabled: #e2e8f0;
+  --primary-to-secondary: linear-gradient(to right, var(--primary), var(--color-secondary));
 
-  /* Custom breakpoints */
-  --breakpoint-xs: 375px;
+  /* Text */
+  --main: #0f172a;
+  --muted: #64748b;
 
-  /* Custom colors */
-  --color-orange: #feba71;
-  --color-yellow: #ffdc7e;
-  --color-pink: #ffc7b0;
+  /* Background img */
+  --bg-polygon-url: url('/assets/light-polygons.png');
+  --bg-solid: #fafafa;
+}
+.dark {
+  --background: #0f172a;
+  --surface: #1e293b;
+  --border: #334155;
+  --primary: #00f0ff; /* Cyan Glow */
+  --secondary: #ff007a; /* Neon Magenta */
+  --tertiary: #059669; /* Neon emmerald */
+  --accent: #ffd600; /* Solar Yellow */
+  --foreground: #f8fafc;
+  --foreground-muted: #94a3b8;
+  --foreground-on-accent: #0f172a;
+  --disabled: #1e293b;
+  --primary-to-secondary: linear-gradient(to right, var(--primary), var(--secondary));
 
-  /* Custom fonts */
-  --font-roboto: 'Roboto', sans-serif;
+  /* Text */
+  --main: #f8fafc;
+  --muted: #94a3b8;
+
+  /* Background img */
+  --bg-polygon-url: url('/assets/dark-polygons.png');
+  --bg-solid: #0f172a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
+  --color-accent: var(--accent);
+  --color-main: var(--main);
+  --color-muted: var(--muted);
+  --color-disabled: var(--muted);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-accent: var(--foreground-on-accent);
+  --color-primary-to-secondary: var(--primary-to-secondary);
+
+  /* fonts */
+  --font-inter: var(--font-inter);
+  --font-plus-jakarta-sans: var(--font-plus-jakarta-sans);
+  --font-seaweed-script: var(--font-seaweed-script);
+
+  /* BreackPoints */
+  --breakpoint-xs: 30rem; /* 480px */
+  --breakpoint-3xl: 120rem; /* 1920px */
+}
+
+@layer utilities {
+  .bg-polygon-responsive {
+    background-image: var(--bg-polygon-url);
+    background-color: var(--bg-solid);
+    background-size: cover;
+    background-position: center;
+    /* background-repeat: no-repeat; */
+  }
+
+  /* 1. Base Default Product Card */
+  .card-base {
+    position: relative;
+    border-radius: 1.25rem;
+    background:
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-foreground) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
+        padding-box,
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-foreground) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
+        padding-box,
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-main) 0%, var(--color-main) 100%) border-box;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .card-base::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--card-hover-background, transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card-base:hover::before {
+    opacity: 1;
+  }
+
+  .card-base > * {
+    z-index: 1;
+  }
+
+  .hover-gradient-cyan-magenta {
+    --card-hover-background:
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
+        padding-box,
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-secondary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
+        padding-box,
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%) border-box;
+  }
+
+  .hover-gradient-cyan-magenta:hover {
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-secondary) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-primary) r g b / 0.45);
+  }
+
+  .hover-gradient-emerald-cyan {
+    --card-hover-background:
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
+        padding-box,
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
+        padding-box,
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-primary) 100%) border-box;
+  }
+
+  .hover-gradient-emerald-cyan:hover {
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-primary) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-tertiary) r g b / 0.45);
+  }
+
+  .hover-gradient-featured {
+    --card-hover-background:
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 40%
+        )
+        padding-box,
+      radial-gradient(
+          circle at top right,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 40%
+        )
+        padding-box,
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-secondary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 40%
+        )
+        padding-box,
+      radial-gradient(
+          circle at bottom left,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 40%
+        )
+        padding-box,
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-primary) 0%, var(--color-tertiary) 50%, var(--color-secondary) 100%)
+        border-box;
+  }
+
+  .hover-gradient-featured:hover {
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-secondary) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-primary) r g b / 0.45);
+  }
+
+  /* 2. Cyan-to-Magenta Gradient Card (MoYu WeiLong) */
+  .card-gradient-cyan-magenta {
+    position: relative;
+    border-radius: 1.25rem;
+    border: 1.5px solid transparent;
+    box-shadow: 0 0 25px -5px rgba(0, 240, 255, 0.2);
+    transition: all 0.3s ease;
+    background:
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
+        padding-box,
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-secondary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
+        padding-box,
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%) border-box;
+  }
+  .card-gradient-cyan-magenta:hover {
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-secondary) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-primary) r g b / 0.45);
+  }
+
+  /* 3. Green-to-Cyan Gradient Card (Bottom-left green card) */
+  .card-gradient-emerald-cyan {
+    position: relative;
+    border-radius: 1.25rem;
+    border: 2px solid transparent;
+    box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
+    transition: all 0.3s ease;
+    background:
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
+        padding-box,
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 35%,
+          transparent 50%
+        )
+        padding-box,
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-primary) 100%) border-box;
+  }
+
+  .card-gradient-emerald-cyan:hover {
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-primary) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-tertiary) r g b / 0.45);
+  }
+
+  /* 4. Full Featured Spectrum Gradient Card (Top-right Square-1) */
+
+  .card-gradient-featured {
+    position: relative;
+    border-radius: 1.25rem;
+    border: 2px solid transparent;
+    box-shadow:
+      4px 4px 15px -2px rgba(from var(--color-accent) r g b / 0.45),
+      -4px -4px 15px -2px rgba(from var(--color-primary) r g b / 0.45);
+    transition: all 0.3s ease;
+    background:
+      radial-gradient(
+          circle at top left,
+          rgba(from var(--color-primary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 25%,
+          transparent 40%
+        )
+        padding-box,
+      radial-gradient(
+          circle at top right,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 25%,
+          transparent 40%
+        )
+        padding-box,
+      radial-gradient(
+          circle at bottom right,
+          rgba(from var(--color-accent) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 25%,
+          transparent 40%
+        )
+        padding-box,
+      radial-gradient(
+          circle at bottom left,
+          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
+          rgba(from var(--color-surface) r g b / 0.95) 25%,
+          transparent 40%
+        )
+        padding-box,
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-primary) 0%, var(--color-tertiary) 50%, var(--color-accent) 100%) border-box;
+  }
+
+  .card-gradient-featured:hover {
+    box-shadow:
+      4px 4px 35px -4px rgba(from var(--color-accent) r g b / 0.45),
+      -4px -4px 35px -4px rgba(from var(--color-primary) r g b / 0.45);
+  }
+}
+
+th,
+td {
+  padding: 10px 20px;
+  text-align: left;
+  height: 100%;
+  overflow-wrap: break-word;
+}
+
+/* Green Status (paid / delivered) */
+.status-paid,
+.status-delivered {
+  border-color: rgb(134, 239, 172);
+  background-color: rgb(187, 247, 208);
+  color: rgb(22, 101, 52);
+  --tw-shadow-color: rgb(134, 239, 172);
+  box-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgba(0, 0, 0, 0.1));
+}
+
+/* Red Status (unpaid / pending) */
+.status-unpaid,
+.status-pending {
+  border-color: rgb(252, 165, 165);
+  background-color: rgb(254, 202, 202);
+  color: rgb(153, 27, 27);
+  --tw-shadow-color: rgb(252, 165, 165);
+  box-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgba(0, 0, 0, 0.1));
+}
+
+/* Yellow Status (shipped) */
+.status-shipped {
+  border-color: #155dfc;
+  background-color: rgb(66, 165, 245);
+  color: #193cb8;
+  --tw-shadow-color: #155dfc;
+  box-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgba(0, 0, 0, 0.1));
+}
+
+.center-nav-li {
+  padding: 8px 16px;
+  border-radius: calc(infinity * 1px);
+}
+
+.action-button {
+  background:
+    radial-gradient(
+        circle at top left,
+        rgba(from var(--color-foreground) r g b / 0.25) 0%,
+        rgba(from var(--color-surface) r g b / 0.95) 35%,
+        transparent 50%
+      )
+      padding-box,
+    radial-gradient(
+        circle at bottom right,
+        rgba(from var(--color-foreground) r g b / 0.25) 0%,
+        rgba(from var(--color-surface) r g b / 0.95) 35%,
+        transparent 50%
+      )
+      padding-box,
+    linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+    linear-gradient(135deg, var(--color-main) 0%, var(--color-main) 100%) border-box;
+  border: 1px solid transparent;
+  @apply mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-xl  text-xs font-bold text-main  transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-40;
+}
+
+.gradient-button {
+  @apply mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-xl
+    bg-linear-to-r from-primary via-blue-500 to-secondary
+    text-xs font-bold text-white
+    shadow-[0_0_25px_rgba(0,240,255,0.12)]
+    transition
+    hover:scale-[1.02]
+    hover:shadow-[0_0_35px_rgba(0,240,255,0.2)]
+    disabled:cursor-not-allowed
+    disabled:opacity-40;
+}
+
+.text-gradient-cyan-magenta {
+  @apply bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent;
+}
+.text-gradient-emerald-cyan {
+  @apply bg-linear-to-r from-tertiary to-primary bg-clip-text text-transparent;
 }

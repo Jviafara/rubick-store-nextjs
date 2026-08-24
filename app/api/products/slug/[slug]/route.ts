@@ -2,7 +2,7 @@ import Product from '@/lib/models/product'
 import connectDB from '@/lib/mongodb'
 import responseHandler from '@/lib/responseHandler'
 
-export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
+export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
   try {

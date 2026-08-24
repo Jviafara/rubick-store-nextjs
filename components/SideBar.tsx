@@ -1,61 +1,64 @@
-import menuConfigs from '@/lib/configs/menu.config'
-import { ISidebarProps } from '@/lib/types'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
-import { motion } from 'framer-motion'
-import Logo from './Logo'
+import { useCallback, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import SearchBar from './SearchBar'
+import { toogleModalService } from '@/lib/redux/features/modalSlice'
+import { useAppDispatch } from '@/lib/hooks/redux.hooks'
 import { useScrollLock } from '@/lib/hooks/useScrollLock'
 
-const SideBar = ({ open, toggleSidebar }: ISidebarProps) => {
-  const sideNavRef = useRef(null)
-  const [mounted, setMounted] = useState(false)
+const SideBar = () => {
+  const pathname = usePathname()
+  const [query, setQuery] = useState('')
+  const router = useRouter()
+  const dispatch = useAppDispatch()
 
-  useScrollLock(open)
+  useScrollLock(true)
 
-  useEffect(() => {
-    const mountSidebar = () => {
-      setMounted(true)
-      return () => setMounted(false)
+  const handleSearchClick = useCallback(() => {
+    if (query === '') {
+      return
     }
-    mountSidebar()
-  }, [])
 
-  if (!open || !mounted || typeof document === 'undefined') return null
+    dispatch(toogleModalService(false))
+    router.push(`/products/?query=${query}`)
+  }, [query, router, dispatch])
 
-  return createPortal(
-    <div className='fixed inset-0 z-50 flex items-center justify-center'>
-      {/* <!-- Backdrop with Fade-In Blur --> */}
-      <div
-        className='absolute w-screen h-screen inset-0 z-99 backdrop-blur-xs'
-        onClick={toggleSidebar}
-      ></div>
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.3 }}
-        ref={sideNavRef}
-        id='sidebar'
-        className='w-75 h-screen p-4 flex flex-col gap-2 fixed inset-0 z-999 bg-transparent  backdrop-blur-lg text-black md:hidden'
-      >
-        <Logo />
-        <ul className='flex flex-col gap-2 ml-4 justify-center  text-primary text-lg'>
-          {menuConfigs.main.map((item, index) => (
-            <li key={index}>
-              <Link
-                href={item.path}
-                onClick={toggleSidebar}
-                className='flex max-w-max items-center gap-2 rounded-lg py-1 px-2 hover:bg-gray-400 hover:scale-105'
-              >
-                <item.icon size={24} />
-                <h6 className='font-medium'>{item.display.toUpperCase()}</h6>
-              </Link>
-            </li>
-          ))}
+  return (
+    <div className='w-screen md:w-fit h-full px-4 py-4 flex  flex-col space-y-4 justify-center'>
+      <div className='border rounded-2xl px-2 py-4 flex flex-col gap-4'>
+        <SearchBar
+          query={query}
+          setQuery={setQuery}
+          handleSearchClick={handleSearchClick}
+        />
+        <ul className='flex flex-col text-main text-xl'>
+          <li className={`${pathname.includes('products') && 'bg-surface/90'} center-nav-li`}>
+            <Link
+              href='/products'
+              onClick={() => dispatch(toogleModalService(false))}
+            >
+              Cubes
+            </Link>
+          </li>
+          <li className={`${pathname.includes('tutorials') && 'bg-surface/90'} center-nav-li`}>
+            <Link
+              href='/tutorials'
+              onClick={() => dispatch(toogleModalService(false))}
+            >
+              Tutorials
+            </Link>
+          </li>
+          <li className={`${pathname.includes('timer') && 'bg-surface/90'} center-nav-li`}>
+            <Link
+              href='/timer'
+              onClick={() => dispatch(toogleModalService(false))}
+            >
+              Timer
+            </Link>
+          </li>
         </ul>
-      </motion.div>
-    </div>,
-    document.body,
+      </div>
+    </div>
   )
 }
 

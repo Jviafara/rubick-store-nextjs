@@ -1,27 +1,32 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter, Plus_Jakarta_Sans, Seaweed_Script } from 'next/font/google'
 import './globals.css'
 import StoreProvider from './StoreProvider'
-import { ToastContainer } from 'react-toastify'
 import ToastProvider from './ToastProvider'
-import Navbar from '@/components/Navbar'
-import GlobalLoading from '@/components/GlobalLoading'
+import AppShell from '@/components/AppShell'
+import ThemeProvider from './ThemeProvider'
 
 // Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: '--font-plus-jakarta-sans',
   subsets: ['latin'],
 })
 
+const seaweedScript = Seaweed_Script({
+  variable: '--font-seaweed-script',
+  subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
+})
 export const metadata: Metadata = {
   title: 'Rubick Store',
   description:
@@ -36,36 +41,13 @@ export default function RootLayout({
   return (
     <html
       lang='en'
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${plusJakartaSans.variable} ${seaweedScript.variable} h-full antialiased `}
     >
-      <body className='min-h-full flex flex-col'>
+      <body className='min-h-screen w-full max-w-[100vw] bg-polygon-responsive relative'>
         <StoreProvider>
+          <ThemeProvider />
           <ToastProvider>
-            <ToastContainer
-              position='bottom-left'
-              autoClose={1000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              pauseOnFocusLoss
-              pauseOnHover
-            />
-            <div
-              style={{
-                backgroundImage: 'url(/assets/background.jpg)',
-              }}
-              className='w-screen h-full fixed bg-top-left bg-cover z-[-999]'
-            />
-            {/* Header */}
-            <header>
-              <Navbar />
-            </header>
-
-            {/* Global Loading */}
-            <GlobalLoading />
-            {/* Global Loading */}
-
-            {children}
+            <AppShell>{children}</AppShell>
           </ToastProvider>
         </StoreProvider>
       </body>

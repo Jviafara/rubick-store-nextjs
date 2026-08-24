@@ -26,6 +26,7 @@ A modern fullstack e-commerce application built with Next.js, TypeScript, and Mo
 ## Migration History
 
 This application was originally developed as a MERN stack project: (Original Project repository: https://github.com/Jviafara/RubicksStore/)
+
 - MongoDB
 - Express
 - React
