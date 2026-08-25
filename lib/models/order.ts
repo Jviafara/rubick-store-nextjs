@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { IOrder } from '../types'
+import { IFullOrder, IOrder } from '../types'
 
 const orderSchema = new mongoose.Schema(
   {
@@ -17,7 +17,14 @@ const orderSchema = new mongoose.Schema(
         },
       },
     ],
-    shippingAddress: { type: mongoose.Types.ObjectId, ref: 'Address', required: true },
+    shippingAddress: {
+      name: { type: String, required: true },
+      address: { type: String, required: true },
+      phone: { type: String, required: true },
+      city: { type: String, required: true },
+      postalCode: { type: String, required: true },
+      country: { type: String, required: true },
+    },
     paymentId: { type: String },
     itemsPrice: { type: Number, required: true },
     shippingPrice: { type: Number, required: true },
@@ -37,6 +44,6 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true },
 )
 
-const Order = mongoose.models.Order || mongoose.model<IOrder>('Order', orderSchema)
+const Order = mongoose.models.Order || mongoose.model<IFullOrder>('Order', orderSchema)
 
 export default Order

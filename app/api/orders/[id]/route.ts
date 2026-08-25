@@ -16,7 +16,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 
     await connectDB()
-    const order = await Order.findById(id).populate('shippingAddress')
+    const order = await Order.findById(id)
     if (!order) return responseHandler.notFound()
     return responseHandler.ok(order)
   } catch (e) {
