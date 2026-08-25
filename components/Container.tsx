@@ -4,9 +4,9 @@ import Link from 'next/link'
 const Container = ({ header, children, seeMore }: ContainerProps) => {
   return (
     <div className='mb-20 w-full max-w-[90vw]'>
-      <div className='flex flex-col gap-8 w-full items-center '>
+      <div className='flex flex-col gap-8 w-full items-start'>
         {header && (
-          <div className='relative xs:px-5 md:p-0 max-w-[90vw] md:max-w-341.5 mx-auto w-full flex items-center gap-8 '>
+          <div className='relative xs:px-5 md:p-0 max-w-[90vw] md:max-w-341.5 w-full flex items-center justify-start gap-8  overflow-x-hidden'>
             <h1 className='font-bold uppercase text-lg md:txt-xl lg:text-2xl font-inter max-w-fit group'>
               {header}
               <span

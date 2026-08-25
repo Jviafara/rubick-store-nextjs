@@ -139,7 +139,7 @@ export interface IShippingAddress extends Document {
   phone: string
   postalCode: string
   country: string
-  user: mongoose.Types.ObjectId
+  user?: mongoose.Types.ObjectId
 }
 
 export interface CreateAddressProps {

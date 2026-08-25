@@ -211,8 +211,8 @@ export default function RubiksCube() {
         <HeroHeading />
 
         {/* Main experience */}
-        <div className='grid items-center gap-5 xl:grid-cols-[250px_minmax(0,1fr)_250px]'>
-          <section className='flex flex-col xl:flex-row gap-5 w-full col-span-2'>
+        <div className='items-stretch flex flex-col xl:flex-row gap-5'>
+          <section className='flex flex-3 flex-col xl:flex-row gap-5 w-full '>
             {/* LEFT PANEL */}
             <div className=' space-y-5  shrink h-full w-full xl:w-1/4 flex flex-col items-start xl:order-1'>
               {/* Status */}
@@ -400,9 +400,9 @@ export default function RubiksCube() {
           </section>
 
           {/* RIGHT PANEL */}
-          <div className='order-3 space-y-5 flex flex-col md:flex-row xl:flex-col gap-5 items-center md:items-stretch xl:items-start h-full w-full'>
+          <div className='flex-1 flex flex-col md:flex-row xl:flex-col gap-5 items-stretch xl:items-baseline h-full w-full'>
             {/* Scramble */}
-            <div className='card-base relative overflow-hidden rounded-2xl p-4 w-full h-full xl:h-fit flex flex-col justify-between'>
+            <div className='card-base relative overflow-hidden rounded-2xl p-4 w-full  flex flex-col justify-between '>
               <div className='mb-4 flex items-center  gap-3'>
                 <div className='flex h-9 w-9 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary'>
                   <FaRandom />
@@ -431,7 +431,7 @@ export default function RubiksCube() {
             </div>
 
             {/* Solution */}
-            <div className='card-base rounded-2xl p-4 w-full'>
+            <div className='card-base rounded-2xl p-4 w-full '>
               <div className='mb-4 flex items-center gap-3'>
                 <div className='flex h-9 w-9 items-center justify-center rounded-xl border border-secondary/20 bg-secondary/10 text-fuchsia-300'>
                   <FaTrophy />
