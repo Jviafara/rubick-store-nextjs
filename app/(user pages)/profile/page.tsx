@@ -28,7 +28,7 @@ const ProfilePageContent = () => {
     }
   })
 
-  if (!session?.user) return null
+  if (!session?.user || isPending) return null
 
   return (
     <div className='w-screen max-w-[100w] min-h-[calc(100vh-76px)]  flex relative'>

@@ -14,8 +14,6 @@ import HeroFeatureRow from './HeroFeatureRow'
 import { MOVE_CONFIGS } from '@/lib/constants'
 import { CubeStatus } from '@/lib/types'
 
-CubeSolver.initSolver()
-
 export function parseMoveString(moveStr: string): SingleMove[] {
   if (!moveStr) return []
 
@@ -47,7 +45,17 @@ export default function RubiksCube() {
   const cubeStateRef = useRef(new CubeSolver())
   const currentAnimationRef = useRef<'idle' | 'scramble' | 'solve'>('idle')
 
-  const width = useWindowWidth() || 1024
+  const [solverReady, setSolverReady] = useState(false)
+
+  useEffect(() => {
+    const initSolver = () => {
+      CubeSolver.initSolver()
+      setSolverReady(true)
+    }
+    initSolver()
+  }, [])
+
+  const width = useWindowWidth()
 
   const isBusy = queue.length > 0
 
@@ -113,7 +121,7 @@ export default function RubiksCube() {
   }, [isBusy, scrambleInput])
 
   const handleSolve = useCallback(() => {
-    if (isBusy) return
+    if (isBusy || !solverReady) return
 
     const solutionString = cubeStateRef.current.solve()
     const parsedSolution = parseMoveString(solutionString)
@@ -130,7 +138,7 @@ export default function RubiksCube() {
     setSolutionMoves(solutionString)
     setStatus('solving')
     setQueue(parsedSolution)
-  }, [isBusy])
+  }, [isBusy, solverReady])
 
   const handleReset = useCallback(() => {
     window.location.reload()
@@ -181,6 +189,8 @@ export default function RubiksCube() {
   }[status]
 
   const solutionCount = parseMoveString(solutionMoves).length
+
+  if (!width) return null
 
   return (
     <section className='relative isolate w-full overflow-hidden '>
@@ -265,7 +275,7 @@ export default function RubiksCube() {
             </div>
 
             {/* CENTER CUBE */}
-            <div className='relative xl:order-2 w-full xl:w-3/4 min-h-115 overflow-hidden rounded-4xl border border-border/70 bg-surface/50 sm:min-h-140 lg:min-h-170'>
+            <div className='relative xl:order-2 w-full xl:w-3/4 h-115 overflow-hidden rounded-4xl border border-border/70 bg-surface/50 sm:h-140 lg:h-170'>
               {/* Inner ambient glow */}
               <div
                 aria-hidden='true'
@@ -277,7 +287,8 @@ export default function RubiksCube() {
                 aria-hidden='true'
                 className='pointer-events-none absolute inset-0 opacity-20'
                 style={{
-                  backgroundImage: 'linear-gradient(rgba(0,240,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,.08) 1px, transparent 1px)',
+                  backgroundImage:
+                    'linear-gradient(rgba(0,240,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,.08) 1px, transparent 1px)',
                   backgroundSize: '48px 48px',
                   maskImage: 'radial-gradient(circle at center, black 25%, transparent 75%)',
                   WebkitMaskImage: 'radial-gradient(circle at center, black 25%, transparent 75%)',
@@ -299,7 +310,7 @@ export default function RubiksCube() {
               />
 
               {/* Canvas */}
-              <div className='absolute inset-0'>
+              <div className='absolute inset-0 h-full w-full'>
                 <Canvas
                   camera={{
                     position: cameraPosition,
@@ -312,7 +323,7 @@ export default function RubiksCube() {
                   shadows={{
                     type: THREE.PCFShadowMap,
                   }}
-                  dpr={[1, 1.8]}
+                  dpr={[1, 1.25]}
                 >
                   <Environment
                     preset='studio'
@@ -386,7 +397,9 @@ export default function RubiksCube() {
                 <div className='flex items-center gap-2'>
                   <span className={`h-2 w-2 rounded-full ${statusConfig.dot}`} />
 
-                  <span className={`text-[10px] font-bold uppercase tracking-wider ${statusConfig.className}`}>{statusConfig.label}</span>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider ${statusConfig.className}`}>
+                    {statusConfig.label}
+                  </span>
                 </div>
               </div>
 
@@ -416,7 +429,9 @@ export default function RubiksCube() {
               </div>
 
               <div className='rounded-xl border border-border bg-black/10 p-3'>
-                <p className='wrap-break-words text-xs leading-5 text-foreground/70'>{scrambleInput || 'Loading scramble...'}</p>
+                <p className='wrap-break-words text-xs leading-5 text-foreground/70'>
+                  {scrambleInput || 'Loading scramble...'}
+                </p>
               </div>
 
               <button
@@ -450,7 +465,8 @@ export default function RubiksCube() {
                 ) : (
                   <div className='flex min-h-18.5 items-center justify-center text-center'>
                     <p className='max-w-45 text-xs leading-5 text-foreground/40'>
-                      Scramble the cube and press <span className='font-semibold text-primary'>Solve</span> to generate a solution.
+                      Scramble the cube and press <span className='font-semibold text-primary'>Solve</span> to generate
+                      a solution.
                     </p>
                   </div>
                 )}
@@ -459,7 +475,7 @@ export default function RubiksCube() {
               <button
                 type='button'
                 onClick={handleSolve}
-                disabled={isBusy}
+                disabled={isBusy || !solverReady}
                 className='gradient-button'
               >
                 <FaRocket />

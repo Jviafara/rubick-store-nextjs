@@ -33,6 +33,22 @@ export const metadata: Metadata = {
     'Rubick Store is a e-commerce platform built with Next.js, TypeScript, and Tailwind CSS. It offers a seamless shopping experience with a modern design and robust features. Developed by Jesús Viafara',
 }
 
+const themeScript = `
+(function () {
+  try {
+    const savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme === 'light') {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (_) {
+    document.documentElement.classList.add('dark');
+  }
+})();
+`
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,8 +57,12 @@ export default function RootLayout({
   return (
     <html
       lang='en'
-      className={`${inter.variable} ${plusJakartaSans.variable} ${seaweedScript.variable} h-full antialiased `}
+      suppressHydrationWarning
+      className={`${inter.variable} ${plusJakartaSans.variable} ${seaweedScript.variable}  dark`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className='min-h-screen w-full max-w-[100vw] bg-polygon-responsive relative'>
         <StoreProvider>
           <ThemeProvider />
