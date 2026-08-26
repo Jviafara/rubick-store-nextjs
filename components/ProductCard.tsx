@@ -20,7 +20,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   useEffect(() => {
     const checkInCart = () => {
-      if (cartItems.filter(item => item._id === product._id)) setInCart(cartItems.filter(item => item._id === product._id)[0])
+      if (cartItems.filter(item => item._id === product._id))
+        setInCart(cartItems.filter(item => item._id === product._id)[0])
     }
     checkInCart()
   }, [cartItems, product])
@@ -48,7 +49,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             src={product.images![0]}
             alt={'Image'}
             fill
-            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            sizes='(max-width: 768px) 85vw, (max-width: 1280px) 30vw, 220px'
             loading='eager'
             className='object-contain z-0 rounded-2xl'
           />
@@ -91,7 +92,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 size={28}
                 className={`${inCart && 'text-secondary'}`}
               />
-              {inCart && <span className='  text-xs  font-bold px-1 lg:px-1.5 py-0.5 rounded-full h-fit absolute -top-1 left-4  bg-red-600 text-white'>{inCart.quantity}</span>}
+              {inCart && (
+                <span className='  text-xs  font-bold px-1 lg:px-1.5 py-0.5 rounded-full h-fit absolute -top-1 left-4  bg-red-600 text-white'>
+                  {inCart.quantity}
+                </span>
+              )}
             </button>
           )}
         </div>
@@ -109,7 +114,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
       {/* Out of Stock or Total sold */}
       <div className='absolute top-2 left-2'>
-        {product.countInStock! <= 0 && <div className='rounded-2xl bg-secondary/80 py-1 px-2 w-fit font-bold text-nowrap text-xs  md:text-sm'>Out of Stock</div>}
+        {product.countInStock! <= 0 && (
+          <div className='rounded-2xl bg-secondary/80 py-1 px-2 w-fit font-bold text-nowrap text-xs  md:text-sm'>
+            Out of Stock
+          </div>
+        )}
       </div>
     </div>
   )

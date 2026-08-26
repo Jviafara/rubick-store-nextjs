@@ -1,11 +1,11 @@
 'use client'
 
-import RubiksCubeApp from './RubiksCube'
+import RubiksCube from './RubiksCube'
 
 const Hero = () => {
   return (
-    <header className='w-full h-full relative scrollbar-none flex flex-col gap-12'>
-      <RubiksCubeApp />
+    <header className='relative flex h-full w-full flex-col gap-12 scrollbar-none'>
+      <RubiksCube />
     </header>
   )
 }

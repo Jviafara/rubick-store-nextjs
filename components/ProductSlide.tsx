@@ -25,6 +25,7 @@ const ProductSlide = ({ slideType }: ProductSlideProps) => {
       if (error) toast.error(String(error))
       if (res.status >= 400) {
         toast.error(res.message)
+        dispatch(setGlobalLoading(false))
       } else if (res) {
         setProducts(res.products ? res.products : res)
         dispatch(setGlobalLoading(false))
