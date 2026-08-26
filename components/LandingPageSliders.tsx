@@ -8,9 +8,9 @@ import { SortByEnum } from '@/lib/constants'
 const LandingPageSliders = () => {
   return (
     <motion.main
-      initial={{ opacity: 0, y: 600 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2 }}
       className='w-full max-w-[100vw] md:w-[90%] lg:w-[85%] 2xl:w:[75%] mx-auto flex flex-col items-center relative overflow-x-hidden'
     >
       <Container

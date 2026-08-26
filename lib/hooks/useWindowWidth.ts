@@ -1,25 +1,21 @@
-'use client' // Required for Next.js App Router
+'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export function useWindowWidth() {
-  // Initialize with undefined so server and client renders match
-  const [windowWidth, setWindowWidth] = useState<number | undefined>(undefined)
+  const [width, setWidth] = useState(() => (typeof window !== 'undefined' ? window.innerWidth : 1280))
 
   useEffect(() => {
-    // This code only runs on the client side
-    function handleResize() {
-      setWindowWidth(window.innerWidth)
+    const handleResize = () => {
+      setWidth(window.innerWidth)
     }
-
-    // Set initial width immediately on mount
-    handleResize()
 
     window.addEventListener('resize', handleResize)
 
-    // Clean up event listener on unmount
-    return () => window.removeEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
   }, [])
 
-  return windowWidth
+  return width
 }
