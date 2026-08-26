@@ -1,3 +1,4 @@
+'use client'
 import { centerAnimations, colorClasses, leftAnimations, ModalPositions, rightAnimations } from '@/lib/constants'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/redux.hooks'
 import { toogleModalService } from '@/lib/redux/features/modalSlice'
@@ -13,18 +14,7 @@ const Modal = () => {
   const dispatch = useAppDispatch()
   const { config } = useAppSelector(state => state.modalService)
 
-  const {
-    modalOpen,
-    position = ModalPositions.Center,
-    header,
-    subTitle,
-    icon: Icon,
-    logo,
-    children,
-    closeButton,
-    confirmButton,
-    cancelButton,
-  } = config
+  const { modalOpen, position = ModalPositions.Center, header, subTitle, icon: Icon, logo, children, closeButton, confirmButton, cancelButton } = config
 
   const confirmClasses = colorClasses[(confirmButton?.color || 'primary') as keyof typeof colorClasses]
 

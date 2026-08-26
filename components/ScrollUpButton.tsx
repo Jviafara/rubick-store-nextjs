@@ -1,3 +1,4 @@
+'use client'
 import { SquareArrowUp } from 'lucide-react'
 
 const ScrollUpButton = () => {

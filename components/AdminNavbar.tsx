@@ -1,17 +1,17 @@
 'use client'
 
-import { useSession } from '@/lib/auth/auth-client'
 import Link from 'next/link'
-import { FaUserCircle } from 'react-icons/fa'
 import Logo from './Logo'
+import { useSession } from '@/lib/auth/auth-client'
 import { useRef, useState } from 'react'
 import UserMenu from './UserMenu'
+import { FaUserCircle } from 'react-icons/fa'
 
 const AdminNavbar = () => {
   const { data: session } = useSession()
+
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const userMenuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
   const clearUserMenuTimeout = () => {
     if (userMenuTimeoutRef.current) {
       clearTimeout(userMenuTimeoutRef.current)
@@ -36,45 +36,29 @@ const AdminNavbar = () => {
       return next
     })
   }
-
   return (
-    <div className='shadow-sm bg-gray-200/50 backdrop-blur-2xl py-4 md:px-4 text-black max-w-[100vw] w-full z-50'>
+    <div className=' py-4 md:px-4 text-main max-w-[100vw] w-full h-19 z-50 font-plus-jakarta-sans uppercase'>
       <UserMenu
         open={userMenuOpen}
         toggleMenu={toggleMenu}
       />
-
-      <nav className='flex items-center md:justify-between gap-0 px-4'>
-        <div>
+      <nav className='relative flex items-center justify-between gap-0 px-4'>
+        <div className='flex items-center gap-1'>
           <Link href='/'>
             <Logo />
           </Link>
         </div>
 
-        <ul className='list-none flex justify-between ml-auto items-center gap-1'>
-          {!session?.user && (
-            <li className='p-2 hover:shadow-lg rounded-full text-lg'>
-              <Link
-                href='/sign-in'
-                className='cursor-pointer flex items-center gap-1'
-              >
-                <h1>Sign In</h1>
-              </Link>
-            </li>
-          )}
-          {session?.user && (
-            <li className='p-2 hover:shadow-lg rounded-full text-lg '>
-              <div
-                onClick={toggleMenu}
-                className='flex gap-2 items-center'
-              >
-                <FaUserCircle size={24} />
+        {session?.user && (
+          <div
+            onClick={toggleMenu}
+            className='flex gap-2 items-center hover:border border-muted px-4 py-1.5 rounded-2xl hover:bg-surface cursor-pointer'
+          >
+            <FaUserCircle size={24} />
 
-                <h1 className='hidden md:inline-flex font-bold'>{session?.user?.name?.toUpperCase().split(' ')[0]}</h1>
-              </div>
-            </li>
-          )}
-        </ul>
+            <h1 className='hidden md:inline-flex font-bold'>{session?.user?.name?.toUpperCase().split(' ')[0]}</h1>
+          </div>
+        )}
       </nav>
     </div>
   )
