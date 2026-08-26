@@ -40,7 +40,7 @@ const admin = [
   {
     display: 'Orders List',
     icon: IoReceiptSharp,
-    state: 'order',
+    state: 'orders',
   },
   {
     display: 'Users List',

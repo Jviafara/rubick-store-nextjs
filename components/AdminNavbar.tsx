@@ -6,6 +6,7 @@ import { useSession } from '@/lib/auth/auth-client'
 import { useRef, useState } from 'react'
 import UserMenu from './UserMenu'
 import { FaUserCircle } from 'react-icons/fa'
+import ThemeButton from './ThemeButton'
 
 const AdminNavbar = () => {
   const { data: session } = useSession()
@@ -48,17 +49,19 @@ const AdminNavbar = () => {
             <Logo />
           </Link>
         </div>
+        <div className='flex gap-4 items-center'>
+          <ThemeButton />
+          {session?.user && (
+            <div
+              onClick={toggleMenu}
+              className='flex gap-2 items-center hover:border border-muted px-4 py-1.5 rounded-2xl hover:bg-surface cursor-pointer'
+            >
+              <FaUserCircle size={24} />
 
-        {session?.user && (
-          <div
-            onClick={toggleMenu}
-            className='flex gap-2 items-center hover:border border-muted px-4 py-1.5 rounded-2xl hover:bg-surface cursor-pointer'
-          >
-            <FaUserCircle size={24} />
-
-            <h1 className='hidden md:inline-flex font-bold'>{session?.user?.name?.toUpperCase().split(' ')[0]}</h1>
-          </div>
-        )}
+              <h1 className='hidden md:inline-flex font-bold'>{session?.user?.name?.toUpperCase().split(' ')[0]}</h1>
+            </div>
+          )}
+        </div>
       </nav>
     </div>
   )

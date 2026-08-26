@@ -96,7 +96,7 @@ const UserTable = ({ query, adminFilter, sortBy }: UserTableProps) => {
                   <Link
                     href={`/admin/user-orders/${user._id}`}
                     target='_blank'
-                    className='cursor-pointer px-2 py-1 border border-gray-400 rounded-xl bg-blue-400/60 hover:bg-blue-500'
+                    className='cursor-pointer px-2 py-1 text-main rounded-xl bg-primary/60 hover:bg-primary/90'
                   >
                     See orders
                   </Link>

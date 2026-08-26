@@ -51,7 +51,7 @@ const RightNav = () => {
 
         <li className='py-2 px-1 flex items-center text-lg'>
           <Link
-            href='/orders'
+            href='/profile?tab=orders'
             className='flex items-center gap-1'
           >
             <MdOutlineShoppingBag size={24} />

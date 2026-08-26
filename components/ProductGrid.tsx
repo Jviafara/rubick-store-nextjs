@@ -29,6 +29,7 @@ const ProductGrid = ({ filter, priceFilter, sortBy }: ProductGridProps) => {
     try {
       const params = new URLSearchParams(searchParams.toString())
       params.set('page', String(pageNumber))
+      console.log(params.toString())
       router.push(`?${params.toString()}`)
     } catch (e) {
       if (e) toast.error('Redirecing')

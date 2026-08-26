@@ -39,7 +39,7 @@ const SearchBar = ({ setQuery, type, query = '', handleSearchClick }: SearchBarP
   }, [handleSearchClick])
 
   return (
-    <div className='lg:w-[30%] flex items-center justify-center gap-4 relative'>
+    <div className='flex items-center justify-center gap-4 relative'>
       <input
         type='text'
         value={query}

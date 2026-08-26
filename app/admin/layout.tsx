@@ -10,27 +10,10 @@ import AdminNavbar from '@/components/AdminNavbar'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { Inter, Plus_Jakarta_Sans, Seaweed_Script } from 'next/font/google'
+
 import ThemeProvider from '../ThemeProvider'
 import Modal from '@/components/Modal'
 import ScrollUpButton from '@/components/ScrollUpButton'
-
-const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
-})
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: '--font-plus-jakarta-sans',
-  subsets: ['latin'],
-})
-
-const seaweedScript = Seaweed_Script({
-  variable: '--font-seaweed-script',
-  subsets: ['latin'],
-  weight: '400',
-  display: 'swap',
-})
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',
@@ -40,7 +23,7 @@ export const metadata: Metadata = {
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <section className={`${inter.variable} ${plusJakartaSans.variable} ${seaweedScript.variable} h-full antialiased `}>
+    <>
       <StoreProvider>
         <ThemeProvider />
         <ToastProvider>
@@ -57,12 +40,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <AdminNavbar />
           </header>
           <GlobalLoading />
-          <main className='flex-1 h-[calc(100vh-50px)]'>{children}</main>
+          <main className='relative z-0 max-w-[100vw] overflow-clip flex items-center justify-center'>{children}</main>
           <Modal />
           {/* Scroll up button */}
           <ScrollUpButton />
         </ToastProvider>
       </StoreProvider>
-    </section>
+    </>
   )
 }

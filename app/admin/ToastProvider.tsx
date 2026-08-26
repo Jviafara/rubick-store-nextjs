@@ -6,7 +6,7 @@ import { setFavoriteList } from '@/lib/redux/features/favoriteSlice'
 import { FullUser } from '@/lib/types'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { toast, ToastContainer } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function ToastProvider({ children }: { children: React.ReactNode }) {
@@ -23,8 +23,7 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
     }
 
     if ((session.user as FullUser)?.role !== 'admin') {
-      toast.error('You are not authorized to view this page')
-      router.replace('/admin/dashboard')
+      router.replace('/')
       return
     }
   })
