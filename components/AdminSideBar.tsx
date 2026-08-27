@@ -19,7 +19,7 @@ const AdminSideBar = () => {
     <motion.div
       initial={false}
       animate={{
-        width: extended ? '100%' : '3.5rem',
+        width: extended ? 'fit-content' : '3.5rem',
       }}
       transition={{
         duration: 0.45,
@@ -38,11 +38,7 @@ const AdminSideBar = () => {
           onClick={() => setExtended(!extended)}
           className={`w-fit ${extended && 'absolute top-4  right-4'} `}
         >
-          {extended ? (
-            <FaRegCaretSquareLeft className='w-6 xl:w-8 h-6 xl:h-10' />
-          ) : (
-            <FaRegCaretSquareRight className='w-6 xl:w-8 h-6 xl:h-8' />
-          )}
+          {extended ? <FaRegCaretSquareLeft className='w-6 h-6 ' /> : <FaRegCaretSquareRight className='w-6  h-6 ' />}
         </button>
       </div>
 
@@ -67,9 +63,7 @@ const AdminSideBar = () => {
                 onClick={() => handleTab(item.state)}
                 className='flex max-w-max items-center gap-2 rounded-lg hover:text-primary/70 hover:scale-110'
               >
-                <item.icon
-                  className={`w-6 xl:w-8 h-6 xl:h-8 ${activeTab === item.state && 'text-primary scale-110 ml-4'} `}
-                />
+                <item.icon className={`w-6  h-6  ${activeTab === item.state && 'text-primary scale-110 ml-4'} `} />
               </button>
             </motion.li>
           ))}
@@ -97,7 +91,7 @@ const AdminSideBar = () => {
                 onClick={() => handleTab(item.state)}
                 className={`flex max-w-max items-center gap-2 rounded-lg ${activeTab === item.state && 'text-primary scale-110 ml-4'} hover:text-primary/70 hover:scale-110`}
               >
-                <item.icon className='w-6 xl:w-8 h-6 xl:h-8' />
+                <item.icon className='w-6 h-6 ' />
                 <h6 className='font-medium '>{item.display.toUpperCase()}</h6>
               </button>
             </motion.li>

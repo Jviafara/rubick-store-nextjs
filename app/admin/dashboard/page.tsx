@@ -1,11 +1,11 @@
 'use client'
 
 import AdminSideBar from '@/components/AdminSideBar'
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import UserList from '@/components/UserList'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-const DashBoard = () => {
+const DashBoardContent = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const activeTab = searchParams.get('tab')
@@ -24,6 +24,14 @@ const DashBoard = () => {
         {activeTab === 'users' && <UserList />}
       </main>
     </div>
+  )
+}
+
+const DashBoard = () => {
+  return (
+    <Suspense fallback={null}>
+      <DashBoardContent />
+    </Suspense>
   )
 }
 
