@@ -1,11 +1,26 @@
 import { SearchBarProps } from '@/lib/types'
 import { useSearchParams } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
 
 const SearchBar = ({ setQuery, type, query = '', handleSearchClick }: SearchBarProps) => {
   const searchParams = useSearchParams()
   const activeQuery = searchParams.get('query') || ''
+  const [text, setText] = useState(activeQuery)
+
+  useEffect(() => {
+    if (!text) {
+      setQuery(text)
+    }
+    const timer = setTimeout(() => {
+      if (text.length < 3 && text) {
+        return
+      }
+      setQuery(text)
+    }, 500) // Wait 500ms after user stops typing
+
+    return () => clearTimeout(timer)
+  }, [setQuery, text])
 
   useEffect(() => {
     if (activeQuery) {
@@ -17,11 +32,7 @@ const SearchBar = ({ setQuery, type, query = '', handleSearchClick }: SearchBarP
 
   const onQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = e.target.value
-    setQuery(newQuery)
-
-    if (newQuery.length >= 3) {
-      return
-    }
+    setText(newQuery)
   }
 
   useEffect(() => {
@@ -42,7 +53,7 @@ const SearchBar = ({ setQuery, type, query = '', handleSearchClick }: SearchBarP
     <div className='flex items-center justify-center gap-4 relative'>
       <input
         type='text'
-        value={query}
+        value={text}
         autoComplete='off'
         onChange={onQueryChange}
         placeholder={type && `Search ${type}`}

@@ -232,6 +232,12 @@ export interface UserTableProps {
   adminFilter: boolean
   sortBy: userSortBy
 }
+export interface ProductsTableProps {
+  query: string
+  filter: string
+  priceFilter: number[]
+  sortBy: string
+}
 
 export interface ISugestionSearchBar {
   query: string

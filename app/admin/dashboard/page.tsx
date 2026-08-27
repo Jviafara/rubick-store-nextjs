@@ -4,6 +4,7 @@ import AdminSideBar from '@/components/AdminSideBar'
 import { Suspense, useEffect } from 'react'
 import UserList from '@/components/UserList'
 import { useRouter, useSearchParams } from 'next/navigation'
+import ProductList from '@/components/ProductList'
 
 const DashBoardContent = () => {
   const router = useRouter()
@@ -22,6 +23,7 @@ const DashBoardContent = () => {
       <AdminSideBar />
       <main className='w-full h-full px-4 py-8 overflow-x-clip flex  justify-center8'>
         {activeTab === 'users' && <UserList />}
+        {activeTab === 'products' && <ProductList />}
       </main>
     </div>
   )
