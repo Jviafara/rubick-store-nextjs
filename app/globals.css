@@ -107,20 +107,8 @@ button {
     position: relative;
     border-radius: 1.25rem;
     background:
-      radial-gradient(
-          circle at top left,
-          rgba(from var(--color-foreground) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 50%
-        )
-        padding-box,
-      radial-gradient(
-          circle at bottom right,
-          rgba(from var(--color-foreground) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 50%
-        )
-        padding-box,
+      radial-gradient(circle at top left, rgba(from var(--color-foreground) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
+      radial-gradient(circle at bottom right, rgba(from var(--color-foreground) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
       linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
       linear-gradient(135deg, var(--color-main) 0%, var(--color-main) 100%) border-box;
     border: 1px solid transparent;
@@ -150,22 +138,9 @@ button {
 
   .hover-gradient-cyan-magenta {
     --card-hover-background:
-      radial-gradient(
-          circle at top left,
-          rgba(from var(--color-primary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 50%
-        )
-        padding-box,
-      radial-gradient(
-          circle at bottom right,
-          rgba(from var(--color-secondary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 50%
-        )
-        padding-box,
-      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
-      linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%) border-box;
+      radial-gradient(circle at top left, rgba(from var(--color-primary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
+      radial-gradient(circle at bottom right, rgba(from var(--color-secondary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box, linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%) border-box;
   }
 
   .hover-gradient-cyan-magenta:hover {
@@ -176,22 +151,9 @@ button {
 
   .hover-gradient-emerald-cyan {
     --card-hover-background:
-      radial-gradient(
-          circle at top left,
-          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 50%
-        )
-        padding-box,
-      radial-gradient(
-          circle at bottom right,
-          rgba(from var(--color-primary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 50%
-        )
-        padding-box,
-      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
-      linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-primary) 100%) border-box;
+      radial-gradient(circle at top left, rgba(from var(--color-tertiary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
+      radial-gradient(circle at bottom right, rgba(from var(--color-primary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box, linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-primary) 100%) border-box;
   }
 
   .hover-gradient-emerald-cyan:hover {
@@ -202,37 +164,12 @@ button {
 
   .hover-gradient-featured {
     --card-hover-background:
-      radial-gradient(
-          circle at top left,
-          rgba(from var(--color-primary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 40%
-        )
-        padding-box,
-      radial-gradient(
-          circle at top right,
-          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 40%
-        )
-        padding-box,
-      radial-gradient(
-          circle at bottom right,
-          rgba(from var(--color-secondary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 40%
-        )
-        padding-box,
-      radial-gradient(
-          circle at bottom left,
-          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 40%
-        )
-        padding-box,
+      radial-gradient(circle at top left, rgba(from var(--color-primary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 40%) padding-box,
+      radial-gradient(circle at top right, rgba(from var(--color-tertiary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 40%) padding-box,
+      radial-gradient(circle at bottom right, rgba(from var(--color-secondary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 40%) padding-box,
+      radial-gradient(circle at bottom left, rgba(from var(--color-tertiary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 40%) padding-box,
       linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
-      linear-gradient(135deg, var(--color-primary) 0%, var(--color-tertiary) 50%, var(--color-secondary) 100%)
-        border-box;
+      linear-gradient(135deg, var(--color-primary) 0%, var(--color-tertiary) 50%, var(--color-secondary) 100%) border-box;
   }
 
   .hover-gradient-featured:hover {
@@ -249,20 +186,8 @@ button {
     box-shadow: 0 0 25px -5px rgba(0, 240, 255, 0.2);
     transition: all 0.3s ease;
     background:
-      radial-gradient(
-          circle at top left,
-          rgba(from var(--color-primary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 50%
-        )
-        padding-box,
-      radial-gradient(
-          circle at bottom right,
-          rgba(from var(--color-secondary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 50%
-        )
-        padding-box,
+      radial-gradient(circle at top left, rgba(from var(--color-primary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
+      radial-gradient(circle at bottom right, rgba(from var(--color-secondary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
       linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
       linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%) border-box;
   }
@@ -280,20 +205,8 @@ button {
     box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
     transition: all 0.3s ease;
     background:
-      radial-gradient(
-          circle at top left,
-          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 50%
-        )
-        padding-box,
-      radial-gradient(
-          circle at bottom right,
-          rgba(from var(--color-primary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 35%,
-          transparent 50%
-        )
-        padding-box,
+      radial-gradient(circle at top left, rgba(from var(--color-tertiary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
+      radial-gradient(circle at bottom right, rgba(from var(--color-primary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
       linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
       linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-primary) 100%) border-box;
   }
@@ -315,34 +228,10 @@ button {
       -4px -4px 15px -2px rgba(from var(--color-primary) r g b / 0.45);
     transition: all 0.3s ease;
     background:
-      radial-gradient(
-          circle at top left,
-          rgba(from var(--color-primary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 25%,
-          transparent 40%
-        )
-        padding-box,
-      radial-gradient(
-          circle at top right,
-          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 25%,
-          transparent 40%
-        )
-        padding-box,
-      radial-gradient(
-          circle at bottom right,
-          rgba(from var(--color-accent) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 25%,
-          transparent 40%
-        )
-        padding-box,
-      radial-gradient(
-          circle at bottom left,
-          rgba(from var(--color-tertiary) r g b / 0.25) 0%,
-          rgba(from var(--color-surface) r g b / 0.95) 25%,
-          transparent 40%
-        )
-        padding-box,
+      radial-gradient(circle at top left, rgba(from var(--color-primary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 25%, transparent 40%) padding-box,
+      radial-gradient(circle at top right, rgba(from var(--color-tertiary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 25%, transparent 40%) padding-box,
+      radial-gradient(circle at bottom right, rgba(from var(--color-accent) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 25%, transparent 40%) padding-box,
+      radial-gradient(circle at bottom left, rgba(from var(--color-tertiary) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 25%, transparent 40%) padding-box,
       linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
       linear-gradient(135deg, var(--color-primary) 0%, var(--color-tertiary) 50%, var(--color-accent) 100%) border-box;
   }
@@ -356,7 +245,7 @@ button {
 
 th,
 td {
-  padding: 10px 20px;
+  padding: 10px 10px;
   text-align: left;
   height: 100%;
   overflow-wrap: break-word;
@@ -398,20 +287,8 @@ td {
 
 .action-button {
   background:
-    radial-gradient(
-        circle at top left,
-        rgba(from var(--color-foreground) r g b / 0.25) 0%,
-        rgba(from var(--color-surface) r g b / 0.95) 35%,
-        transparent 50%
-      )
-      padding-box,
-    radial-gradient(
-        circle at bottom right,
-        rgba(from var(--color-foreground) r g b / 0.25) 0%,
-        rgba(from var(--color-surface) r g b / 0.95) 35%,
-        transparent 50%
-      )
-      padding-box,
+    radial-gradient(circle at top left, rgba(from var(--color-foreground) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
+    radial-gradient(circle at bottom right, rgba(from var(--color-foreground) r g b / 0.25) 0%, rgba(from var(--color-surface) r g b / 0.95) 35%, transparent 50%) padding-box,
     linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
     linear-gradient(135deg, var(--color-main) 0%, var(--color-main) 100%) border-box;
   border: 1px solid transparent;

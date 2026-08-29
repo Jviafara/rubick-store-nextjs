@@ -1,6 +1,6 @@
 import { CiSearch } from 'react-icons/ci'
 import SearchBar from './SearchBar'
-import { SortByEnum, userSortBy } from '@/lib/constants'
+import { ProductCategory, SortByEnum } from '@/lib/constants'
 import { useEffect, useState } from 'react'
 import ProductsTable from './ProductsTable'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -12,7 +12,8 @@ const ProductList = () => {
   const [sortBy, setSortBy] = useState('')
   const [filter, setFilter] = useState('All products')
   const [priceFilter, setPriceFilter] = useState([0, 1000])
-  const options = Object.values(SortByEnum)
+  const sortOptions = Object.values(SortByEnum)
+  const categories = Object.values(ProductCategory)
 
   useEffect(() => {
     const getSortByParams = () => {
@@ -24,15 +25,20 @@ const ProductList = () => {
   }, [searchParams, setSortBy])
 
   const resetToFirstPage = () => {
-    router.push('/products?page=1')
+    router.push('?tab=products&page=1')
   }
 
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortBy(event.target.value as userSortBy)
+    setSortBy(event.target.value)
+    resetToFirstPage()
+  }
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilter(event.target.value as ProductCategory)
+    resetToFirstPage()
   }
 
   return (
-    <div className='w-full h-full flex flex-col gap-4 items-baseline bg-surface p-4 rounded-2xl'>
+    <div className='w-full h-full flex flex-col gap-4 items-baseline bg-surface px-4 py-8 rounded-2xl'>
       <section className='w-full'>
         <h1 className='font-bold text-center uppercase text-xl'>Product List</h1>
       </section>
@@ -60,12 +66,37 @@ const ProductList = () => {
             onChange={handleSortChange}
             className='h-8 border border-muted rounded-xl px-2 py-1 text-main bg-background'
           >
-            {options.map(sort => (
+            {sortOptions.map(sort => (
               <option
                 key={sort}
                 value={sort}
               >
                 {sort}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className=' flex items-center space-x-2'>
+          <label
+            htmlFor='categories'
+            className='font-semibold mr-2'
+          >
+            Category:
+          </label>
+          <select
+            name='categories'
+            id='categories'
+            value={filter}
+            onChange={handleFilterChange}
+            className='h-8 border border-muted rounded-xl px-2 py-1 text-main bg-background'
+          >
+            <option value={'All products'}>All</option>
+            {categories.map((category, index) => (
+              <option
+                key={index}
+                value={category}
+              >
+                {category}
               </option>
             ))}
           </select>

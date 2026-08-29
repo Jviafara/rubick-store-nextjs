@@ -7,10 +7,16 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import LoadingThreeDotsPulse from './LoadingThreeDotsPulse'
 import Image from 'next/image'
+import { FaEdit } from 'react-icons/fa'
+import { useAppDispatch } from '@/lib/hooks/redux.hooks'
+import { setModalService } from '@/lib/redux/features/modalSlice'
+import { ModalPositions } from '@/lib/constants'
+import ProductForm from './ProductForm'
 
 const ProductsTable = ({ query, sortBy, filter, priceFilter }: ProductsTableProps) => {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const dispatch = useAppDispatch()
   const [products, setProducts] = useState<IProduct[]>([])
   const [pagination, setPagination] = useState<IPagination | null>(null)
   const page = searchParams.get('page') || '1'
@@ -76,6 +82,20 @@ const ProductsTable = ({ query, sortBy, filter, priceFilter }: ProductsTableProp
     return pages
   }
 
+  const handleEdit = (product: IProduct) => {
+    dispatch(
+      setModalService({
+        modalOpen: true,
+        header: 'Edit Product',
+        subTitle: `Product id: ${product._id.toString()}`,
+        children: <ProductForm product={product} />,
+        position: ModalPositions.center,
+        confirmButton: null,
+        cancelButton: null,
+      }),
+    )
+  }
+
   if (products.length <= 0 || !pagination) return <ProductNotFound />
 
   return (
@@ -86,18 +106,49 @@ const ProductsTable = ({ query, sortBy, filter, priceFilter }: ProductsTableProp
         </section>
       ) : (
         <section className='flex flex-col items-center justify-center w-full gap-4 overflow-x-auto rounded-2xl'>
-          <table className='w-full text-center rtl:text-center text-main '>
+          <table className='w-full text-main mb-4'>
             <thead className='border-b border-muted'>
               <tr className='bg-muted/20'>
-                <th scope='col'></th>
-                <th scope='col'></th>
-                <th scope='col'>Name</th>
-                <th scope='col'>Price</th>
-                <th scope='col'>Sold</th>
-                <th scope='col'>Stock</th>
+                <th
+                  scope='col'
+                  className='w-0'
+                ></th>
+                <th
+                  scope='col'
+                  className='w-0'
+                ></th>
+                <th
+                  scope='col'
+                  className='text-center! '
+                >
+                  Name
+                </th>
+                <th
+                  scope='col'
+                  className='text-center! '
+                >
+                  Price
+                </th>
+                <th
+                  scope='col'
+                  className='text-center!'
+                >
+                  Sold
+                </th>
+                <th
+                  scope='col'
+                  className='text-center!'
+                >
+                  Stock
+                </th>
+
+                <th
+                  scope='col'
+                  className='w-0'
+                ></th>
               </tr>
             </thead>
-            <tbody className=''>
+            <tbody className='w-full'>
               {products.map((product, index) => (
                 <tr
                   key={product.slug}
@@ -116,10 +167,41 @@ const ProductsTable = ({ query, sortBy, filter, priceFilter }: ProductsTableProp
                       />
                     </div>
                   </td>
-                  <td scope='row'>{product.name}</td>
-                  <td scope='row'>${product.price}</td>
-                  <td scope='row'>{product.totalSold}</td>
-                  <td scope='row'>{product.countInStock}</td>
+                  <td
+                    scope='row'
+                    className='text-center! max-w-fit!'
+                  >
+                    {product.name}
+                  </td>
+                  <td
+                    scope='row'
+                    className='text-center!'
+                  >
+                    ${product.price}
+                  </td>
+                  <td
+                    scope='row'
+                    className='text-center!'
+                  >
+                    {product.totalSold}
+                  </td>
+                  <td
+                    scope='row'
+                    className='text-center!'
+                  >
+                    {product.countInStock}
+                  </td>
+                  <td
+                    scope='row'
+                    className='text-center!'
+                  >
+                    <button
+                      onClick={() => handleEdit(product)}
+                      className='hover:text-primary px-2 py-1'
+                    >
+                      <FaEdit size={24} />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

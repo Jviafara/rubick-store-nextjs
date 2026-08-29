@@ -222,10 +222,7 @@ export const validateEditProfile = Yup.object().shape({
 })
 
 export const validateCreatePassword = Yup.object().shape({
-  newPassword: Yup.string()
-    .min(8, 'Password minimum 8 characters')
-    .max(16, 'Password maximum 16 characters')
-    .required('Password required'),
+  newPassword: Yup.string().min(8, 'Password minimum 8 characters').max(16, 'Password maximum 16 characters').required('Password required'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('newPassword')], 'Passwords must match')
     .min(8, 'Comfirm password minimum 8 characters')
@@ -234,17 +231,21 @@ export const validateCreatePassword = Yup.object().shape({
 })
 
 export const validateChangePassword = Yup.object().shape({
-  newPassword: Yup.string()
-    .min(8, 'Password minimum 8 characters')
-    .max(16, 'Password maximum 16 characters')
-    .required('Password required'),
+  newPassword: Yup.string().min(8, 'Password minimum 8 characters').max(16, 'Password maximum 16 characters').required('Password required'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('newPassword')], 'Passwords must match')
     .min(8, 'Comfirm password minimum 8 characters')
     .max(16, 'Comfirm password maximum 16 characters')
     .required('Comfirm Password required'),
-  currentPassword: Yup.string()
-    .min(8, 'Comfirm password minimum 8 characters')
-    .max(16, 'Comfirm password maximum 16 characters')
-    .required('Comfirm Password required'),
+  currentPassword: Yup.string().min(8, 'Comfirm password minimum 8 characters').max(16, 'Comfirm password maximum 16 characters').required('Comfirm Password required'),
+})
+
+export const createProductSchema = Yup.object({
+  name: Yup.string().required('Product name is required').trim(),
+  slug: Yup.string().required('Slug is required').trim(),
+  category: Yup.string().required('Category is required').trim(),
+  price: Yup.number().typeError('Price must be a number').required('Price is required').min(0, 'Price cannot be negative'),
+  countInStock: Yup.number().typeError('Stock must be a number').required('Stock is required').integer('Stock must be an integer').min(0, 'Stock cannot be negative'),
+  brand: Yup.string().required('Brand is required').trim(),
+  description: Yup.string().required('Description is required').trim(),
 })
