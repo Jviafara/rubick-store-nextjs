@@ -19,6 +19,7 @@ const ProductsTable = ({ query, sortBy, filter, priceFilter }: ProductsTableProp
   const dispatch = useAppDispatch()
   const [products, setProducts] = useState<IProduct[]>([])
   const [pagination, setPagination] = useState<IPagination | null>(null)
+  const [refreshVersion, setRefreshVersion] = useState(0)
   const page = searchParams.get('page') || '1'
   const pageSize = searchParams.get('page_size') || '12'
   const [loading, setLoading] = useState(false)
@@ -29,7 +30,6 @@ const ProductsTable = ({ query, sortBy, filter, priceFilter }: ProductsTableProp
     try {
       const params = new URLSearchParams(searchParams.toString())
       params.set('page', String(pageNumber))
-      console.log(params.toString())
       router.push(`?${params.toString()}`)
     } catch (e) {
       if (e) toast.error('Redirecing')
@@ -66,7 +66,7 @@ const ProductsTable = ({ query, sortBy, filter, priceFilter }: ProductsTableProp
       }
     }
     getProducts()
-  }, [paramsString])
+  }, [paramsString, refreshVersion])
 
   const getPageNumbers = (totalPages: number, current: number) => {
     const pages: number[] = []
@@ -88,7 +88,12 @@ const ProductsTable = ({ query, sortBy, filter, priceFilter }: ProductsTableProp
         modalOpen: true,
         header: 'Edit Product',
         subTitle: `Product id: ${product._id.toString()}`,
-        children: <ProductForm product={product} />,
+        children: (
+          <ProductForm
+            product={product}
+            onUpdated={() => setRefreshVersion(version => version + 1)}
+          />
+        ),
         position: ModalPositions.center,
         confirmButton: null,
         cancelButton: null,

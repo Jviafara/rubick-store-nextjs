@@ -240,12 +240,23 @@ export const validateChangePassword = Yup.object().shape({
   currentPassword: Yup.string().min(8, 'Comfirm password minimum 8 characters').max(16, 'Comfirm password maximum 16 characters').required('Comfirm Password required'),
 })
 
+export const emptyProduct = {
+  name: '',
+  slug: '',
+  category: '',
+  price: 0,
+  countInStock: 0,
+  description: '',
+  images: [],
+  brand: '',
+}
+
 export const createProductSchema = Yup.object({
   name: Yup.string().required('Product name is required').trim(),
   slug: Yup.string().required('Slug is required').trim(),
   category: Yup.string().required('Category is required').trim(),
   price: Yup.number().typeError('Price must be a number').required('Price is required').min(0, 'Price cannot be negative'),
   countInStock: Yup.number().typeError('Stock must be a number').required('Stock is required').integer('Stock must be an integer').min(0, 'Stock cannot be negative'),
-  brand: Yup.string().required('Brand is required').trim(),
+  brand: Yup.string().trim(),
   description: Yup.string().required('Description is required').trim(),
 })

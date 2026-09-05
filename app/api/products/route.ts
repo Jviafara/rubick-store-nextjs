@@ -1,3 +1,4 @@
+import { auth } from '@/lib/auth/auth'
 import Product from '@/lib/models/product'
 import connectDB from '@/lib/mongodb'
 import responseHandler from '@/lib/responseHandler'
@@ -81,5 +82,26 @@ export async function GET(req: NextRequest) {
   } catch (e) {
     console.error(e)
     return responseHandler.badRequest(String(e) || 'Error al buscar los productos')
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    })
+    if (!session?.user) {
+      return responseHandler.unauthorize()
+    }
+
+    const body = await req.json()
+
+    await connectDB()
+
+    return responseHandler.error()
+    // return responseHandler.created(order)
+  } catch (e) {
+    console.error(e)
+    return responseHandler.error()
   }
 }

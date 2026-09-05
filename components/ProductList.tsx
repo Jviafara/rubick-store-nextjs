@@ -4,6 +4,7 @@ import { ProductCategory, SortByEnum } from '@/lib/constants'
 import { useEffect, useState } from 'react'
 import ProductsTable from './ProductsTable'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { GiBroom } from 'react-icons/gi'
 
 const ProductList = () => {
   const searchParams = useSearchParams()
@@ -14,6 +15,17 @@ const ProductList = () => {
   const [priceFilter, setPriceFilter] = useState([0, 1000])
   const sortOptions = Object.values(SortByEnum)
   const categories = Object.values(ProductCategory)
+
+  const priceOptions = [
+    [0, 10],
+    [10, 25],
+    [25, 50],
+    [50, 100],
+    [100, Infinity],
+  ]
+
+  const [priceMin, setPriceMin] = useState(0)
+  const [priceMax, setPriceMax] = useState(1000)
 
   useEffect(() => {
     const getSortByParams = () => {
@@ -37,12 +49,41 @@ const ProductList = () => {
     resetToFirstPage()
   }
 
+  const handlePriceSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOption = event.target.value
+    if (selectedOption === 'All products') {
+      handlePriceClear()
+      resetToFirstPage()
+      return
+    }
+    const [min, max] = selectedOption.split('-').map(Number)
+    handleCategorySelect([min, max])
+    resetToFirstPage()
+  }
+
+  const handleCategorySelect = (opt: number[]) => {
+    setPriceMin(opt[0])
+    setPriceMax(opt[1])
+    setPriceFilter([opt[0], opt[1]])
+  }
+  const handlePriceClear = () => {
+    setPriceMin(0)
+    setPriceMax(Infinity)
+    setPriceFilter([0, Infinity])
+  }
+  const handleFilterClear = () => {
+    setSortBy(sortOptions[0])
+    setFilter('All products')
+    handlePriceClear()
+    resetToFirstPage()
+  }
+
   return (
     <div className='w-full h-full flex flex-col gap-4 items-baseline bg-surface px-4 py-8 rounded-2xl'>
       <section className='w-full'>
         <h1 className='font-bold text-center uppercase text-xl'>Product List</h1>
       </section>
-      <section className='w-full flex items-center  space-x-8'>
+      <section className='w-full flex items-center justify-between space-x-8'>
         <div className='flex gap-2 items-center '>
           <CiSearch size={24} />
           <SearchBar
@@ -100,6 +141,41 @@ const ProductList = () => {
               </option>
             ))}
           </select>
+        </div>
+        <div className=' flex items-center space-x-2'>
+          <label
+            htmlFor='categories'
+            className='font-semibold mr-2'
+          >
+            Price:
+          </label>
+          <select
+            name='price'
+            id='price'
+            onChange={handlePriceSelect}
+            value={`${priceMin}-${priceMax}`}
+            className='h-8 border border-muted rounded-xl px-2 py-1 text-main bg-background'
+          >
+            <option value={'All products'}>All</option>
+            {priceOptions.map((option, index) => (
+              <option
+                key={index}
+                value={`${option[0]}-${option[1]}`}
+              >
+                {option[0] !== 0 ? option[0] : '<'}
+                {option[0] > 0 && option[1] < 101 && ' - '}
+                {option[1] === Infinity ? '<' : option[1]}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className=' flex self-end items-center space-x-2'>
+          <button
+            onClick={handleFilterClear}
+            className='p-4 hover:text-primary hover:scale-110'
+          >
+            <GiBroom size={24} />
+          </button>
         </div>
       </section>
       <ProductsTable

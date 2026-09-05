@@ -222,6 +222,20 @@ export interface CreateOrderProps {
   orderItems: IOrderItems[]
 }
 
+export interface CreateProductProps {
+  name: string
+  slug: string
+  category?: string
+  images?: string[]
+  price?: number
+  countInStock?: number
+  brand?: string
+  rating?: number
+  numReviews?: number
+  description?: string
+  totalSold?: number
+}
+
 export interface AdminAsideProps {
   mainView: string
   setView: (state: string) => void

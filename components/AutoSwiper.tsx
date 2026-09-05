@@ -19,7 +19,7 @@ const AutoSwiper = ({ children, slideNumber }: AutoSwiperProps) => {
           },
           425: {
             slidesPerView: 1.5,
-            spaceBetween: 25,
+            spaceBetween: 15,
           },
           768: {
             slidesPerView: 2.5,
@@ -27,15 +27,15 @@ const AutoSwiper = ({ children, slideNumber }: AutoSwiperProps) => {
           },
           1024: {
             slidesPerView: 3,
-            spaceBetween: 30,
+            spaceBetween: 20,
           },
           1280: {
             slidesPerView: 4,
-            spaceBetween: 35,
+            spaceBetween: 20,
           },
           1536: {
             slidesPerView: 5,
-            spaceBetween: 50,
+            spaceBetween: 20,
           },
         }}
         modules={[Pagination]}
