@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
     "upload:images": "tsx --env-file=.env.local scripts/product_images_upload.ts",
     "populate:totalSold": "tsx --env-file=.env.local scripts/product_populate_totalSold.ts",
     "populate:description": "tsx --env-file=.env.local scripts/product_populate_description.ts"
@@ -48,13 +50,24 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.9",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.19.43",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.6",
+    "eslint-plugin-jest-dom": "^5.10.1",
+    "eslint-plugin-testing-library": "^7.16.2",
     "jeasings": "^0.0.16",
+    "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2",
     "tailwindcss": "^4.3.0",
+    "ts-jest": "^29.4.15",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
 }
