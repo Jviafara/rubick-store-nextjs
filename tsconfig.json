@@ -30,6 +30,6 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "auth-types.d.ts"
-  ],
+, "__mocks__/styleMock.js"  ],
   "exclude": ["node_modules"]
 }

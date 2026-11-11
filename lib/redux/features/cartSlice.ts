@@ -15,20 +15,20 @@ export const cartSlice = createSlice({
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
     },
     setcartItems: (state, action) => {
-      if (!action.payload) {
+      if (action.payload.length <= 0) {
         localStorage.setItem('cartItems', JSON.stringify([]))
       }
       state.cartItems = action.payload
     },
     addcartItem: (state, action) => {
       const newItem = action.payload
-      if (!localStorage.getItem('cartItems')) {
+      const cartItems = JSON.parse(localStorage.getItem('cartItems') ?? 'null') as ICartItem[]
+
+      if (!cartItems || cartItems.length <= 0) {
         state.cartItems = [newItem]
         localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
         return
       }
-
-      const cartItems = JSON.parse(localStorage.getItem('cartItems') || '')
 
       const existItem = cartItems.find((item: ICartItem) => item._id === newItem._id)
 

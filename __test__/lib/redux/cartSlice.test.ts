@@ -22,6 +22,12 @@ describe('cartSlice', () => {
       expect(stored()).toEqual([item('a')])
     })
 
+    it('successfully retrieve the cartItems from localStorage if it exists', () => {
+      localStorage.setItem('cartItems', JSON.stringify([item('a')]))
+
+      expect(stored()).toEqual([item('a')])
+    })
+
     it('appends a different item to the existing cart', () => {
       localStorage.setItem('cartItems', JSON.stringify([item('a')]))
 
@@ -54,20 +60,27 @@ describe('cartSlice', () => {
       const state = reducer({ cartItems: [item('a')] }, removecartItem({ _id: 'zzz' }))
 
       expect(state.cartItems).toEqual([item('a')])
+      expect(stored()).toEqual([item('a')])
     })
   })
 
   describe('setcartItems', () => {
-    it('replaces the cart items', () => {
+    it('replaces the cart items and persists them to localStorage', () => {
       const state = reducer({ cartItems: [item('a')] }, setcartItems([item('b'), item('c')]))
 
       expect(state.cartItems).toEqual([item('b'), item('c')])
+    })
+
+    it('set and persist empty cart if none is provided', () => {
+      const newstate = reducer({ cartItems: [item('a')] }, setcartItems([]))
+      expect(newstate.cartItems).toEqual([])
+      expect(stored()).toEqual([])
     })
   })
 
   describe('clearCart', () => {
     it('empties the cart and localStorage', () => {
-      localStorage.setItem('cartItems', JSON.stringify([item('a')]))
+      localStorage.setItem('cartItems', JSON.stringify([item('a'), item('b')]))
 
       const state = reducer({ cartItems: [item('a'), item('b')] }, clearCart())
 
