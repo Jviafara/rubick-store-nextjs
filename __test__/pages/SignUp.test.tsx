@@ -36,8 +36,12 @@ jest.mock('@/lib/auth/auth-client', () => ({
 jest.mock('@/components/GoogleSignIn', () => ({
   __esModule: true,
   default: () => <div data-testid='google-sign-in' />,
-  GoogleSignIne: () => <div data-testid='google-sign-in' />,
+  GoogleSignIn: () => <div data-testid='google-sign-in' />,
 }))
+
+mockRouter.mockReturnValue({
+  push: mockPush,
+})
 
 describe('Sign-up page', () => {
   beforeEach(() => {
@@ -45,9 +49,6 @@ describe('Sign-up page', () => {
     mockUseSession.mockReturnValue({
       data: null,
       isPending: false,
-    })
-    mockRouter.mockReturnValue({
-      push: mockPush,
     })
   })
 

@@ -36,7 +36,7 @@ const Cart = () => {
 
   useEffect(() => {
     const getSubtotal = () => {
-      if (cartItems.length <= 0) return
+      if (!cartItems || cartItems.length <= 0) return
       const subTotal = cartItems?.reduce((a, c) => a + c.quantity * c.price!, 0)
       setSubtotal(subTotal)
       setShipping(subTotal >= 100 ? 0 : subtotal * 0.15)
@@ -51,7 +51,9 @@ const Cart = () => {
         modalOpen: true,
         header: 'Clear Cart!',
         subTitle: 'This action can not be reverted.',
-        children: <h1 className='text-xl font-bold font-plus-jakarta-sans '>Are you sure you want to remove all items?</h1>,
+        children: (
+          <h1 className='text-xl font-bold font-plus-jakarta-sans '>Are you sure you want to remove all items?</h1>
+        ),
         position: ModalPositions.center,
         confirmButton: {
           label: 'Clear',
@@ -115,7 +117,9 @@ const Cart = () => {
           ))}
         </div>
         {/* Order summary */}
-        <div className={`w-full h-fit col-span-2 ${shipping === 0 ? 'card-gradient-cyan-magenta' : 'card-gradient-emerald-cyan'}  px-4 py-8 flex flex-col space-y-4`}>
+        <div
+          className={`w-full h-fit col-span-2 ${shipping === 0 ? 'card-gradient-cyan-magenta' : 'card-gradient-emerald-cyan'}  px-4 py-8 flex flex-col space-y-4`}
+        >
           <div>
             <h1 className='text-xl font-light font-plus-jakarta-sans uppercase'>Order summary</h1>
             <p className='text-muted text-sm'>{cartItems.length} products</p>
@@ -123,13 +127,20 @@ const Cart = () => {
           <div className='flex justify-between items-center text-lg'>
             <h1 className='flex items-baseline gap-1'>
               Subtotal
-              <span className='text-muted font-light text-sm'>({cartItems?.reduce((a, c) => a + c.quantity, 0)} items)</span>:
+              <span className='text-muted font-light text-sm'>
+                ({cartItems?.reduce((a, c) => a + c.quantity, 0)} items)
+              </span>
+              :
             </h1>
             <p>${subtotal}</p>
           </div>
           <div className='flex justify-between items-center text-lg'>
             <h1>Shipping:</h1>
-            {shipping === 0 ? <p className='uppercase text-tertiary font-bold'>Free</p> : <p className='uppercase'>{shipping}</p>}
+            {shipping === 0 ? (
+              <p className='uppercase text-tertiary font-bold'>Free</p>
+            ) : (
+              <p className='uppercase'>{shipping}</p>
+            )}
           </div>
           <div className='border-t border-muted/30 h-0 w-full' />
           <div className='flex justify-between items-center text-2xl font-bold'>
