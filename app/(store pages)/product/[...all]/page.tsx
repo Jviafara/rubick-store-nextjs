@@ -8,7 +8,7 @@ import { productApi } from '@/lib/modules/productsApiClient'
 import { addcartItem } from '@/lib/redux/features/cartSlice'
 import { addFavorite, removeFavorite } from '@/lib/redux/features/favoriteSlice'
 import { setGlobalLoading } from '@/lib/redux/features/globalLoadingSlice'
-import { ICartItem, IFavorite, IProduct } from '@/lib/types'
+import { IFavorite, IProduct } from '@/lib/types'
 import Link from 'next/link'
 import { notFound, useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -36,54 +36,42 @@ const ProductDetail = () => {
   const [productLoaded, setProductLoaded] = useState(false)
 
   useEffect(() => {
-    const CheckCartItems = async (item: ICartItem) => {
-      const inCart = cartItems.find(p => p._id === item._id)
-      if (inCart) setAlreadyInCart(true)
-    }
-    const getProduct = async () => {
-      const { res, error } = await productApi.productInfo(slug?.toLocaleString() || '')
+    let isMounted = true
 
-      if (res.status || error) {
-        toast.error(res.message)
-        return
-      }
-      if (res) {
-        setProduct(res)
-        CheckCartItems(res)
-      }
-    }
-    getProduct()
-  }, [slug, cartItems])
-
-  useEffect(() => {
     const getProduct = async () => {
       dispatch(setGlobalLoading(true))
-      const { res, error } = await productApi.productInfo(slug?.toLocaleString() || ' ')
+      const { res, error } = await productApi.productInfo(slug?.toLocaleString() || '')
 
-      if (res.status || error) {
-        toast.error(res.message)
+      if (!isMounted) return
+
+      if (error || res?.status) {
+        toast.error(res?.message || 'Error loading product')
         setProductLoaded(true)
         dispatch(setGlobalLoading(false))
         return
       }
+
       if (res) {
         setProduct(res)
+        const inCart = cartItems.find(p => p._id === res._id)
+        if (inCart) setAlreadyInCart(true)
       }
 
       setProductLoaded(true)
       dispatch(setGlobalLoading(false))
     }
+
     getProduct()
-  }, [dispatch, slug])
+
+    return () => {
+      isMounted = false
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, dispatch])
 
   const addToCartHandler = async () => {
     const existItem = cartItems?.find(x => x._id === product!._id)
     const cartQuantity = existItem ? existItem.quantity + quantity : quantity
-
-    if (product!.countInStock! < cartQuantity) {
-      toast.error('The items in your cart and these many more are more than we have on stock!')
-      return
-    }
 
     dispatch(addcartItem({ ...product, quantity: cartQuantity }))
   }

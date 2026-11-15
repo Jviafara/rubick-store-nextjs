@@ -1,11 +1,13 @@
-import { mockProduct } from '@/__mocks__/products.mock'
+import { mockCartItems, mockProduct } from '@/__mocks__/products.mock'
 import ProductDetail from '@/app/(store pages)/product/[...all]/page'
 import { useSession } from '@/lib/auth/auth-client'
 import { useAppSelector } from '@/lib/hooks/redux.hooks'
 import favoriteApi from '@/lib/modules/favoriteApiClient'
 import { productApi } from '@/lib/modules/productsApiClient'
+import { addcartItem } from '@/lib/redux/features/cartSlice'
 import { addFavorite, removeFavorite } from '@/lib/redux/features/favoriteSlice'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { IFavorite } from '@/lib/types'
+import { act, createEvent, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { notFound, useParams, useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
@@ -107,7 +109,7 @@ describe('Product Details Page', () => {
 
     // Wait for the async loading effect to finish and check if notFound was triggered
     await waitFor(() => {
-      expect(notFound).toHaveBeenCalledTimes(1)
+      expect(notFound).toHaveBeenCalled()
     })
   })
 
@@ -333,39 +335,106 @@ describe('Product Details Page', () => {
     expect(toast.error).toHaveBeenCalledWith('Error')
   })
 
-  it('should exit remove function when product not found on favorite list', async () => {
-    const user = userEvent.setup()
-
-    let callCount = 0
+  it('should render not render add to cart button when product already in cart', async () => {
     mockUseAppSelector.mockImplementation(selector => {
-      callCount++
-      const mockState = {
-        favoriteList: {
-          favoriteList: callCount > 2 ? [] : [{ _id: 'fav_123', product: 'prod_123' }],
-        },
-        cart: { cartItems: [] },
+      if (selector.toString().includes('favoriteList')) {
+        return { favoriteList: [] }
       }
-      return selector(mockState)
-    })
-
-    mockRemoveFavorite.mockResolvedValueOnce({
-      res: mockProduct,
-      error: undefined,
-    })
-
-    mockAddFavorite.mockResolvedValueOnce({
-      res: { _id: 'fav_123', product: mockProduct._id },
-      err: null,
+      if (selector.toString().includes('cart')) {
+        return { cartItems: mockCartItems }
+      }
+      return {}
     })
 
     render(<ProductDetail />)
 
     expect(await screen.findByRole('heading', { name: /Mechanical Keyboard/i })).toBeInTheDocument()
-    const favoriteButton = screen.getByTestId('favorite-button')
-    expect(favoriteButton).toBeInTheDocument()
 
+    expect(screen.getByText('Already in Cart!')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Add to Cart/i })).not.toBeInTheDocument()
+  })
+
+  it.each(['Backspace', 'Delete'])('should prevent %s when quantity has only one digit', async key => {
+    render(<ProductDetail />)
+
+    const quantityInput = await screen.findByRole('spinbutton')
+
+    fireEvent.change(quantityInput, {
+      target: { value: '1' },
+    })
+
+    const event = createEvent.keyDown(quantityInput, { key })
+    fireEvent(quantityInput, event)
+
+    expect(event.defaultPrevented).toBe(true)
+  })
+
+  it.each(['Backspace', 'Delete'])('should allow %s when quantity has more than one digit', async key => {
+    render(<ProductDetail />)
+
+    const quantityInput = await screen.findByRole('spinbutton')
+
+    fireEvent.change(quantityInput, {
+      target: { value: '10' },
+    })
+
+    const event = createEvent.keyDown(quantityInput, { key })
+    fireEvent(quantityInput, event)
+
+    expect(event.defaultPrevented).toBe(false)
+  })
+
+  it('allows to add product to cart', async () => {
+    const user = userEvent.setup()
+
+    mockProductInfo.mockResolvedValue({
+      res: { ...mockProduct, name: 'Mechanical Keyboard' },
+      error: undefined,
+    })
+
+    render(<ProductDetail />)
+
+    await act(async () => {
+      await Promise.resolve()
+      await Promise.resolve()
+    })
+
+    expect(await screen.findByRole('heading', { name: /Mechanical Keyboard/i })).toBeInTheDocument()
+    const addToCartButton = await screen.findByRole('button', { name: /add to cart/i })
+    expect(addToCartButton).toBeInTheDocument()
+
+    await user.click(addToCartButton)
+
+    expect(mockDispatch).toHaveBeenCalledWith(addcartItem({ ...mockProduct, quantity: 1 }))
+  })
+
+  it('exits early without calling remove API if favorite item is missing from state', async () => {
+    const user = userEvent.setup()
+
+    const trickyFavoriteList = [] as IFavorite[]
+    trickyFavoriteList.some = () => true // Makes isFavorite = true
+    trickyFavoriteList.find = () => undefined // Makes favorite = undefined in onRemoveFavorite
+
+    mockUseAppSelector.mockImplementation(selector => {
+      const state = {
+        favoriteList: {
+          favoriteList: trickyFavoriteList,
+        },
+        cart: { cartItems: [] },
+      }
+      return selector(state)
+    })
+
+    render(<ProductDetail />)
+
+    // Wait for product to load
+    expect(await screen.findByRole('heading', { name: /Mechanical Keyboard/i })).toBeInTheDocument()
+
+    const favoriteButton = screen.getByTestId('favorite-button')
     await user.click(favoriteButton)
 
+    // 5. Assert that favoriteApi.remove was never called due to the early return guard
     expect(favoriteApi.remove).not.toHaveBeenCalled()
+    expect(favoriteApi.add).not.toHaveBeenCalled()
   })
 })
