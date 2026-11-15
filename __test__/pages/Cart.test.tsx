@@ -6,7 +6,6 @@ import { useAppSelector } from '@/lib/hooks/redux.hooks'
 import { mockCartItems } from '@/__mocks__/products.mock'
 import userEvent from '@testing-library/user-event'
 import { setModalService, toogleModalService } from '@/lib/redux/features/modalSlice'
-import { mockClearCartModal } from '@/__mocks__/modalService.mock'
 import { toast } from 'react-toastify'
 import { ModalPositions } from '@/lib/constants'
 import { clearCart, setcartItems } from '@/lib/redux/features/cartSlice'
@@ -73,22 +72,6 @@ describe('Cart page', () => {
       }),
     )
   })
-
-  const buildItems = (lines: { price: number; quantity: number }[]) =>
-    lines.map((line, i) => ({
-      ...mockCartItems[0],
-      _id: `test-item-${i}`,
-      ...line,
-    }))
-
-  const setCart = (lines: { price: number; quantity: number }[]) => {
-    mockUseAppSelector.mockImplementation(selector =>
-      selector({
-        cart: { cartItems: buildItems(lines) },
-        favoriteList: { favoriteList: [] },
-      }),
-    )
-  }
 
   it('Should render Cart Page', () => {
     render(<Cart />)

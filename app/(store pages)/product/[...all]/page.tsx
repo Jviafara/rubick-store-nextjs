@@ -122,7 +122,7 @@ const ProductDetail = () => {
     }
     if (res) {
       dispatch(removeFavorite(product?._id))
-      toast.success('Product remove from favorites')
+      toast.success('Product removed from favorites')
     }
   }
 
@@ -152,6 +152,7 @@ const ProductDetail = () => {
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const quantity = parseInt(e.target.value)
+
     if (quantity < 1) {
       toast.error('Should have at least 1 product!')
       setQuantity(prev => prev)
@@ -193,6 +194,7 @@ const ProductDetail = () => {
           <div className='w-full flex justify-between'>
             <h1 className='text-2xl'>{product.name}</h1>
             <button
+              data-testid='favorite-button'
               type='button'
               onClick={onFavoriteClick}
             >
@@ -243,6 +245,7 @@ const ProductDetail = () => {
                 <p className='w-fit text-left text-lg'>Quantity:</p>
                 <div className='flex items-center justify-center md:justify-start md:w-1/2 text-center'>
                   <button
+                    data-testid='decrement-button'
                     onClick={decrement}
                     className='bg-background h-8 w-8 rounded-l-sm flex items-center justify-center'
                   >
@@ -257,6 +260,7 @@ const ProductDetail = () => {
                     className='w-[20%] max-w-20 h-8 bg-background/70 text-center! focus:outline-0 focus:border focus:border-primary. [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
                   />
                   <button
+                    data-testid='increment-button'
                     onClick={increment}
                     className='bg-background h-8 w-8 rounded-r-sm flex items-center justify-center'
                   >
