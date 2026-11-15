@@ -437,4 +437,25 @@ describe('Product Details Page', () => {
     expect(favoriteApi.remove).not.toHaveBeenCalled()
     expect(favoriteApi.add).not.toHaveBeenCalled()
   })
+
+  it('should render out of stock indicators', async () => {
+    mockProductInfo.mockResolvedValue({
+      res: { ...mockProduct, countInStock: 0 },
+      error: undefined,
+    })
+
+    render(<ProductDetail />)
+
+    // Wait for product to load
+    expect(await screen.findByRole('heading', { name: /Mechanical Keyboard/i })).toBeInTheDocument()
+
+    //Stock count tags
+    expect(await screen.findByText(/out of stock/i)).toBeInTheDocument()
+    expect(screen.queryByRole('paragraph', { name: 'In Stock' })).not.toBeInTheDocument()
+
+    //Quantity input and buttons
+    expect(screen.queryByTestId('decrement-button')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('increment-button')).not.toBeInTheDocument()
+    expect(screen.queryByRole('spinbutton')).not.toBeInTheDocument()
+  })
 })
