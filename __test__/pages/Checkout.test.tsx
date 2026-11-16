@@ -1,11 +1,9 @@
 import CheckoutPage from '@/app/(store pages)/checkout/page'
 import { render, screen } from '@testing-library/react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 
 const mockDispatch = jest.fn()
-const mockPush = jest.fn()
 const mockSPGet = jest.fn()
-const mockRouter = useRouter as jest.Mock
 const mockSearchParams = useSearchParams as jest.Mock
 
 jest.mock('@/lib/hooks/redux.hooks', () => ({
