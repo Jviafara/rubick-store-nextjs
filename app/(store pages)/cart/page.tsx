@@ -132,20 +132,25 @@ const Cart = () => {
               </span>
               :
             </h1>
-            <p>${subtotal}</p>
+            <p data-testid='subtotal'>${subtotal}</p>
           </div>
           <div className='flex justify-between items-center text-lg'>
             <h1>Shipping:</h1>
             {shipping === 0 ? (
               <p className='uppercase text-tertiary font-bold'>Free</p>
             ) : (
-              <p className='uppercase'>{shipping}</p>
+              <p
+                data-testid='shipping'
+                className='uppercase'
+              >
+                ${shipping}
+              </p>
             )}
           </div>
           <div className='border-t border-muted/30 h-0 w-full' />
           <div className='flex justify-between items-center text-2xl font-bold'>
             <h1 className='flex items-baseline gap-1'>Total:</h1>
-            <p>${total}</p>
+            <p data-testid='total'>${total}</p>
           </div>
           <div className='flex justify-between items-center text-2xl font-bold'>
             <button

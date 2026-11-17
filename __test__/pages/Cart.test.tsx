@@ -3,7 +3,7 @@ import { useSession } from '@/lib/auth/auth-client'
 import { render, screen } from '@testing-library/react'
 import { useRouter } from 'next/navigation'
 import { useAppSelector } from '@/lib/hooks/redux.hooks'
-import { mockCartItems } from '@/__mocks__/products.mock'
+import { mockCartItem, mockCartItems } from '@/__mocks__/products.mock'
 import userEvent from '@testing-library/user-event'
 import { setModalService, toogleModalService } from '@/lib/redux/features/modalSlice'
 import { toast } from 'react-toastify'
@@ -198,42 +198,19 @@ describe('Cart page', () => {
     expect(store.getState().cart.cartItems).toEqual(mockCartItems)
   })
 
-  // it('charges 15% shipping when subtotal is below 100', () => {
-  //   setCart([{ price: 50, quantity: 1 }])
-  //   render(<Cart />)
+  it('charges 15% shipping when subtotal is below 100', () => {
+    mockUseAppSelector.mockImplementation(selector =>
+      selector({
+        cart: { cartItems: [{ ...mockCartItem, price: 50, quantity: 1 }] },
+        favoriteList: { favoriteList: [] },
+      }),
+    )
 
-  //   expect(screen.getByText('$50')).toBeInTheDocument() // subtotal
-  //   expect(screen.getByText('7.5')).toBeInTheDocument() // shipping
-  //   expect(screen.getByText('$57.5')).toBeInTheDocument() // total
-  //   expect(screen.queryByText(/free/i)).not.toBeInTheDocument()
-  // })
+    render(<Cart />)
 
-  // it('adds up quantity * price across several items', () => {
-  //   setCart([
-  //     { price: 20, quantity: 2 }, // 40
-  //     { price: 10, quantity: 3 }, // 30
-  //   ])
-  //   render(<Cart />)
-
-  //   expect(screen.getByText('$70')).toBeInTheDocument()
-  //   expect(screen.getByText('10.5')).toBeInTheDocument()
-  //   expect(screen.getByText('$80.5')).toBeInTheDocument()
-  // })
-
-  // it('gives free shipping when subtotal is exactly 100', () => {
-  //   setCart([{ price: 100, quantity: 1 }])
-  //   render(<Cart />)
-
-  //   expect(screen.getByText(/free/i)).toBeInTheDocument()
-  //   // subtotal and total are both $100
-  //   expect(screen.getAllByText('$100')).toHaveLength(2)
-  // })
-
-  // it('gives free shipping when subtotal is above 100', () => {
-  //   setCart([{ price: 60, quantity: 2 }]) // 120
-  //   render(<Cart />)
-
-  //   expect(screen.getByText(/free/i)).toBeInTheDocument()
-  //   expect(screen.getAllByText('$120')).toHaveLength(2)
-  // })
+    expect(screen.getByTestId('subtotal')).toHaveTextContent('$50') // subtotal
+    expect(screen.getByTestId('shipping')).toHaveTextContent('$7.5') // shipping
+    expect(screen.getByTestId('total')).toHaveTextContent('$57.5') // total
+    expect(screen.queryByText(/free/i)).not.toBeInTheDocument()
+  })
 })

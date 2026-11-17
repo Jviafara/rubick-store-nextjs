@@ -1,4 +1,4 @@
-import { mockCartItems, mockProduct } from '@/__mocks__/products.mock'
+import { mockCartItem, mockProduct } from '@/__mocks__/products.mock'
 import ProductDetail from '@/app/(store pages)/product/[...all]/page'
 import { useSession } from '@/lib/auth/auth-client'
 import { useAppSelector } from '@/lib/hooks/redux.hooks'
@@ -39,7 +39,18 @@ jest.mock('@/lib/auth/auth-client', () => ({
 
 jest.mock('@/components/ImageSlide', () => ({
   __esModule: true,
-  default: () => <div data-testid='image-slide' />,
+  default: ({ images }: { images: string[] }) => (
+    <div data-testid='image-container'>
+      {images.map((img, index) => (
+        <h1
+          key={index}
+          data-testid='image-slide'
+        >
+          {img}
+        </h1>
+      ))}
+    </div>
+  ),
 }))
 
 jest.mock('react-toastify', () => ({
@@ -67,7 +78,7 @@ describe('Product Details Page', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockUseRouter.mockReturnValue({ push: mockPush })
-    mockUseParams.mockReturnValue({ all: ['products', 'wireless-headphones'] })
+    mockUseParams.mockReturnValue({ all: ['products', 'mechanical-keyboard'] })
     mockUseSession.mockReturnValue({ data: null })
     mockUseSession.mockReturnValue({
       data: { user: { id: 1, name: 'Jesus' } },
@@ -93,11 +104,30 @@ describe('Product Details Page', () => {
 
     // Wait for product information to render
     expect(await screen.findByRole('heading', { name: /Mechanical Keyboard/i })).toBeInTheDocument()
+    expect(mockProductInfo).toHaveBeenCalled()
+    expect(mockProductInfo).toHaveBeenCalledWith(mockProduct.slug.toString())
     expect(screen.getByText(/150/i)).toBeInTheDocument()
     expect(screen.getByText(/In Stock/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /add to cart/i })).toBeInTheDocument()
   })
 
+  it('should call notFound() when slug is not pass through the params and no message is send on the response', async () => {
+    // Mock productApi to return an error or empty response
+
+    mockUseParams.mockReturnValue({ all: ['products'] })
+    mockProductInfo.mockResolvedValue({
+      res: { status: 404 },
+      error: { message: 'Product not found' },
+    })
+
+    render(<ProductDetail />)
+
+    // Wait for the async loading effect to finish and check if notFound was triggered
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith('Error loading product')
+      expect(notFound).toHaveBeenCalled()
+    })
+  })
   it('should call notFound() when product does not exist or fails to load', async () => {
     // Mock productApi to return an error or empty response
     mockProductInfo.mockResolvedValue({
@@ -109,6 +139,7 @@ describe('Product Details Page', () => {
 
     // Wait for the async loading effect to finish and check if notFound was triggered
     await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith('Product not found')
       expect(notFound).toHaveBeenCalled()
     })
   })
@@ -335,25 +366,6 @@ describe('Product Details Page', () => {
     expect(toast.error).toHaveBeenCalledWith('Error')
   })
 
-  it('should render not render add to cart button when product already in cart', async () => {
-    mockUseAppSelector.mockImplementation(selector => {
-      if (selector.toString().includes('favoriteList')) {
-        return { favoriteList: [] }
-      }
-      if (selector.toString().includes('cart')) {
-        return { cartItems: mockCartItems }
-      }
-      return {}
-    })
-
-    render(<ProductDetail />)
-
-    expect(await screen.findByRole('heading', { name: /Mechanical Keyboard/i })).toBeInTheDocument()
-
-    expect(screen.getByText('Already in Cart!')).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /Add to Cart/i })).not.toBeInTheDocument()
-  })
-
   it.each(['Backspace', 'Delete'])('should prevent %s when quantity has only one digit', async key => {
     render(<ProductDetail />)
 
@@ -408,6 +420,35 @@ describe('Product Details Page', () => {
     expect(mockDispatch).toHaveBeenCalledWith(addcartItem({ ...mockProduct, quantity: 1 }))
   })
 
+  it('allows to add quantity to a product that is already on the cart', async () => {
+    const user = userEvent.setup()
+
+    mockUseAppSelector.mockImplementation(selector => {
+      if (selector.toString().includes('favoriteList')) {
+        return { favoriteList: [] }
+      }
+      if (selector.toString().includes('cart')) {
+        return { cartItems: [mockCartItem] }
+      }
+      return {}
+    })
+
+    render(<ProductDetail />)
+
+    await act(async () => {
+      await Promise.resolve()
+      await Promise.resolve()
+    })
+
+    expect(await screen.findByRole('heading', { name: /Mechanical Keyboard/i })).toBeInTheDocument()
+    const addToCartButton = await screen.findByRole('button', { name: /add to cart/i })
+    expect(addToCartButton).toBeInTheDocument()
+
+    await user.click(addToCartButton)
+
+    expect(mockDispatch).toHaveBeenCalledWith(addcartItem({ ...mockProduct, quantity: 3 }))
+  })
+
   it('exits early without calling remove API if favorite item is missing from state', async () => {
     const user = userEvent.setup()
 
@@ -457,5 +498,32 @@ describe('Product Details Page', () => {
     expect(screen.queryByTestId('decrement-button')).not.toBeInTheDocument()
     expect(screen.queryByTestId('increment-button')).not.toBeInTheDocument()
     expect(screen.queryByRole('spinbutton')).not.toBeInTheDocument()
+  })
+
+  it('should not render images if the product dont have any', async () => {
+    mockProductInfo.mockResolvedValue({
+      res: { ...mockProduct, images: null },
+      error: undefined,
+    })
+    render(<ProductDetail />)
+
+    // Wait for product to load
+    expect(await screen.findByRole('heading', { name: /Mechanical Keyboard/i })).toBeInTheDocument()
+
+    expect(screen.queryByTestId('image-lide')).not.toBeInTheDocument()
+    expect(screen.queryAllByTestId('image-lide')).toHaveLength(0)
+  })
+
+  it('should not render the amount sold if it is lower o equal 0', async () => {
+    mockProductInfo.mockResolvedValue({
+      res: { ...mockProduct, totalSold: 0 },
+      error: undefined,
+    })
+    render(<ProductDetail />)
+
+    // Wait for product to load
+    expect(await screen.findByRole('heading', { name: /Mechanical Keyboard/i })).toBeInTheDocument()
+
+    expect(screen.queryByText('sold')).not.toBeInTheDocument()
   })
 })

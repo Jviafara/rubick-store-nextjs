@@ -36,13 +36,9 @@ const ProductDetail = () => {
   const [productLoaded, setProductLoaded] = useState(false)
 
   useEffect(() => {
-    let isMounted = true
-
     const getProduct = async () => {
       dispatch(setGlobalLoading(true))
       const { res, error } = await productApi.productInfo(slug?.toLocaleString() || '')
-
-      if (!isMounted) return
 
       if (error || res?.status) {
         toast.error(res?.message || 'Error loading product')
@@ -63,9 +59,6 @@ const ProductDetail = () => {
 
     getProduct()
 
-    return () => {
-      isMounted = false
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, dispatch])
 
@@ -256,20 +249,14 @@ const ProductDetail = () => {
                   </button>
                 </div>
               </div>
-              {alreadyInCart ? (
-                <div className='w-fit py-1 px-2 text-white font-plus-jakarta-sans text-center rounded-2xl bg-secondary/70'>
-                  Already in Cart!
-                </div>
-              ) : (
-                <button
-                  onClick={addToCartHandler}
-                  type='button'
-                  className='gradient-button text-lg!'
-                >
-                  Add to Cart
-                  <HiShoppingCart size={24} />
-                </button>
-              )}
+              <button
+                onClick={addToCartHandler}
+                type='button'
+                className='gradient-button text-lg!'
+              >
+                Add to Cart
+                <HiShoppingCart size={24} />
+              </button>
             </div>
           )}
           <div className='text-muted text-sm flex flex-col gap-2'>
