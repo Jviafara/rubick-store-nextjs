@@ -1,12 +1,12 @@
 export const mockUser = {
-  _id: '6a6776dd664af3fff52362af',
+  _id: '1',
   name: 'jesus viafara',
   email: 'jealvito@gmail.com',
   emailVerified: true,
   image: 'https://lh3.googleusercontent.com/a/ACg8ocJvXwp9vPwP8anZ6v-T8rgMyrsIE_3fnAZl5tocEGuXR4OWvg=s96-c',
   role: 'admin',
   phone: '+57 3016288717',
-  defaultAddress: '6a8cb5a5f84ffbf1949e4dc4',
+  defaultAddress: '1',
   save: jest.fn().mockResolvedValue(true),
 }
 
