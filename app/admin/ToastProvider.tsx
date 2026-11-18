@@ -1,8 +1,6 @@
 'use client'
 
 import { useSession } from '@/lib/auth/auth-client'
-import { useAppDispatch } from '@/lib/hooks/redux.hooks'
-import { setFavoriteList } from '@/lib/redux/features/favoriteSlice'
 import { FullUser } from '@/lib/types'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -11,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css'
 
 export default function ToastProvider({ children }: { children: React.ReactNode }) {
   const { data: session, isPending } = useSession()
-  const dispatch = useAppDispatch()
   const router = useRouter()
 
   useEffect(() => {
@@ -24,28 +21,10 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
 
     if ((session.user as FullUser)?.role !== 'admin') {
       toast.error('You are not authorized to view this page')
-      router.replace('/admin/dashboard')
+      router.replace('/')
       return
     }
   })
-
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        const response = await fetch('/api/favorites', {
-          method: 'GET',
-          credentials: 'include',
-        })
-        const data = await response.json()
-        dispatch(setFavoriteList(data))
-      } catch (err) {
-        dispatch(setFavoriteList(null))
-        console.error(err)
-      }
-    }
-    if (!session?.user) return
-    fetchFavorites()
-  }, [dispatch, session])
 
   return (
     <>
