@@ -58,7 +58,6 @@ describe('GET /api/products', () => {
 
     const res = await request('?page=2&page_size=10')
     const body = await res.json()
-
     expect(res.status).toBe(200)
     expect(body.products).toEqual([{ name: 'MoYu RS3M' }])
     expect(body.pagination).toEqual({
@@ -124,7 +123,9 @@ describe('GET /api/products', () => {
   it('filters by price range', async () => {
     await request('?price_min=10&price_max=50')
 
-    expect(pipelineOfFirstCall()[0].$match.$and).toEqual(expect.arrayContaining([{ price: { $gte: 10 } }, { price: { $lte: 50 } }]))
+    expect(pipelineOfFirstCall()[0].$match.$and).toEqual(
+      expect.arrayContaining([{ price: { $gte: 10 } }, { price: { $lte: 50 } }]),
+    )
   })
 
   it('sorts out-of-stock products last, then by the requested order', async () => {
@@ -144,6 +145,19 @@ describe('GET /api/products', () => {
 
     expect(res.status).toBe(400)
     expect(body.message).toContain('db down')
+
+    consoleError.mockRestore()
+  })
+
+  it('returns 400 with the default message when the database fails and dont receive the error message', async () => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {})
+    aggregate.mockRejectedValue(null)
+
+    const res = await request()
+    const body = await res.json()
+
+    expect(res.status).toBe(400)
+    expect(body.message).toContain('Error al buscar los productos')
 
     consoleError.mockRestore()
   })

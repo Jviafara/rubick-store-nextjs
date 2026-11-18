@@ -18,14 +18,21 @@ export async function GET(req: NextRequest) {
 
   const mongoQuery = {
     name: { $regex: query, $options: 'i' },
-    $and: [{ price: { $gte: priceMin } }, { price: { $lte: priceMax } }, { category: filter !== 'All products' ? filter : { $exists: true } }],
+    $and: [
+      { price: { $gte: priceMin } },
+      { price: { $lte: priceMax } },
+      { category: filter !== 'All products' ? filter : { $exists: true } },
+    ],
   }
 
   const sortRule = JSON.parse(getSortRule(sortBy))
 
   try {
     await connectDB()
-    const combinedSort = { isOutOfStock: 1, ...(sortRule as Record<string, 1 | -1 | { $meta: 'textScore' }>) } as Record<string, 1 | -1 | { $meta: 'textScore' }>
+    const combinedSort = {
+      isOutOfStock: 1,
+      ...(sortRule as Record<string, 1 | -1 | { $meta: 'textScore' }>),
+    } as Record<string, 1 | -1 | { $meta: 'textScore' }>
 
     if (query) {
       const products = await Product.aggregate([
@@ -80,6 +87,6 @@ export async function GET(req: NextRequest) {
     return responseHandler.ok({ products, pagination })
   } catch (e) {
     console.error(e)
-    return responseHandler.badRequest(String(e) || 'Error al buscar los productos')
+    return responseHandler.badRequest(String(e || 'Error al buscar los productos'))
   }
 }

@@ -15,6 +15,20 @@ export const mockProduct = {
   updatedAt: new Date('2026-02-10'),
 }
 
+export const mockNewProduct = {
+  name: 'Mechanical Keyboard',
+  slug: 'mechanical-keyboard',
+  category: 'Electronics',
+  images: ['/images/keyboard.webp'],
+  price: 150,
+  countInStock: 20,
+  brand: 'Keychron',
+  rating: 4.8,
+  numReviews: 25,
+  description: 'Wireless mechanical keyboard with RGB lighting.',
+  totalSold: 120,
+}
+
 export const mockCartItem = {
   ...mockProduct,
   quantity: 2,

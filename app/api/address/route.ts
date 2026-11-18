@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
 
     await connectDB()
+
     const address = await Address.create({ ...body, user: session.user.id })
     const user = await User.findById(session.user.id)
     const defaultAddress = await Address.findById(user.defaultAddress)
