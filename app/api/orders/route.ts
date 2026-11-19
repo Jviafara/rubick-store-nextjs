@@ -35,13 +35,15 @@ export async function POST(req: NextRequest) {
       return responseHandler.unauthorize()
     }
 
+    await connectDB()
+
     const body = await req.json()
     const address = await Address.findById(body.shippingAddress)
 
     if (!address) {
       return responseHandler.badRequest('Address not found')
     }
-    await connectDB()
+
     const order = await Order.create({
       orderItems: body.orderItems.map((product: IProduct) => ({
         ...product,
