@@ -27,7 +27,8 @@ export async function GET(req: NextRequest) {
         user: session?.user.id,
       })
 
-      const productIds = favoritesList.map(favorite => favorite.product)
+      const productIds = favoritesList.map(favorite => favorite.product).filter(id => id != null)
+      if (productIds.length <= 0) return responseHandler.notFound()
 
       const products = await Product.find({
         _id: { $in: productIds },
@@ -35,8 +36,6 @@ export async function GET(req: NextRequest) {
         .sort('-createdAt')
         .skip(skip)
         .limit(pageSize)
-
-      if (productIds.length <= 0) return responseHandler.notFound()
 
       const total: number = await Favorite.countDocuments({
         user: session?.user.id,
@@ -113,7 +112,6 @@ export async function DELETE(req: NextRequest) {
     if (!isFavorite) return responseHandler.notFound()
 
     await Favorite.findByIdAndDelete(favoriteId)
-
     return responseHandler.ok({ _id: isFavorite._id })
   } catch (err) {
     console.error(err)

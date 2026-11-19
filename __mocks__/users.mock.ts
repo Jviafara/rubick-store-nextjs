@@ -1,5 +1,6 @@
 export const mockUser = {
   _id: '1',
+  id: '1',
   name: 'jesus viafara',
   email: 'jealvito@gmail.com',
   emailVerified: true,
