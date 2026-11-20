@@ -12,7 +12,7 @@ export const mockUser = {
 }
 
 export const mockUserSession = {
-  token: '60vP5iq6XCPQVqdpcOEa9EmUGW4l3EWe',
+  token: 'session-token',
   ipAddress: '0000:0000:0000:0000:0000:0000:0000:0000',
   userAgent:
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36',

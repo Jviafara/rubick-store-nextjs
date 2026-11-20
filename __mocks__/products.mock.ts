@@ -11,8 +11,8 @@ export const mockProduct = {
   numReviews: 25,
   description: 'Wireless mechanical keyboard with RGB lighting.',
   totalSold: 120,
-  createdAt: new Date('2026-01-10'),
-  updatedAt: new Date('2026-02-10'),
+  createdAt: new Date('2026-01-10').toString(),
+  updatedAt: new Date('2026-02-10').toString(),
 }
 
 export const mockNewProduct = {
@@ -49,8 +49,8 @@ export const mockCartItems = [
     numReviews: 18,
     description: 'Ergonomic wireless gaming mouse.',
     totalSold: 85,
-    createdAt: new Date('2026-01-15'),
-    updatedAt: new Date('2026-02-15'),
+    createdAt: new Date('2026-01-15').toString(),
+    updatedAt: new Date('2026-02-15').toString(),
     quantity: 1,
   },
 ]

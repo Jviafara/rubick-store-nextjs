@@ -10,7 +10,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is missing from environment variables.')
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '')
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

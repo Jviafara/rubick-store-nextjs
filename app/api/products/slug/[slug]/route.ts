@@ -13,6 +13,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
 
     return responseHandler.ok(product)
   } catch (error) {
-    return responseHandler.badRequest(String(error) || 'Error al buscar los productos')
+    return responseHandler.badRequest(String(error || 'Error al buscar los productos'))
   }
 }

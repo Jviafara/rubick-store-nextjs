@@ -93,6 +93,8 @@ const postRequest = (bodyData: Record<string, unknown>) =>
   )
 
 describe('POST / api/orders/pay/[id]', () => {
+  const originalStripeKey = process.env.STRIPE_SECRET_KEY
+
   beforeEach(() => {
     jest.clearAllMocks()
     mockAuthSession.mockResolvedValue({
@@ -105,6 +107,16 @@ describe('POST / api/orders/pay/[id]', () => {
 
     mockOrderFindById.mockResolvedValue(mockOrder)
     mockProductFindById.mockResolvedValue(mockProductDocument)
+  })
+
+  afterEach(() => {
+    jest.resetModules()
+
+    if (originalStripeKey === undefined) {
+      delete process.env.STRIPE_SECRET_KEY
+    } else {
+      process.env.STRIPE_SECRET_KEY = originalStripeKey
+    }
   })
 
   it('should return 401 unauthorized to unauthenticated users', async () => {
@@ -216,5 +228,15 @@ describe('POST / api/orders/pay/[id]', () => {
     await expect(res.json()).resolves.toEqual(mockResponseHandler.error())
 
     consoleSpy.mockRestore()
+  })
+
+  it('should throw an error when STRIPE_SECRET_KEY is missing', async () => {
+    delete process.env.STRIPE_SECRET_KEY
+
+    jest.resetModules()
+
+    await expect(import('@/app/api/orders/pay/[id]/route')).rejects.toThrow(
+      'STRIPE_SECRET_KEY is missing from environment variables.',
+    )
   })
 })
