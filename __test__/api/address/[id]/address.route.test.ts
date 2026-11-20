@@ -174,7 +174,7 @@ describe('DELETE / api/address/[id]', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockAuthSession.mockResolvedValue({
-      user: mockUser,
+      user: { ...mockUser, save: jest.fn() },
       session: mockUserSession,
     })
     mockAddressDelete.mockResolvedValue(mockAddress)
@@ -182,6 +182,7 @@ describe('DELETE / api/address/[id]', () => {
   })
 
   it('should connect to database', async () => {
+    mockUserFindById.mockResolvedValue({ ...mockUser, defaultAddress: '1', save: jest.fn() })
     await deleteRequest('1')
 
     expect(connectDB).toHaveBeenCalledTimes(1)
@@ -206,7 +207,7 @@ describe('DELETE / api/address/[id]', () => {
   })
 
   it('should update user if address is set as defaultAddress', async () => {
-    mockUserFindById.mockResolvedValue({ ...mockUser, defaultAddress: '1' })
+    mockUserFindById.mockResolvedValue({ ...mockUser, defaultAddress: '1', save: jest.fn() })
     mockAddressFind.mockResolvedValue(mockAddressList)
     const res = await deleteRequest('1')
     expect(mockAuthUpdateUser).toHaveBeenCalledWith({
@@ -218,7 +219,7 @@ describe('DELETE / api/address/[id]', () => {
   })
 
   it('should update user if address is the last user address', async () => {
-    mockUserFindById.mockResolvedValue({ ...mockUser, defaultAddress: '1' })
+    mockUserFindById.mockResolvedValue({ ...mockUser, defaultAddress: '1', save: jest.fn() })
     mockAddressFind.mockResolvedValue([])
     const res = await deleteRequest('1')
     expect(mockAuthUpdateUser).toHaveBeenCalledWith({

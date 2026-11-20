@@ -133,7 +133,7 @@ describe('PUT / api/orders', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockAuthSession.mockResolvedValue({
-      user: mockUser,
+      user: { ...mockUser, role: 'admin' },
       session: mockUserSession,
     })
     mockOrderFindById.mockResolvedValue({ ...mockNewOrder, save: jest.fn() })

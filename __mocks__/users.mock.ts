@@ -5,10 +5,9 @@ export const mockUser = {
   email: 'jealvito@gmail.com',
   emailVerified: true,
   image: 'https://lh3.googleusercontent.com/a/ACg8ocJvXwp9vPwP8anZ6v-T8rgMyrsIE_3fnAZl5tocEGuXR4OWvg=s96-c',
-  role: 'admin',
+  role: 'user',
   phone: '+57 3016288717',
   defaultAddress: '1',
-  save: jest.fn().mockResolvedValue(true),
 }
 
 export const mockUserSession = {

@@ -20,6 +20,6 @@ export async function GET(req: NextRequest) {
 
     return responseHandler.ok(users)
   } catch (e) {
-    return responseHandler.badRequest(String(e) || 'Error al buscar los usuarios')
+    return responseHandler.badRequest(String(e || 'Error al buscar los usuarios'))
   }
 }

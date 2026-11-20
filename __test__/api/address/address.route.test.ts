@@ -179,7 +179,7 @@ describe('POST / api/address', () => {
   })
 
   it('should update user when dont have default address', async () => {
-    mockUserFindById.mockResolvedValue({ ...mockUser, defaultAddress: null })
+    mockUserFindById.mockResolvedValue({ ...mockUser, defaultAddress: null, save: jest.fn() })
     mockAddressFindById.mockResolvedValue(null)
     const res = await postRequest(mockNewAddress)
 
