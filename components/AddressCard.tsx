@@ -17,6 +17,7 @@ const AddressCard = ({ address, handleEditModalOpen, handleDelete }: IAddressCar
 
   return (
     <div
+      data-testid='main-container'
       className={`${address._id === (session?.user as FullUser).defaultAddress ? 'card-gradient-cyan-magenta' : 'card-base'} max-w-[90%] md:max-w-full`}
     >
       <section className='w-full flex flex-col gap-2 border border-muted rounded-2xl bg-surface/70 px-4 py-4 '>
@@ -26,12 +27,14 @@ const AddressCard = ({ address, handleEditModalOpen, handleDelete }: IAddressCar
           </h1>
           <div className='flex gap-2'>
             <button
+              aria-label='Edit address'
               onClick={() => handleEditModalOpen(address._id.toString())}
               className='border border-muted text-muted rounded-full p-1'
             >
               <MdOutlineModeEditOutline />
             </button>
             <button
+              aria-label='Delete address'
               onClick={() => handleDelete(address._id.toString())}
               className='border border-muted text-muted rounded-full p-1'
             >

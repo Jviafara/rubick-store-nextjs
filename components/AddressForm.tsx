@@ -38,21 +38,29 @@ const AddressForm = ({ addressId, onSuccess }: { addressId?: string; onSuccess: 
   }
 
   useEffect(() => {
+    let isMounted = true
     const getShippingAddres = async () => {
       if (addressId) {
         const { res, error } = await AddressApi.byId(addressId)
         if (res.status || error) {
           if (res.status === 404) {
+            toast.error(res.message)
             return
           }
           toast.error(res.message)
           return
         }
-        if (res._id === (session?.user as FullUser).defaultAddress) setIsDefault(true)
-        hydrateForm(res)
+        if (res._id === (session?.user as FullUser).defaultAddress && isMounted) setIsDefault(true)
+        if (isMounted) {
+          hydrateForm(res)
+        }
       }
     }
     getShippingAddres()
+
+    return () => {
+      isMounted = false
+    }
   }, [addressId, session])
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -169,6 +177,7 @@ const AddressForm = ({ addressId, onSuccess }: { addressId?: string; onSuccess: 
             />
           </div>
           <div
+            data-testid='default-address-select-button'
             onClick={() => setIsDefault(prev => !prev)}
             className='w-full flex gap-4 items-center md:justify-center cursor-pointer py-4'
           >
