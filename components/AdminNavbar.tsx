@@ -23,14 +23,13 @@ const AdminNavbar = () => {
     setUserMenuOpen(prev => {
       const next = !prev
 
+      clearUserMenuTimeout()
+
       if (next) {
-        clearUserMenuTimeout()
         userMenuTimeoutRef.current = setTimeout(() => {
           setUserMenuOpen(false)
           userMenuTimeoutRef.current = null
         }, 5000)
-      } else {
-        clearUserMenuTimeout()
       }
 
       return next
