@@ -82,6 +82,7 @@ const AdressesSlider = () => {
             <CiCirclePlus size={24} /> Add Address
           </button>
         </SwiperSlide>
+
         {addresses.find(address => address._id === (session?.user as FullUser).defaultAddress) && (
           <SwiperSlide className='swiper-slide w-fit overflow-x-visible'>
             <AddressCard

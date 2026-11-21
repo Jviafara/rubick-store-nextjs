@@ -22,8 +22,8 @@ export const mockNewAddress = {
 export const mockAddressList = [
   mockAddress,
   {
-    _id: '1',
-    user: '2',
+    _id: '2',
+    user: '1',
     name: 'Jane Doe',
     address: '456 Secondary Ave',
     phone: '+573009876543',

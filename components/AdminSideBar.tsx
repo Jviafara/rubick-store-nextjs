@@ -8,6 +8,7 @@ const AdminSideBar = ({ mainView, setView }: AdminAsideProps) => {
         {menuConfigs.admin.map((item, index) => (
           <li
             key={index}
+            data-testid={`${item.state}-link`}
             onClick={() => setView(item.state)}
             className={`flex max-w-max items-center gap-2 rounded-lg py-1 px-2 ${mainView === item.state && 'bg-gray-400'} hover:bg-gray-400 hover:scale-105`}
           >
