@@ -15,6 +15,7 @@ const AveragesTable = ({ current, handleClearTimes, lowests }: TimesTableProps) 
           <tr>
             <th className='flex items-center justify-center'>
               <button
+                aria-label='clear button'
                 onClick={handleClearTimes}
                 className='hover:text-red-500 cursor-pointer'
               >
@@ -35,7 +36,12 @@ const AveragesTable = ({ current, handleClearTimes, lowests }: TimesTableProps) 
               <h1>Time</h1>
             </td>
             <td className='text-center!'>{current?.time ? formatearTiempo('stop', current.time) : '-'}</td>
-            <td className='text-center!'>{lowests?.time ? formatearTiempo('stop', lowests.time.time) : '-'}</td>
+            <td
+              data-testid='time'
+              className='text-center!'
+            >
+              {lowests?.time ? formatearTiempo('stop', lowests.time.time) : '-'}
+            </td>
           </tr>
           {current && current.mo3 && (
             <tr>
@@ -43,7 +49,12 @@ const AveragesTable = ({ current, handleClearTimes, lowests }: TimesTableProps) 
                 <h1>mo3</h1>
               </td>
               <td className='text-center!'>{formatearTiempo('stop', current.mo3)}</td>
-              <td className='text-center!'>{lowests?.mo3 ? formatearTiempo('stop', lowests.mo3.mo3!) : '-'}</td>
+              <td
+                data-testid='mo3'
+                className='text-center!'
+              >
+                {lowests?.mo3 ? formatearTiempo('stop', lowests.mo3.mo3!) : '-'}
+              </td>
             </tr>
           )}
           {current && current.ao5 && (
@@ -52,7 +63,12 @@ const AveragesTable = ({ current, handleClearTimes, lowests }: TimesTableProps) 
                 <h1>ao5</h1>
               </td>
               <td className='text-center!'>{formatearTiempo('stop', current.ao5)}</td>
-              <td className='text-center!'>{lowests?.ao5 ? formatearTiempo('stop', lowests.ao5.ao5!) : '-'}</td>
+              <td
+                data-testid='ao5'
+                className='text-center!'
+              >
+                {lowests?.ao5 ? formatearTiempo('stop', lowests.ao5.ao5!) : '-'}
+              </td>
             </tr>
           )}
           {current && current.ao12 && (
@@ -61,7 +77,12 @@ const AveragesTable = ({ current, handleClearTimes, lowests }: TimesTableProps) 
                 <h1>ao12</h1>
               </td>
               <td className='text-center!'>{formatearTiempo('stop', current.ao12)}</td>
-              <td className='text-center!'>{lowests?.ao12 ? formatearTiempo('stop', lowests.ao12.ao12!) : '-'}</td>
+              <td
+                data-testid='ao12'
+                className='text-center!'
+              >
+                {lowests?.ao12 ? formatearTiempo('stop', lowests.ao12.ao12!) : '-'}
+              </td>
             </tr>
           )}
           {current && current.ao25 && (
@@ -70,7 +91,12 @@ const AveragesTable = ({ current, handleClearTimes, lowests }: TimesTableProps) 
                 <h1>ao25</h1>
               </td>
               <td className='text-center!'>{formatearTiempo('stop', current.ao25)}</td>
-              <td className='text-center!'>{lowests?.ao25 ? formatearTiempo('stop', lowests.ao25.ao25!) : '-'}</td>
+              <td
+                data-testid='ao25'
+                className='text-center!'
+              >
+                {lowests?.ao25 ? formatearTiempo('stop', lowests.ao25.ao25!) : '-'}
+              </td>
             </tr>
           )}
           {current && current.ao50 && (
@@ -79,7 +105,12 @@ const AveragesTable = ({ current, handleClearTimes, lowests }: TimesTableProps) 
                 <h1>ao50</h1>
               </td>
               <td className='text-center!'>{formatearTiempo('stop', current.ao50)}</td>
-              <td className='text-center!'>{lowests?.ao50 ? formatearTiempo('stop', lowests.ao50.ao50!) : '-'}</td>
+              <td
+                data-testid='ao50'
+                className='text-center!'
+              >
+                {lowests?.ao50 ? formatearTiempo('stop', lowests.ao50.ao50!) : '-'}
+              </td>
             </tr>
           )}
           {current && current.ao100 && (
@@ -88,7 +119,12 @@ const AveragesTable = ({ current, handleClearTimes, lowests }: TimesTableProps) 
                 <h1>ao100</h1>
               </td>
               <td className='text-center!'>{formatearTiempo('stop', current.ao100)}</td>
-              <td className='text-center!'>{lowests?.ao100 ? formatearTiempo('stop', lowests.ao100.ao100!) : '-'}</td>
+              <td
+                data-testid='ao100'
+                className='text-center!'
+              >
+                {lowests?.ao100 ? formatearTiempo('stop', lowests.ao100.ao100!) : '-'}
+              </td>
             </tr>
           )}
         </tbody>

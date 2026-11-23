@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "jest",
     "test:watch": "jest --watchAll",
+    "test:CI": "set CI=true &&react-scripts test --env=jsdom --testResultsProcessor=./node_modules/jest-html-reporter",
     "upload:images": "tsx --env-file=.env.local scripts/product_images_upload.ts",
     "populate:totalSold": "tsx --env-file=.env.local scripts/product_populate_totalSold.ts",
     "populate:description": "tsx --env-file=.env.local scripts/product_populate_description.ts"
@@ -66,6 +67,7 @@
     "jeasings": "^0.0.16",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
+    "jest-html-reporter": "^4.4.3",
     "tailwindcss": "^4.3.0",
     "ts-jest": "^29.4.15",
     "ts-node": "^10.9.2",

@@ -11,7 +11,7 @@ import Modal from './Modal'
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const isAdminRoute = pathname?.startsWith('/admin') ?? false
+  const isAdminRoute = !!pathname?.startsWith('/admin')
 
   const [scrollY, setScrollY] = useState(0)
   const innerHeight = useWindowHeight() || 1080
